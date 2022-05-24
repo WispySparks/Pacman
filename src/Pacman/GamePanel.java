@@ -15,7 +15,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
     private final int gridWidth = 28;
     private final int gridLength = 36;
     private final File mapFile = new File("./resources/images/pacmap.png");
-    private boolean started = false;
+    private boolean startDone = false;
     private int direction = 3;
     private Map map = new Map();
     private Pacman pacman = new Pacman(map);
@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
         try {
             mapImage = ImageIO.read(mapFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
         ImageIcon mapIcon = new ImageIcon(mapImage);
         mapLabel.setIcon(mapIcon);
@@ -78,12 +78,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (started == true) {
+        startDone = audioPlayer.isFinished("start");
+        if (startDone == true) {
             move();
+            /*if (audioPlayer.isFinished("waka")) {
+                audioPlayer.playWaka();
+            }*/
         }
-        else {
-            started = audioPlayer.isFinished();
-        }   
     }
 
     public void keyPressed(KeyEvent e) {

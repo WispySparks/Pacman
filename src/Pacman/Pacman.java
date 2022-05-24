@@ -30,7 +30,7 @@ public class Pacman {
             try {
                 animImages[i] = ImageIO.read(animFiles[i]);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e);
             }
         }
     }
