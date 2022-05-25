@@ -101,7 +101,7 @@ public class Pacman {
         // rotates the image based on direction
         BufferedImage rotatedImage = new BufferedImage(anim.getWidth(), anim.getHeight(), anim.getType()); 
         AffineTransform transform = new AffineTransform();
-        transform.rotate(Math.toRadians(90*direction), anim.getWidth()/2, anim.getHeight()/2);
+        transform.rotate(Math.toRadians(0*direction), anim.getWidth()/2, anim.getHeight()/2);
         AffineTransformOp rotateOp = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
         BufferedImage rotatedAnim = rotateOp.filter(anim, rotatedImage);
         animState++;
