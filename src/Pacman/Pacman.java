@@ -9,8 +9,8 @@ import java.awt.image.AffineTransformOp;
 
 public class Pacman {
     
-    private int xPos = 14 * 16 - 8;
-    private int yPos = 26 * 16 + 8;
+    private int xPos = 13 * 16;
+    private int yPos = 26 * 16;
     private int wallTempX = xPos;
     private int wallTempY = yPos;
     private Rectangle[] walls;
@@ -36,36 +36,36 @@ public class Pacman {
     }
 
     public int getX() {
-        return xPos - 8;
+        return xPos;
     }
 
     public int getY() {
-        return yPos - 8;
+        return yPos-2;
     }
 
     public boolean checkCollision(int direction) {
         switch (direction) {
             case 0: // right
-                wallTempX = xPos + 16;
-                wallTempY = yPos-8;
+                wallTempX = xPos + 24;
+                wallTempY = yPos;
                 wallHitbox.height = 32;
                 wallHitbox.width = 16;
                 break;
             case 1: // down
-                wallTempY = yPos + 16;
-                wallTempX = xPos-8;
+                wallTempY = yPos + 24;
+                wallTempX = xPos;
                 wallHitbox.width = 32;
                 wallHitbox.height = 16;
                 break;
             case 2: // left
-                wallTempX = xPos - 16;
-                wallTempY = yPos-8;
+                wallTempX = xPos - 8;
+                wallTempY = yPos;
                 wallHitbox.height = 32;
                 wallHitbox.width = 16;
                 break;
             case 3: // up
-                wallTempY = yPos - 16;
-                wallTempX = xPos-8;
+                wallTempY = yPos - 8;
+                wallTempX = xPos;
                 wallHitbox.width = 32;
                 wallHitbox.height = 16;
                 break;
