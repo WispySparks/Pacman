@@ -45,21 +45,29 @@ public class Pacman {
 
     public boolean checkCollision(int direction) {
         switch (direction) {
-            case 0:
+            case 0: // right
                 wallTempX = xPos + 16;
-                wallTempY = yPos;
+                wallTempY = yPos-8;
+                wallHitbox.height = 32;
+                wallHitbox.width = 16;
                 break;
-            case 1:
+            case 1: // down
                 wallTempY = yPos + 16;
-                wallTempX = xPos;
+                wallTempX = xPos-8;
+                wallHitbox.width = 32;
+                wallHitbox.height = 16;
                 break;
-            case 2:
+            case 2: // left
                 wallTempX = xPos - 16;
-                wallTempY = yPos;
+                wallTempY = yPos-8;
+                wallHitbox.height = 32;
+                wallHitbox.width = 16;
                 break;
-            case 3:
+            case 3: // up
                 wallTempY = yPos - 16;
-                wallTempX = xPos;
+                wallTempX = xPos-8;
+                wallHitbox.width = 32;
+                wallHitbox.height = 16;
                 break;
         } 
         wallHitbox.x = wallTempX;

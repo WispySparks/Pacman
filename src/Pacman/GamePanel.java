@@ -34,12 +34,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
         super.paint(g);
         g.setColor(Color.YELLOW);
         g.drawImage(pacman.updateAnim(direction), pacman.getX(), pacman.getY(), null);
-        // g.setColor(Color.BLUE);
-        // g.fillRect(pacman.wallHitbox.x, pacman.wallHitbox.y, pacman.wallHitbox.width, pacman.wallHitbox.height);
-        // g.setColor(Color.GREEN);
-        // for (int i = 0; i<map.walls.length; i++) {
-        //     g.fillRect(map.walls[i].x, map.walls[i].y, map.walls[i].width, map.walls[i].height);
-        // }
+        g.setColor(Color.BLUE);
+        g.fillRect(pacman.wallHitbox.x, pacman.wallHitbox.y, pacman.wallHitbox.width, pacman.wallHitbox.height);
+        g.setColor(Color.GREEN);
+        for (int i = 0; i<map.walls.length; i++) {
+            g.fillRect(map.walls[i].x, map.walls[i].y, map.walls[i].width, map.walls[i].height);
+        }
     }
 
     public void imageSetup() {
