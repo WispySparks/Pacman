@@ -1,6 +1,6 @@
 package Pacman;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -8,20 +8,22 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 
 public class Pacman {
-    
+
+    private final Map map = new Map();
+    private final Rectangle[] walls = map.getWalls();
+    private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png")};
+    private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
+    private int animState = 0;
+    private Blinky blinky;
     private int xPos = 13 * 16;
     private int yPos = 26 * 16;
     private int wallTempX = xPos;
     private int wallTempY = yPos;
-    private Rectangle[] walls;
-    Rectangle wallHitbox = new Rectangle(wallTempX, wallTempY, 16, 16);
-    private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png")};
-    private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
-    private int animState = 0;
-    boolean isDead = false;
+    private Rectangle wallHitbox = new Rectangle(wallTempX, wallTempY, 16, 16);
+    Rectangle hitbox = new Rectangle(xPos, yPos, 32, 32);
 
-    Pacman(Map map) {
-        this.walls = map.getWalls();
+    Pacman(Blinky blinky) {
+        this.blinky = blinky;
         setupAnims();
     }
 
@@ -43,7 +45,7 @@ public class Pacman {
         return yPos-2;
     }
 
-    public boolean checkCollision(int direction) {
+    public boolean checkWallCollision(int direction) {
         switch (direction) {
             case 0: // right
                 wallTempX = xPos + 24;
@@ -76,6 +78,15 @@ public class Pacman {
             if (wallHitbox.intersects(walls[i])) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean pacmanCollision() {
+        hitbox.x = getX();
+        hitbox.y = getY();
+        if (blinky.getHitbox().intersects(hitbox)) {
+            return true;
         }
         return false;
     }

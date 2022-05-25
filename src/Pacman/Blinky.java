@@ -3,13 +3,15 @@ package Pacman;
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 
 public class Blinky {
 
-    private int xPos = 13 * 16;
-    private int yPos = 55 * 4;
     private final File[] animFiles = {new File("resources/images/blinky_0.png"), new File("./resources/images/blinky_1.png")};
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
+    private int xPos = 13 * 16;
+    private int yPos = 55 * 4;
+    Rectangle hitbox = new Rectangle(xPos, yPos, 32, 32);
     
     Blinky() {
         setupAnims();
@@ -35,6 +37,10 @@ public class Blinky {
 
     public BufferedImage updateAnim() {
         return animImages[0];
+    }
+
+    public Rectangle getHitbox() {
+        return hitbox;
     }
 
 }
