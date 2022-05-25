@@ -9,8 +9,8 @@ import java.awt.image.AffineTransformOp;
 
 public class Pacman {
     
-    private int xPos = 21 * 16;
-    private int yPos = 20 * 16;
+    private int xPos = 14 * 16 - 8;
+    private int yPos = 26 * 16 + 8;
     private int wallTempX = xPos;
     private int wallTempY = yPos;
     private Rectangle[] walls;
@@ -36,11 +36,11 @@ public class Pacman {
     }
 
     public int getX() {
-        return xPos;
+        return xPos - 8;
     }
 
     public int getY() {
-        return yPos;
+        return yPos - 8;
     }
 
     public boolean checkCollision(int direction) {
@@ -101,7 +101,7 @@ public class Pacman {
         // rotates the image based on direction
         BufferedImage rotatedImage = new BufferedImage(anim.getWidth(), anim.getHeight(), anim.getType()); 
         AffineTransform transform = new AffineTransform();
-        transform.rotate(Math.toRadians(0*direction), anim.getWidth()/2, anim.getHeight()/2);
+        transform.rotate(Math.toRadians(90*direction), anim.getWidth()/2, anim.getHeight()/2);
         AffineTransformOp rotateOp = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
         BufferedImage rotatedAnim = rotateOp.filter(anim, rotatedImage);
         animState++;

@@ -18,7 +18,7 @@ public class Map {
         new Rectangle(33*8, 25*16, 64, 16), new Rectangle(45*8, 25*16, 48, 16), new Rectangle(45*8, 25*16, 16, 64), 
         new Rectangle(9*8, 25*16, 16, 64), new Rectangle(21*8, 28*16, 112, 16), new Rectangle(5*8, 31*16, 144, 16), 
         new Rectangle(33*8, 31*16, 144, 16), new Rectangle(15*8, 28*16, 16, 48), new Rectangle(39*8, 28*16, 16, 48),
-        new Rectangle(27*8, 29*16, 16, 48),};
+        new Rectangle(27*8, 29*16, 16, 48)};
 
     public Rectangle[] getWalls() {
         return walls;

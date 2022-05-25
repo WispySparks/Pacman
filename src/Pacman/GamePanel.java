@@ -16,14 +16,16 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
     private final int gridLength = 36;
     private final File mapFile = new File("./resources/images/pacmap.png");
     private boolean startDone = false;
-    private int direction = 3;
-    private int nextDirection = 3;
+    private int direction = 2;
+    private int nextDirection = 2;
+    private int prevKey = 0;
     private Map map = new Map();
     private Pacman pacman = new Pacman(map);
+    private Blinky blinky = new Blinky();
     private JLabel mapLabel = new JLabel();
     private BufferedImage mapImage;
     private AudioPlayer audioPlayer = new AudioPlayer();
-    private Timer timer = new Timer(100, this);
+    private Timer timer = new Timer(75, this);
 
     GamePanel() {
         audioPlayer.playStart();
@@ -33,8 +35,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
 
     public void paint(Graphics g) {
         super.paint(g);
-        g.setColor(Color.YELLOW);
         g.drawImage(pacman.updateAnim(direction), pacman.getX(), pacman.getY(), null);
+        g.drawImage(blinky.updateAnim(), blinky.getX(), blinky.getY(), null);
         g.setColor(Color.BLUE);
         g.fillRect(pacman.wallHitbox.x, pacman.wallHitbox.y, pacman.wallHitbox.width, pacman.wallHitbox.height);
         // g.setColor(Color.GREEN);
@@ -107,19 +109,24 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        System.out.println(prevKey);
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT && prevKey != KeyEvent.VK_RIGHT) {
+            prevKey = KeyEvent.VK_RIGHT;
             direction = nextDirection;
             nextDirection = 0;
         }
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        else if (e.getKeyCode() == KeyEvent.VK_DOWN && prevKey != KeyEvent.VK_DOWN) {
+            prevKey = KeyEvent.VK_DOWN;
             direction = nextDirection;
             nextDirection = 1;
         }
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        else if (e.getKeyCode() == KeyEvent.VK_LEFT && prevKey != KeyEvent.VK_LEFT) {
+            prevKey = KeyEvent.VK_LEFT;
             direction = nextDirection;
             nextDirection = 2;
         }
-        else if (e.getKeyCode() == KeyEvent.VK_UP) {
+        else if (e.getKeyCode() == KeyEvent.VK_UP && prevKey != KeyEvent.VK_UP) {
+            prevKey = KeyEvent.VK_UP;
             direction = nextDirection;
             nextDirection = 3;
         }
