@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Map {
 
-    public final Rectangle[] walls = {new Rectangle(5*8, 6*16, 48, 32), new Rectangle(5*8, 10*16, 48, 16), 
+    private final Rectangle[] walls = {new Rectangle(5*8, 6*16, 48, 32), new Rectangle(5*8, 10*16, 48, 16), 
         new Rectangle(15*8, 6*16, 64, 32), new Rectangle(33*8, 6*16, 64, 32), new Rectangle(45*8, 6*16, 48, 32),
         new Rectangle(45*8, 10*16, 48, 16), new Rectangle(21*8, 10*16, 112, 16), new Rectangle(27*8, 4*16, 16, 64), 
         new Rectangle(0*8, 3*16, 448, 16), new Rectangle(0*8, 3*16, 8, 160), new Rectangle(0*8, 13*16, 88, 64), 
@@ -19,9 +19,14 @@ public class Map {
         new Rectangle(9*8, 25*16, 16, 64), new Rectangle(21*8, 28*16, 112, 16), new Rectangle(5*8, 31*16, 144, 16), 
         new Rectangle(33*8, 31*16, 144, 16), new Rectangle(15*8, 28*16, 16, 48), new Rectangle(39*8, 28*16, 16, 48),
         new Rectangle(27*8, 29*16, 16, 48)};
+    private final Rectangle[] tps = {new Rectangle(-5*8, 17*16, 16, 32), new Rectangle(59*8, 17*16, 16, 32)};
 
     public Rectangle[] getWalls() {
         return walls;
+    }
+
+    public Rectangle[] getTps() {
+        return tps;
     }
 
 }

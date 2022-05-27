@@ -23,7 +23,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
     private boolean startDone = false;
     private int direction = 2;
     private int nextDirection = 2;
-    private Timer timer = new Timer(75, this);
+    private Timer timer = new Timer(100, this);
 
     GamePanel() {
         audioPlayer.playStart();
@@ -42,8 +42,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
         // g.setColor(Color.CYAN);
         // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
         // g.setColor(Color.GREEN);
-        // for (int i = 0; i<map.walls.length; i++) {
-        //     g.fillRect(map.walls[i].x, map.walls[i].y, map.walls[i].width, map.walls[i].height);
+        // for (int i = 0; i<map.tps.length; i++) {
+        //     g.fillRect(map.tps[i].x, map.tps[i].y, map.tps[i].width, map.tps[i].height);
         // }
     }
 
@@ -61,6 +61,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
     }
 
     public void move() {
+        if (pacman.checkTps()) {
+            System.out.println("tp!");
+        }
         if (pacman.checkWallCollision(nextDirection) == false) {
             switch (nextDirection) {
                 case 0: 
@@ -97,17 +100,18 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
                     break;
             }
         }
-        repaint();
     }
 
     public void actionPerformed(ActionEvent e) {
+        pacman.checkHitboxCollision();
         startDone = audioPlayer.isFinished("start");
-        System.out.println(pacman.pacmanCollision());
-        if (startDone == true) {
+        if (startDone == true && pacman.isDead() == false) {
             move();
-            /*if (audioPlayer.isFinished("waka")) {
-                audioPlayer.playWaka();
-            }*/
+            repaint();
+        }
+        else if (startDone == true && pacman.isDead() == true) {
+            audioPlayer.playDeath();
+            repaint();
         }
     }
 

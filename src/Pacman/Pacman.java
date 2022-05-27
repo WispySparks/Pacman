@@ -3,24 +3,32 @@ package Pacman;
 import java.awt.Rectangle;
 import java.io.File;
 import javax.imageio.ImageIO;
+import javax.swing.Timer;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 
-public class Pacman {
+public class Pacman implements ActionListener {
 
     private final Map map = new Map();
     private final Rectangle[] walls = map.getWalls();
-    private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png")};
+    private final Rectangle[] tps = map.getTps();
+    private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png"),
+    new File("./resources/images/pacdeath_0.png"), new File("./resources/images/pacdeath_1.png"), new File("./resources/images/pacdeath_2.png"), new File("./resources/images/pacdeath_3.png"), new File("./resources/images/pacdeath_4.png"), new File("./resources/images/pacdeath_5.png"),
+    new File("./resources/images/pacdeath_6.png"), new File("./resources/images/pacdeath_7.png"), new File("./resources/images/pacdeath_8.png"), new File("./resources/images/pacdeath_9.png"), new File("./resources/images/pacdeath_10.png"),
+    new File("./resources/images/pacdeath_11.png"), new File("./resources/images/pacdeath_12.png")};
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
-    private int animState = 0;
+    private int animState = -1;
     private Blinky blinky;
     private int xPos = 13 * 16;
     private int yPos = 26 * 16;
     private int wallTempX = xPos;
     private int wallTempY = yPos;
     private Rectangle wallHitbox = new Rectangle(wallTempX, wallTempY, 16, 16);
+    private Timer animTimer = new Timer(75, this);
     Rectangle hitbox = new Rectangle(xPos, yPos, 32, 32);
+    private boolean isDead = false;
 
     Pacman(Blinky blinky) {
         this.blinky = blinky;
@@ -28,6 +36,7 @@ public class Pacman {
     }
 
     public void setupAnims() {
+        animTimer.start();
         for (int i = 0; i<animFiles.length; i++) {
             try {
                 animImages[i] = ImageIO.read(animFiles[i]);
@@ -43,6 +52,10 @@ public class Pacman {
 
     public int getY() {
         return yPos-2;
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 
     public boolean checkWallCollision(int direction) {
@@ -82,13 +95,21 @@ public class Pacman {
         return false;
     }
 
-    public boolean pacmanCollision() {
+    public boolean checkTps() {
+        for (int i = 0; i<tps.length; i++) {
+            if (tps[i].intersects(hitbox)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void checkHitboxCollision() {
         hitbox.x = getX();
         hitbox.y = getY();
         if (blinky.getHitbox().intersects(hitbox)) {
-            return true;
+            isDead = true;
         }
-        return false;
     }
 
     public void up() {
@@ -115,10 +136,16 @@ public class Pacman {
         transform.rotate(Math.toRadians(90*direction), anim.getWidth()/2, anim.getHeight()/2);
         AffineTransformOp rotateOp = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
         BufferedImage rotatedAnim = rotateOp.filter(anim, rotatedImage);
+        return rotatedAnim;
+    }
+    
+    public void actionPerformed(ActionEvent e) {
         animState++;
-        if (animState > 4 ){
+        if (animState > 4  && isDead == false){
             animState = 0;
         }
-        return rotatedAnim;
-    } 
+        else if (animState > 17 && isDead == true) {
+            animState = 17;
+        }
+    }
 }
