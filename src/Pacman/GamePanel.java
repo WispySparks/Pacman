@@ -21,8 +21,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private BufferedImage mapImage;
     private boolean startDone = false;
-    private int direction = 2;
-    private int nextDirection = 2;
+    
     private Timer timer = new Timer(100, this);
 
     GamePanel() {
@@ -33,7 +32,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
 
     public void paint(Graphics g) {
         super.paint(g);
-        g.drawImage(pacman.updateAnim(direction), pacman.getX(), pacman.getY(), null);
+        g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
         g.drawImage(blinky.updateAnim(), blinky.getX(), blinky.getY(), null);
         // g.setColor(Color.BLUE);
         // g.fillRect(pacman.wallHitbox.x, pacman.wallHitbox.y, pacman.wallHitbox.width, pacman.wallHitbox.height);
@@ -60,53 +59,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
         this.add(mapLabel);
     }
 
-    public void move() {
-        if (pacman.checkTps()) {
-            System.out.println("tp!");
-        }
-        if (pacman.checkWallCollision(nextDirection) == false) {
-            switch (nextDirection) {
-                case 0: 
-                    pacman.right();
-                    direction = nextDirection;
-                    break;
-                case 1:
-                    pacman.down();
-                    direction = nextDirection;
-                    break;
-                case 2:
-                    pacman.left();
-                    direction = nextDirection;
-                    break;
-                case 3:
-                    pacman.up();
-                    direction = nextDirection;
-                    break;
-            }
-        }
-        else if (pacman.checkWallCollision(direction) == false) {
-            switch (direction) {
-                case 0: 
-                    pacman.right();
-                    break;
-                case 1:
-                    pacman.down();
-                    break;
-                case 2:
-                    pacman.left();
-                    break;
-                case 3:
-                    pacman.up();
-                    break;
-            }
-        }
-    }
+    
 
     public void actionPerformed(ActionEvent e) {
         pacman.checkHitboxCollision();
         startDone = audioPlayer.isFinished("start");
         if (startDone == true && pacman.isDead() == false) {
-            move();
+            pacman.move();
             repaint();
         }
         else if (startDone == true && pacman.isDead() == true) {
@@ -117,16 +76,16 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
 
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            nextDirection = 0;
+            pacman.setNextDir(0);
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            nextDirection = 1;
+            pacman.setNextDir(1);
         }
         else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            nextDirection = 2;
+            pacman.setNextDir(2);
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            nextDirection = 3;
+            pacman.setNextDir(3);
         }
     }
     public void keyReleased(KeyEvent e) {

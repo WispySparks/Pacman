@@ -14,19 +14,18 @@ public class Pacman implements ActionListener {
     private final Map map = new Map();
     private final Rectangle[] walls = map.getWalls();
     private final Rectangle[] tps = map.getTps();
-    private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png"),
-    new File("./resources/images/pacdeath_0.png"), new File("./resources/images/pacdeath_1.png"), new File("./resources/images/pacdeath_2.png"), new File("./resources/images/pacdeath_3.png"), new File("./resources/images/pacdeath_4.png"), new File("./resources/images/pacdeath_5.png"),
-    new File("./resources/images/pacdeath_6.png"), new File("./resources/images/pacdeath_7.png"), new File("./resources/images/pacdeath_8.png"), new File("./resources/images/pacdeath_9.png"), new File("./resources/images/pacdeath_10.png"),
-    new File("./resources/images/pacdeath_11.png"), new File("./resources/images/pacdeath_12.png")};
+    private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png"), new File("./resources/images/pacdeath_0.png"), new File("./resources/images/pacdeath_1.png"), new File("./resources/images/pacdeath_2.png"), new File("./resources/images/pacdeath_3.png"), new File("./resources/images/pacdeath_4.png"), new File("./resources/images/pacdeath_5.png"), new File("./resources/images/pacdeath_6.png"), new File("./resources/images/pacdeath_7.png"), new File("./resources/images/pacdeath_8.png"), new File("./resources/images/pacdeath_9.png"), new File("./resources/images/pacdeath_10.png"), new File("./resources/images/pacdeath_11.png"), new File("./resources/images/pacdeath_12.png")};
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
     private int animState = -1;
+    private Timer animTimer = new Timer(75, this);
     private Blinky blinky;
     private int xPos = 13 * 16;
     private int yPos = 26 * 16;
     private int wallTempX = xPos;
     private int wallTempY = yPos;
+    private int direction = 2;
+    private int nextDirection = 2;
     private Rectangle wallHitbox = new Rectangle(wallTempX, wallTempY, 16, 16);
-    private Timer animTimer = new Timer(75, this);
     Rectangle hitbox = new Rectangle(xPos, yPos, 32, 32);
     private boolean isDead = false;
 
@@ -128,7 +127,53 @@ public class Pacman implements ActionListener {
         xPos -= 8;
     }
 
-    public BufferedImage updateAnim(int direction) {
+    public void setNextDir(int nextDirection) {
+        this.nextDirection = nextDirection;
+    }
+
+    public void move() {
+        if (checkTps()) {
+            System.out.println("tp!");
+        }
+        if (checkWallCollision(nextDirection) == false) {
+            switch (nextDirection) {
+                case 0: 
+                    right();
+                    direction = nextDirection;
+                    break;
+                case 1:
+                    down();
+                    direction = nextDirection;
+                    break;
+                case 2:
+                    left();
+                    direction = nextDirection;
+                    break;
+                case 3:
+                    up();
+                    direction = nextDirection;
+                    break;
+            }
+        }
+        else if (checkWallCollision(direction) == false) {
+            switch (direction) {
+                case 0: 
+                    right();
+                    break;
+                case 1:
+                    down();
+                    break;
+                case 2:
+                    left();
+                    break;
+                case 3:
+                    up();
+                    break;
+            }
+        }
+    }
+
+    public BufferedImage updateAnim() {
         BufferedImage anim = animImages[animState];
         // rotates the image based on direction
         BufferedImage rotatedImage = new BufferedImage(anim.getWidth(), anim.getHeight(), anim.getType()); 
