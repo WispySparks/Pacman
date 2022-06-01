@@ -25,8 +25,54 @@ public class Map {
         return walls;
     }
 
-    public Rectangle[] getTps() {
-        return tps;
+    public int checkTps(Rectangle hitbox) {
+        if (tps[0].intersects(hitbox)) {
+            return 1;
+        }
+        if (tps[1].intersects(hitbox)) {
+            return 2;
+        }
+        return 0;
+    }
+
+    public boolean checkWallCollision(int direction, int xPos, int yPos) {
+        int wallTempX = xPos;
+        int wallTempY = yPos;
+        Rectangle wallHitbox = new Rectangle(wallTempX, wallTempY, 16, 16);
+        switch (direction) {
+            case 0: // right
+                wallTempX = xPos + 24;
+                wallTempY = yPos;
+                wallHitbox.height = 32;
+                wallHitbox.width = 16;
+                break;
+            case 1: // down
+                wallTempY = yPos + 24;
+                wallTempX = xPos;
+                wallHitbox.width = 32;
+                wallHitbox.height = 16;
+                break;
+            case 2: // left
+                wallTempX = xPos - 8;
+                wallTempY = yPos;
+                wallHitbox.height = 32;
+                wallHitbox.width = 16;
+                break;
+            case 3: // up
+                wallTempY = yPos - 8;
+                wallTempX = xPos;
+                wallHitbox.width = 32;
+                wallHitbox.height = 16;
+                break;
+        } 
+        wallHitbox.x = wallTempX;
+        wallHitbox.y = wallTempY;
+        for (int i = 0; i<walls.length; i++) {
+            if (wallHitbox.intersects(walls[i])) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

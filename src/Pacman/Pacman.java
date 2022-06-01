@@ -12,8 +12,6 @@ import java.awt.image.AffineTransformOp;
 public class Pacman implements ActionListener {
 
     private final Map map = new Map();
-    private final Rectangle[] walls = map.getWalls();
-    private final Rectangle[] tps = map.getTps();
     private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png"), new File("./resources/images/pacdeath_0.png"), new File("./resources/images/pacdeath_1.png"), new File("./resources/images/pacdeath_2.png"), new File("./resources/images/pacdeath_3.png"), new File("./resources/images/pacdeath_4.png"), new File("./resources/images/pacdeath_5.png"), new File("./resources/images/pacdeath_6.png"), new File("./resources/images/pacdeath_7.png"), new File("./resources/images/pacdeath_8.png"), new File("./resources/images/pacdeath_9.png"), new File("./resources/images/pacdeath_10.png"), new File("./resources/images/pacdeath_11.png"), new File("./resources/images/pacdeath_12.png")};
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
     private int animState = -1;
@@ -21,11 +19,8 @@ public class Pacman implements ActionListener {
     private Blinky blinky;
     private int xPos = 13 * 16;
     private int yPos = 26 * 16;
-    private int wallTempX = xPos;
-    private int wallTempY = yPos;
     private int direction = 2;
     private int nextDirection = 2;
-    private Rectangle wallHitbox = new Rectangle(wallTempX, wallTempY, 16, 16);
     Rectangle hitbox = new Rectangle(xPos, yPos, 32, 32);
     private boolean isDead = false;
 
@@ -57,52 +52,6 @@ public class Pacman implements ActionListener {
         return isDead;
     }
 
-    public boolean checkWallCollision(int direction) {
-        switch (direction) {
-            case 0: // right
-                wallTempX = xPos + 24;
-                wallTempY = yPos;
-                wallHitbox.height = 32;
-                wallHitbox.width = 16;
-                break;
-            case 1: // down
-                wallTempY = yPos + 24;
-                wallTempX = xPos;
-                wallHitbox.width = 32;
-                wallHitbox.height = 16;
-                break;
-            case 2: // left
-                wallTempX = xPos - 8;
-                wallTempY = yPos;
-                wallHitbox.height = 32;
-                wallHitbox.width = 16;
-                break;
-            case 3: // up
-                wallTempY = yPos - 8;
-                wallTempX = xPos;
-                wallHitbox.width = 32;
-                wallHitbox.height = 16;
-                break;
-        } 
-        wallHitbox.x = wallTempX;
-        wallHitbox.y = wallTempY;
-        for (int i = 0; i<walls.length; i++) {
-            if (wallHitbox.intersects(walls[i])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean checkTps() {
-        for (int i = 0; i<tps.length; i++) {
-            if (tps[i].intersects(hitbox)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void checkHitboxCollision() {
         hitbox.x = getX();
         hitbox.y = getY();
@@ -132,10 +81,15 @@ public class Pacman implements ActionListener {
     }
 
     public void move() {
-        if (checkTps()) {
-            System.out.println("tp!");
+        if (map.checkTps(hitbox) == 1) {
+            xPos = 28*16;
+            nextDirection = direction = 2;
         }
-        if (checkWallCollision(nextDirection) == false) {
+        else if (map.checkTps(hitbox) == 2) {
+            xPos = -2*16;
+            nextDirection = direction = 0;
+        }
+        if (map.checkWallCollision(nextDirection, xPos, yPos) == false) {
             switch (nextDirection) {
                 case 0: 
                     right();
@@ -155,7 +109,7 @@ public class Pacman implements ActionListener {
                     break;
             }
         }
-        else if (checkWallCollision(direction) == false) {
+        else if (map.checkWallCollision(direction, xPos, yPos) == false) {
             switch (direction) {
                 case 0: 
                     right();
