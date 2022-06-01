@@ -14,9 +14,10 @@ public class Pacman implements ActionListener {
     private final Map map = new Map();
     private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png"), new File("./resources/images/pacdeath_0.png"), new File("./resources/images/pacdeath_1.png"), new File("./resources/images/pacdeath_2.png"), new File("./resources/images/pacdeath_3.png"), new File("./resources/images/pacdeath_4.png"), new File("./resources/images/pacdeath_5.png"), new File("./resources/images/pacdeath_6.png"), new File("./resources/images/pacdeath_7.png"), new File("./resources/images/pacdeath_8.png"), new File("./resources/images/pacdeath_9.png"), new File("./resources/images/pacdeath_10.png"), new File("./resources/images/pacdeath_11.png"), new File("./resources/images/pacdeath_12.png")};
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
-    private int animState = -1;
+    private int animState = 0;
     private Timer animTimer = new Timer(75, this);
     private Blinky blinky;
+    private GamePanel panel;
     private int xPos = 13 * 16;
     private int yPos = 26 * 16;
     private int direction = 2;
@@ -24,8 +25,9 @@ public class Pacman implements ActionListener {
     private Rectangle hitbox = new Rectangle(xPos, yPos, 32, 32);
     private boolean isDead = false;
 
-    Pacman(Blinky blinky) {
+    Pacman(Blinky blinky, GamePanel panel) {
         this.blinky = blinky;
+        this.panel = panel;
         setupAnims();
     }
 
@@ -139,7 +141,9 @@ public class Pacman implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent e) {
-        animState++;
+        if (panel.isStartDone()) {
+            animState++;
+        }
         if (animState > 4  && isDead == false){
             animState = 0;
         }

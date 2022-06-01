@@ -16,7 +16,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
     private final int gridLength = 36;
     private final File mapFile = new File("./resources/images/pacmap.png");
     private final Blinky blinky = new Blinky();
-    private final Pacman pacman = new Pacman(blinky);
+    private final Pacman pacman = new Pacman(blinky, this);
     private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private BufferedImage mapImage;
@@ -33,6 +33,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
 
     public void paint(Graphics g) {
         super.paint(g);
+        g.setColor(Color.WHITE);
+        for (int i = 0; i<map.dots.length; i++) {
+            g.fillRect(map.dots[i].x, map.dots[i].y, map.dots[i].width, map.dots[i].height);
+        }
         g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
         g.drawImage(blinky.updateAnim(), blinky.getX(), blinky.getY(), null);
         // g.setColor(Color.BLUE);
@@ -42,10 +46,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
         // g.setColor(Color.CYAN);
         // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
         // g.setColor(Color.GREEN);
-        g.setColor(Color.WHITE);
-        for (int i = 0; i<map.dots.length; i++) {
-            g.fillRect(map.dots[i].x, map.dots[i].y, map.dots[i].width, map.dots[i].height);
-        }
+        
     }
 
     public void bgSetup() {
@@ -74,6 +75,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
             audioPlayer.playDeath();
             repaint();
         }
+    }
+
+    public boolean isStartDone() {
+        return startDone;
     }
 
     public void keyPressed(KeyEvent e) {

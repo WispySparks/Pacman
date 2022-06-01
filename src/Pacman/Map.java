@@ -20,16 +20,26 @@ public class Map {
         new Rectangle(33*8, 31*16, 144, 16), new Rectangle(15*8, 28*16, 16, 48), new Rectangle(39*8, 28*16, 16, 48),
         new Rectangle(27*8, 29*16, 16, 48)};
     private final Rectangle[] tps = {new Rectangle(-5*8, 17*16, 16, 32), new Rectangle(59*8, 17*16, 16, 32)};
-    public Rectangle[] dots = new Rectangle[244];
+    public Rectangle[] dots = new Rectangle[810];   // it has to acount for the walls being spaces along with dots which is why its so big
     
     Map() {
         setDots();
     }
 
     public void setDots() {
+        int rollOver = 0;
+        int yPos = 4;
+        int xPos = 0;
         int counter = 0;
         for (int i = 0; i < dots.length; i++) {
-            dots[i] = new Rectangle((i+i)*16, 9*8, 8, 8);
+            dots[i] = new Rectangle((xPos*16)+4, (yPos*16)+12, 4, 4);
+            rollOver = (rollOver+1) % 28;
+            xPos++;
+            if (rollOver == 27) {
+                yPos++;
+                xPos = 0;
+            }
+            System.out.println(yPos);
             if (checkWallCollision(4, dots[i].x, dots[i].y)) {
                 dots[i] = new Rectangle(0, 0, 0, 0);
                 counter++;
