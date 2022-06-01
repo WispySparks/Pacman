@@ -21,7 +21,7 @@ public class Pacman implements ActionListener {
     private int yPos = 26 * 16;
     private int direction = 2;
     private int nextDirection = 2;
-    Rectangle hitbox = new Rectangle(xPos, yPos, 32, 32);
+    private Rectangle hitbox = new Rectangle(xPos, yPos, 32, 32);
     private boolean isDead = false;
 
     Pacman(Blinky blinky) {

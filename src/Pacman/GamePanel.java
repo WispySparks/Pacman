@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private BufferedImage mapImage;
     private boolean startDone = false;
+    Map map = new Map();
     
     private Timer timer = new Timer(100, this);
 
@@ -41,9 +42,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
         // g.setColor(Color.CYAN);
         // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
         // g.setColor(Color.GREEN);
-        // for (int i = 0; i<map.tps.length; i++) {
-        //     g.fillRect(map.tps[i].x, map.tps[i].y, map.tps[i].width, map.tps[i].height);
-        // }
+        g.setColor(Color.WHITE);
+        for (int i = 0; i<map.dots.length; i++) {
+            g.fillRect(map.dots[i].x, map.dots[i].y, map.dots[i].width, map.dots[i].height);
+        }
     }
 
     public void bgSetup() {

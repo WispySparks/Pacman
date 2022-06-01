@@ -20,9 +20,22 @@ public class Map {
         new Rectangle(33*8, 31*16, 144, 16), new Rectangle(15*8, 28*16, 16, 48), new Rectangle(39*8, 28*16, 16, 48),
         new Rectangle(27*8, 29*16, 16, 48)};
     private final Rectangle[] tps = {new Rectangle(-5*8, 17*16, 16, 32), new Rectangle(59*8, 17*16, 16, 32)};
+    public Rectangle[] dots = new Rectangle[244];
+    
+    Map() {
+        setDots();
+    }
 
-    public Rectangle[] getWalls() {
-        return walls;
+    public void setDots() {
+        int counter = 0;
+        for (int i = 0; i < dots.length; i++) {
+            dots[i] = new Rectangle((i+i)*16, 9*8, 8, 8);
+            if (checkWallCollision(4, dots[i].x, dots[i].y)) {
+                dots[i] = new Rectangle(0, 0, 0, 0);
+                counter++;
+            }
+        }
+        System.out.println(counter);
     }
 
     public int checkTps(Rectangle hitbox) {
@@ -64,6 +77,11 @@ public class Map {
                 wallHitbox.width = 32;
                 wallHitbox.height = 16;
                 break;
+            case 4: // by itself
+                wallTempX = xPos;
+                wallTempY = yPos;
+                wallHitbox.width = 16;
+                wallHitbox.height = 16;
         } 
         wallHitbox.x = wallTempX;
         wallHitbox.y = wallTempY;
