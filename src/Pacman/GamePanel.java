@@ -9,11 +9,11 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.event.KeyEvent;
 
-public class GamePanel extends JPanel implements KeyListener, ActionListener{
+public class GamePanel extends JLayeredPane implements KeyListener, ActionListener{
 
     private final int tileSize = 16;
     private final int gridWidth = 28;
-    private final int gridLength = 38;
+    private final int gridLength = 36;
     private final File mapFile = new File("./resources/images/pacmap.png");
     private final Map map = new Map(this);
     private final Blinky blinky = new Blinky();
@@ -45,13 +45,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
         // g.fillRect(pacman.wallHitbox.x, pacman.wallHitbox.y, pacman.wallHitbox.width, pacman.wallHitbox.height);
         // g.setColor(Color.PINK);
         // g.fillRect(blinky.hitbox.x, blinky.hitbox.y, blinky.hitbox.width, blinky.hitbox.height);
-        g.setColor(Color.CYAN);
-        //g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
+        // g.setColor(Color.CYAN);
+        // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
         // g.setColor(Color.GREEN);
         
     }
 
     public void bgSetup() {
+        this.setOpaque(true);
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(gridWidth*tileSize, gridLength*tileSize));
         try {
@@ -61,12 +62,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
         }
         ImageIcon mapIcon = new ImageIcon(mapImage);
         mapLabel.setIcon(mapIcon);
-        //scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        //scoreLabel.setVerticalAlignment(SwingConstants.TOP);
-        //scoreLabel.setBounds(25, 25, 64, 32);
+        mapLabel.setBounds(0, 0, gridWidth*tileSize, gridLength*tileSize);
+        scoreLabel.setBounds(gridWidth*tileSize/2-75, 0, 200, 50);
         scoreLabel.setForeground(Color.WHITE);
-        this.add(mapLabel);
-        this.add(scoreLabel);
+        scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+        System.out.println(mapLabel);
+        this.add(mapLabel, Integer.valueOf(1));
+        this.add(scoreLabel, Integer.valueOf(2));
     }
 
     

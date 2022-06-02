@@ -48,7 +48,7 @@ public class Pacman implements ActionListener {
     }
 
     public int getY() {
-        return yPos-2;
+        return yPos-6;
     }
 
     public boolean isDead() {

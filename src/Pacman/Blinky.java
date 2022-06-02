@@ -32,7 +32,7 @@ public class Blinky {
     }
 
     public int getY() {
-        return yPos;
+        return yPos-4;
     }
 
     public BufferedImage updateAnim() {
