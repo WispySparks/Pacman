@@ -13,16 +13,18 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
 
     private final int tileSize = 16;
     private final int gridWidth = 28;
-    private final int gridLength = 36;
+    private final int gridLength = 38;
     private final File mapFile = new File("./resources/images/pacmap.png");
+    private final Map map = new Map(this);
     private final Blinky blinky = new Blinky();
-    private final Pacman pacman = new Pacman(blinky, this);
+    private final Pacman pacman = new Pacman(blinky, this, map);
     private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
+    private int score = 0;
     private BufferedImage mapImage;
+    private JLabel scoreLabel = new JLabel("HIGH SCORE " + Integer.toString(score));
     private boolean startDone = false;
-    Map map = new Map();
-    
+    private Rectangle[] dots = map.getDots();
     private Timer timer = new Timer(100, this);
 
     GamePanel() {
@@ -34,8 +36,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
     public void paint(Graphics g) {
         super.paint(g);
         g.setColor(Color.WHITE);
-        for (int i = 0; i<map.dots.length; i++) {
-            g.fillRect(map.dots[i].x, map.dots[i].y, map.dots[i].width, map.dots[i].height);
+        for (int i = 0; i<dots.length; i++) {
+            g.fillRect(dots[i].x, dots[i].y, dots[i].width, dots[i].height);
         }
         g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
         g.drawImage(blinky.updateAnim(), blinky.getX(), blinky.getY(), null);
@@ -43,8 +45,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
         // g.fillRect(pacman.wallHitbox.x, pacman.wallHitbox.y, pacman.wallHitbox.width, pacman.wallHitbox.height);
         // g.setColor(Color.PINK);
         // g.fillRect(blinky.hitbox.x, blinky.hitbox.y, blinky.hitbox.width, blinky.hitbox.height);
-        // g.setColor(Color.CYAN);
-        // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
+        g.setColor(Color.CYAN);
+        //g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
         // g.setColor(Color.GREEN);
         
     }
@@ -59,7 +61,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
         }
         ImageIcon mapIcon = new ImageIcon(mapImage);
         mapLabel.setIcon(mapIcon);
+        //scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        //scoreLabel.setVerticalAlignment(SwingConstants.TOP);
+        //scoreLabel.setBounds(25, 25, 64, 32);
+        scoreLabel.setForeground(Color.WHITE);
         this.add(mapLabel);
+        this.add(scoreLabel);
     }
 
     
@@ -79,6 +86,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener{
 
     public boolean isStartDone() {
         return startDone;
+    }
+
+    public void setScore(int amount) {
+        score += amount;
+        scoreLabel.setText("HIGH SCORE " + Integer.toString(score));
     }
 
     public void keyPressed(KeyEvent e) {

@@ -11,23 +11,24 @@ import java.awt.image.AffineTransformOp;
 
 public class Pacman implements ActionListener {
 
-    private final Map map = new Map();
+    private final Map map;
     private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png"), new File("./resources/images/pacdeath_0.png"), new File("./resources/images/pacdeath_1.png"), new File("./resources/images/pacdeath_2.png"), new File("./resources/images/pacdeath_3.png"), new File("./resources/images/pacdeath_4.png"), new File("./resources/images/pacdeath_5.png"), new File("./resources/images/pacdeath_6.png"), new File("./resources/images/pacdeath_7.png"), new File("./resources/images/pacdeath_8.png"), new File("./resources/images/pacdeath_9.png"), new File("./resources/images/pacdeath_10.png"), new File("./resources/images/pacdeath_11.png"), new File("./resources/images/pacdeath_12.png")};
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
+    private final GamePanel panel;
     private int animState = 0;
     private Timer animTimer = new Timer(75, this);
     private Blinky blinky;
-    private GamePanel panel;
     private int xPos = 13 * 16;
     private int yPos = 26 * 16;
     private int direction = 2;
     private int nextDirection = 2;
-    private Rectangle hitbox = new Rectangle(xPos, yPos, 32, 32);
+    public Rectangle hitbox = new Rectangle(xPos, yPos-2, 24, 24);
     private boolean isDead = false;
 
-    Pacman(Blinky blinky, GamePanel panel) {
+    Pacman(Blinky blinky, GamePanel panel, Map map) {
         this.blinky = blinky;
         this.panel = panel;
+        this.map = map;
         setupAnims();
     }
 
@@ -55,8 +56,8 @@ public class Pacman implements ActionListener {
     }
 
     public void checkHitboxCollision() {
-        hitbox.x = getX();
-        hitbox.y = getY();
+        hitbox.x = getX() + 4;
+        hitbox.y = getY() + 4;
         if (blinky.getHitbox().intersects(hitbox)) {
             isDead = true;
         }
@@ -83,6 +84,7 @@ public class Pacman implements ActionListener {
     }
 
     public void move() {
+        map.eatDot(hitbox);
         if (map.checkTps(hitbox) == 1) {
             xPos = 28*16;
             nextDirection = direction = 2;
