@@ -16,7 +16,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private final int gridLength = 36;
     private final File mapFile = new File("./resources/images/pacmap.png");
     private final Map map = new Map(this);
-    private final Blinky blinky = new Blinky();
+    private final Blinky blinky = new Blinky(map);
     private final Pacman pacman = new Pacman(blinky, this, map);
     private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
@@ -44,11 +44,10 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         // g.setColor(Color.BLUE);
         // g.fillRect(pacman.wallHitbox.x, pacman.wallHitbox.y, pacman.wallHitbox.width, pacman.wallHitbox.height);
         // g.setColor(Color.PINK);
-        // g.fillRect(blinky.hitbox.x, blinky.hitbox.y, blinky.hitbox.width, blinky.hitbox.height);
-        // g.setColor(Color.CYAN);
+        g.fillRect(blinky.hitbox.x, blinky.hitbox.y, blinky.hitbox.width, blinky.hitbox.height);
+        g.setColor(Color.CYAN);
         // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
         // g.setColor(Color.GREEN);
-        
     }
 
     public void bgSetup() {
@@ -66,24 +65,18 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         scoreLabel.setBounds(gridWidth*tileSize/2-75, 0, 200, 50);
         scoreLabel.setForeground(Color.WHITE);
         scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-        System.out.println(mapLabel);
         this.add(mapLabel, Integer.valueOf(1));
         this.add(scoreLabel, Integer.valueOf(2));
     }
 
-    
-
     public void actionPerformed(ActionEvent e) {
-        pacman.checkHitboxCollision();
         startDone = audioPlayer.isFinished("start");
+        pacman.checkHitboxCollision();
         if (startDone == true && pacman.isDead() == false) {
             pacman.move();
-            repaint();
+            blinky.move();
         }
-        else if (startDone == true && pacman.isDead() == true) {
-            audioPlayer.playDeath();
-            repaint();
-        }
+        repaint();
     }
 
     public boolean isStartDone() {

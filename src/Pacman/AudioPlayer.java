@@ -32,13 +32,15 @@ public class AudioPlayer {
     }
 
     public void playWaka() {
-        try {
-            audioStream = AudioSystem.getAudioInputStream(wakaAudio);
-            wakaClip = AudioSystem.getClip();
-            wakaClip.open(audioStream);
-            wakaClip.start();
-        } catch (Exception e) {
-            System.out.println(e);
+        if (wakaClip == null || wakaClip.isRunning() == false) {
+            try {
+                audioStream = AudioSystem.getAudioInputStream(wakaAudio);
+                wakaClip = AudioSystem.getClip();
+                wakaClip.open(audioStream);
+                wakaClip.start();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 

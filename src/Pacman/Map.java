@@ -5,6 +5,7 @@ import java.awt.*;
 public class Map {
 
     private final GamePanel panel;
+    private final AudioPlayer audioPlayer = new AudioPlayer();
     private final Rectangle[] walls = {new Rectangle(5*8, 6*16, 48, 32), new Rectangle(5*8, 10*16, 48, 16), 
         new Rectangle(15*8, 6*16, 64, 32), new Rectangle(33*8, 6*16, 64, 32), new Rectangle(45*8, 6*16, 48, 32),
         new Rectangle(45*8, 10*16, 48, 16), new Rectangle(21*8, 10*16, 112, 16), new Rectangle(27*8, 4*16, 16, 64), 
@@ -30,7 +31,7 @@ public class Map {
         setDots();
     }
 
-    public void setDots() {
+    public void setDots() {     // set up dots for the map
         int rollOver = 0;
         int yPos = 4;
         int xPos = 1;
@@ -62,10 +63,11 @@ public class Map {
         return dots;
     }
 
-    public void eatDot(Rectangle rect) {
+    public void eatDot(Rectangle rect) {    // code for eating a dot
         Rectangle space = new Rectangle(0, 0, 0, 0);
         for (int i = 0; i<dots.length; i++) {
             if (dots[i].intersects(rect)) {
+                audioPlayer.playWaka();
                 panel.setScore(10);
                 dots[i] = space;
             }
