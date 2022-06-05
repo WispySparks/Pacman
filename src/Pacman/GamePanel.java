@@ -16,8 +16,8 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private final int gridLength = 36;
     private final File mapFile = new File("./resources/images/pacmap.png");
     private final Map map = new Map(this);
-    private final Blinky blinky = new Blinky(map);
-    private final Pacman pacman = new Pacman(blinky, this, map);
+    private final Pacman pacman = new Pacman(this, map);
+    private final Blinky blinky = new Blinky(pacman, map);
     private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private int score = 0;
@@ -29,8 +29,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
 
     GamePanel() {
         audioPlayer.playStart();
-        bgSetup();
-        timer.start();
+        gameSetup();
     }
 
     public void paint(Graphics g) {
@@ -42,15 +41,18 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
         g.drawImage(blinky.updateAnim(), blinky.getX(), blinky.getY(), null);
         // g.setColor(Color.BLUE);
-        // g.fillRect(pacman.wallHitbox.x, pacman.wallHitbox.y, pacman.wallHitbox.width, pacman.wallHitbox.height);
-        // g.setColor(Color.PINK);
-        g.fillRect(blinky.hitbox.x, blinky.hitbox.y, blinky.hitbox.width, blinky.hitbox.height);
-        g.setColor(Color.CYAN);
         // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
+        // g.setColor(Color.PINK);
+        // g.fillRect(blinky.hitbox.x, blinky.hitbox.y, blinky.hitbox.width, blinky.hitbox.height);
+        // g.setColor(Color.CYAN);
+        // g.fillRect(map.test.x, map.test.y, map.test.width, map.test.height);
         // g.setColor(Color.GREEN);
+        // for (int i = 0; i<map.walls.length; i++) {
+        //     g.fillRect(map.walls[i].x, map.walls[i].y, map.walls[i].width, map.walls[i].height);
+        // }
     }
 
-    public void bgSetup() {
+    public void gameSetup() {
         this.setOpaque(true);
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(gridWidth*tileSize, gridLength*tileSize));
@@ -67,6 +69,8 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
         this.add(mapLabel, Integer.valueOf(1));
         this.add(scoreLabel, Integer.valueOf(2));
+        pacman.setGhosts(blinky);
+        timer.start();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -77,15 +81,6 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
             blinky.move();
         }
         repaint();
-    }
-
-    public boolean isStartDone() {
-        return startDone;
-    }
-
-    public void setScore(int amount) {
-        score += amount;
-        scoreLabel.setText("HIGH SCORE " + Integer.toString(score));
     }
 
     public void keyPressed(KeyEvent e) {
@@ -105,5 +100,14 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     public void keyReleased(KeyEvent e) {
     }
     public void keyTyped(KeyEvent e) {
+    }
+
+    public boolean isStartDone() {
+        return startDone;
+    }
+
+    public void setScore(int amount) {
+        score += amount;
+        scoreLabel.setText("HIGH SCORE " + Integer.toString(score));
     }
 }

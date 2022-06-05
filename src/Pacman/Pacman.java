@@ -23,11 +23,10 @@ public class Pacman implements ActionListener {
     private int yPos = 26 * 16;
     private int direction = 2;
     private int nextDirection = 2;
-    private Rectangle hitbox = new Rectangle(xPos, yPos-2, 24, 24);
+    public Rectangle hitbox = new Rectangle(xPos, yPos, 24, 24);
     private boolean isDead = false;
 
-    Pacman(Blinky blinky, GamePanel panel, Map map) {
-        this.blinky = blinky;
+    Pacman(GamePanel panel, Map map) {
         this.panel = panel;
         this.map = map;
         setupAnims();
@@ -44,12 +43,16 @@ public class Pacman implements ActionListener {
         }
     }
 
+    public void setGhosts(Blinky blinky) {
+        this.blinky = blinky;
+    }
+
     public int getX() {
         return xPos;
     }
 
     public int getY() {
-        return yPos-6;
+        return yPos-8;
     }
 
     public boolean isDead() {
@@ -57,8 +60,6 @@ public class Pacman implements ActionListener {
     }
 
     public void checkHitboxCollision() {
-        hitbox.x = getX() + 4;
-        hitbox.y = getY() + 4;
         if (blinky.getHitbox().intersects(hitbox)) {
             audioPlayer.playDeath();
             isDead = true;
@@ -131,6 +132,8 @@ public class Pacman implements ActionListener {
                     break;
             }
         }
+        hitbox.x = getX()+4;
+        hitbox.y = getY()+4;
     }
 
     public BufferedImage updateAnim() {

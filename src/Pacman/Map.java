@@ -65,6 +65,8 @@ public class Map {
 
     public void eatDot(Rectangle rect) {    // code for eating a dot
         Rectangle space = new Rectangle(0, 0, 0, 0);
+        rect.height = 24;
+        rect.y = rect.y+8;
         for (int i = 0; i<dots.length; i++) {
             if (dots[i].intersects(rect)) {
                 audioPlayer.playWaka();
@@ -84,7 +86,7 @@ public class Map {
         return 0;
     }
 
-    public boolean checkWallCollision(int direction, int xPos, int yPos) {
+    public boolean checkWallCollision(int direction, int xPos, int yPos) {  // check if something collides with the walls
         int wallTempX = xPos;
         int wallTempY = yPos;
         Rectangle wallHitbox = new Rectangle(wallTempX, wallTempY, 16, 16);
