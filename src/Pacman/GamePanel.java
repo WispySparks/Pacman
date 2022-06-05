@@ -93,7 +93,6 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     }
 
     public void modes() {   // sets the states of the ghosts based on the current time or if the power pellets have run out
-        //System.out.println(frightenTime);
         if (blinky.getState() < 2) {
             currentTime += .1;
             frightenTime = 0;
@@ -101,28 +100,12 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         else {
             frightenTime += .1;
         }
+        for (int i = 0; i<modeTimes.length; i++) {
+            if ((int) currentTime == modeTimes[i]) {
+                blinky.setState(i % 2);
+            }
+        }
         if ((int) frightenTime == 7) {
-            blinky.setState(0);
-        }
-        if ((int) currentTime == modeTimes[0]) {
-            blinky.setState(0);
-        }
-        else if ((int) currentTime == modeTimes[1]) {
-            blinky.setState(1);
-        }
-        else if ((int) currentTime == modeTimes[2]) {
-            blinky.setState(0);
-        }
-        else if ((int) currentTime == modeTimes[3]) {
-            blinky.setState(1);
-        }
-        else if ((int) currentTime == modeTimes[4]) {
-            blinky.setState(0);
-        }
-        else if ((int) currentTime == modeTimes[5]) {
-            blinky.setState(1);
-        }
-        else if ((int) currentTime == modeTimes[6]) {
             blinky.setState(0);
         }
     }

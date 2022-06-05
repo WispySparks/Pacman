@@ -125,15 +125,15 @@ public class Blinky implements ActionListener {
     public int getNextDirection() {
         int x1 = 0;
         int y1 = 0;
-        if (ghostState == 0) {
+        if (ghostState == 0) {  // chase mode
             x1 = pacman.getX();
             y1 = pacman.getY();
         }
-        else if (ghostState == 1) {
+        else if (ghostState == 1) {  // scatter mode
             x1 = 26*16;
             y1 = 4*16;
         }
-        else if (ghostState == 2) {
+        else if (ghostState == 2) {  // frighten mode
             return randDirection();
         }
         int x2 = getX();
@@ -188,24 +188,22 @@ public class Blinky implements ActionListener {
         return 5;
     }
 
-    public int randDirection() {
+    public int randDirection() {    // get a new random direction
         int x = rand.nextInt(4);
-        //System.out.println(x);
-        if (x == 0 && direction == 2 || map.checkWallCollision(0, xPos, yPos)) {
-            System.out.println("cant do that");
-            //return randDirection();
+        if (x == 0 && direction == 2) {
+            return randDirection();
         }
-        if (x == 1 && direction == 3 || map.checkWallCollision(1, xPos, yPos) ) {
-            System.out.println("cant do that");
-            //return randDirection();
+        else if (x == 1 && direction == 3) {
+            return randDirection();
         }
-        if (x == 2 && direction == 0 || map.checkWallCollision(2, xPos, yPos)) {
-            System.out.println("cant do that");
-            //return randDirection();
+        else if (x == 2 && direction == 0) {
+            return randDirection();
         }
-        if (x == 3 && direction == 1 || map.checkWallCollision(3, xPos, yPos)) {
-            System.out.println("cant do that");
-            //return randDirection();
+        else if (x == 3 && direction == 1) {
+            return randDirection();
+        }
+        else if (map.checkWallCollision(x, xPos, yPos)) {
+            return randDirection();
         }
         return x;
     }
