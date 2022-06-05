@@ -20,8 +20,10 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private final Blinky blinky = new Blinky(pacman, map);
     private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
+    private final int[] modeTimes = {7, 27, 34, 54, 59, 79, 84};
+    private float currentTime = 0;
+    private float frightenTime = 0;
     private int score = 0;
-    private BufferedImage mapImage;
     private JLabel scoreLabel = new JLabel("HIGH SCORE " + Integer.toString(score));
     private boolean startDone = false;
     private Rectangle[] dots = map.getDots();
@@ -57,6 +59,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     }
 
     public void gameSetup() {
+        BufferedImage mapImage = null;
         this.setOpaque(true);
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(gridWidth*tileSize, gridLength*tileSize));
@@ -81,10 +84,47 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         startDone = audioPlayer.isFinished("start");
         pacman.checkHitboxCollision();
         if (startDone == true && pacman.isDead() == false) {
+            modes();
+            //System.out.println(blinky.getState() + " state");
             pacman.move();
             blinky.move();
         }
         repaint();
+    }
+
+    public void modes() {   // sets the states of the ghosts based on the current time or if the power pellets have run out
+        //System.out.println(frightenTime);
+        if (blinky.getState() < 2) {
+            currentTime += .1;
+            frightenTime = 0;
+        }
+        else {
+            frightenTime += .1;
+        }
+        if ((int) frightenTime == 7) {
+            blinky.setState(0);
+        }
+        if ((int) currentTime == modeTimes[0]) {
+            blinky.setState(0);
+        }
+        else if ((int) currentTime == modeTimes[1]) {
+            blinky.setState(1);
+        }
+        else if ((int) currentTime == modeTimes[2]) {
+            blinky.setState(0);
+        }
+        else if ((int) currentTime == modeTimes[3]) {
+            blinky.setState(1);
+        }
+        else if ((int) currentTime == modeTimes[4]) {
+            blinky.setState(0);
+        }
+        else if ((int) currentTime == modeTimes[5]) {
+            blinky.setState(1);
+        }
+        else if ((int) currentTime == modeTimes[6]) {
+            blinky.setState(0);
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -113,5 +153,9 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     public void setScore(int amount) {
         score += amount;
         scoreLabel.setText("HIGH SCORE " + Integer.toString(score));
+    }
+
+    public void powerPellet() { // set states of ghosts to frightened
+        blinky.setState(2);
     }
 }

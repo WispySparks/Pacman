@@ -1,6 +1,7 @@
 package Pacman;
 
 import java.io.File;
+import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 import java.awt.image.BufferedImage;
@@ -20,6 +21,8 @@ public class Blinky implements ActionListener {
     private int direction = 2;
     private int nextDirection = 2;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
+    private int ghostState = 1; // 0 = chase, 1 = scatter, 2 = frightened, 3 = eaten
+    private Random rand = new Random();
     
     Blinky(Pacman pacman, Map map) {
         this.pacman = pacman;
@@ -44,6 +47,14 @@ public class Blinky implements ActionListener {
 
     public int getY() {
         return yPos;
+    }
+
+    public int getState() {
+        return ghostState;
+    }
+
+    public void setState(int state) {
+        ghostState = state;
     }
 
     public BufferedImage updateAnim() {
@@ -112,8 +123,19 @@ public class Blinky implements ActionListener {
     }
 
     public int getNextDirection() {
-        int x1 = pacman.getX();
-        int y1 = pacman.getY();
+        int x1 = 0;
+        int y1 = 0;
+        if (ghostState == 0) {
+            x1 = pacman.getX();
+            y1 = pacman.getY();
+        }
+        else if (ghostState == 1) {
+            x1 = 26*16;
+            y1 = 4*16;
+        }
+        else if (ghostState == 2) {
+            return randDirection();
+        }
         int x2 = getX();
         int y2 = getY();
         int ablr = Math.abs(y2 - y1);
@@ -127,26 +149,26 @@ public class Blinky implements ActionListener {
         double leftdistance = Math.hypot(bcleft, ablr);
         double updistance = Math.hypot(bcdu, abup);
         if (map.checkWallCollision(0, xPos, yPos) || direction == 2) {
-            rightdistance +=999;
+            rightdistance += 999;
         }
         if (map.checkWallCollision(1, xPos, yPos) || direction == 3) {
-            downdistance +=999;
+            downdistance += 999;
         }
         if (map.checkWallCollision(2, xPos, yPos) || direction == 0) {
-            leftdistance +=999;
+            leftdistance += 999;
         }
         if (map.checkWallCollision(3, xPos, yPos) || direction == 1) {
-            updistance +=999;
+            updistance += 999;
         }
         if (rightdistance == leftdistance) {
-            rightdistance +=1;
+            leftdistance +=1;
         }
         if (updistance == downdistance) {
             updistance +=1;
         }
         updistance -= 1;
         downdistance -= 1;
-        System.out.println(rightdistance + " " + downdistance + " " + leftdistance + " " + updistance);
+        // System.out.println(rightdistance + " " + downdistance + " " + leftdistance + " " + updistance);
         return compare(rightdistance, downdistance, leftdistance, updistance);
     }
 
@@ -164,6 +186,28 @@ public class Blinky implements ActionListener {
             return 3;
         }
         return 5;
+    }
+
+    public int randDirection() {
+        int x = rand.nextInt(4);
+        //System.out.println(x);
+        if (x == 0 && direction == 2 || map.checkWallCollision(0, xPos, yPos)) {
+            System.out.println("cant do that");
+            //return randDirection();
+        }
+        if (x == 1 && direction == 3 || map.checkWallCollision(1, xPos, yPos) ) {
+            System.out.println("cant do that");
+            //return randDirection();
+        }
+        if (x == 2 && direction == 0 || map.checkWallCollision(2, xPos, yPos)) {
+            System.out.println("cant do that");
+            //return randDirection();
+        }
+        if (x == 3 && direction == 1 || map.checkWallCollision(3, xPos, yPos)) {
+            System.out.println("cant do that");
+            //return randDirection();
+        }
+        return x;
     }
 
 }

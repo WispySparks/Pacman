@@ -60,7 +60,7 @@ public class Pacman implements ActionListener {
     }
 
     public void checkHitboxCollision() {
-        if (blinky.getHitbox().intersects(hitbox)) {
+        if (blinky.getHitbox().intersects(hitbox) && blinky.getState() < 2) {
             audioPlayer.playDeath();
             isDead = true;
         }

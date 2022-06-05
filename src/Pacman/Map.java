@@ -81,6 +81,7 @@ public class Map {
             if (i < 4 && bigDots[i].intersects(rect)) {
                 panel.setScore(50);
                 bigDots[i] = space;
+                panel.powerPellet();    // sets the ghosts to frightened mode
             }
         }
     }
