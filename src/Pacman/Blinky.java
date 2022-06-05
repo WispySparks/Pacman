@@ -6,7 +6,6 @@ import javax.swing.Timer;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.awt.event.*;
-import java.math.*;
 
 public class Blinky implements ActionListener {
 
@@ -17,10 +16,10 @@ public class Blinky implements ActionListener {
     private final Timer timer= new Timer(75, this);
     private int animState = 0;
     private int xPos = 13 * 16;
-    private int yPos = 14 * 16;
+    private int yPos = 27 * 8;
     private int direction = 2;
     private int nextDirection = 2;
-    Rectangle hitbox = new Rectangle(xPos, yPos, 32, 32);
+    private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     
     Blinky(Pacman pacman, Map map) {
         this.pacman = pacman;
@@ -44,7 +43,7 @@ public class Blinky implements ActionListener {
     }
 
     public int getY() {
-        return yPos-8;
+        return yPos;
     }
 
     public BufferedImage updateAnim() {
@@ -59,8 +58,6 @@ public class Blinky implements ActionListener {
     }
 
     public Rectangle getHitbox() {
-        hitbox.x = getX();
-        hitbox.y = getY();
         return hitbox;
     }
 
@@ -110,6 +107,8 @@ public class Blinky implements ActionListener {
                     break;
             }
         }
+        hitbox.x = getX()+4;
+        hitbox.y = getY()+4;
     }
 
     public int getNextDirection() {
@@ -139,8 +138,14 @@ public class Blinky implements ActionListener {
         if (map.checkWallCollision(3, xPos, yPos) || direction == 1) {
             updistance +=999;
         }
-        updistance += 1;
-        leftdistance += 1;
+        if (rightdistance == leftdistance) {
+            rightdistance +=1;
+        }
+        if (updistance == downdistance) {
+            updistance +=1;
+        }
+        updistance -= 1;
+        downdistance -= 1;
         System.out.println(rightdistance + " " + downdistance + " " + leftdistance + " " + updistance);
         return compare(rightdistance, downdistance, leftdistance, updistance);
     }

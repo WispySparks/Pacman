@@ -25,6 +25,8 @@ public class Map {
     private final Rectangle[] blanks = {new Rectangle(14*8, (12*16)+8, 216, 176), new Rectangle(0*8, 17*16, 96, 16), 
         new Rectangle(44*8, 17*16, 96, 16), new Rectangle(13*16, 26 * 16, 32, 32)};
     private Rectangle[] dots = new Rectangle[244];
+    private Rectangle[] bigDots = {new Rectangle(1*16-2, 6*16 + 6, 16, 16), new Rectangle(26*16-1, 6*16 + 6, 16, 16),
+        new Rectangle(1*16-2, 26*16 + 4, 16, 16), new Rectangle(26*16-1, 26*16 + 4, 16, 16)};
     
     Map(GamePanel panel) {
         this.panel = panel;
@@ -63,15 +65,22 @@ public class Map {
         return dots;
     }
 
+    public Rectangle[] getBigDots() {
+        return bigDots;
+    }
+
     public void eatDot(Rectangle rect) {    // code for eating a dot
         Rectangle space = new Rectangle(0, 0, 0, 0);
-        rect.height = 24;
-        rect.y = rect.y+8;
+        rect.y = rect.y+4;
         for (int i = 0; i<dots.length; i++) {
             if (dots[i].intersects(rect)) {
                 audioPlayer.playWaka();
                 panel.setScore(10);
                 dots[i] = space;
+            }
+            if (i < 4 && bigDots[i].intersects(rect)) {
+                panel.setScore(50);
+                bigDots[i] = space;
             }
         }
     }
@@ -93,24 +102,24 @@ public class Map {
         switch (direction) {
             case 0: // right
                 wallTempX = xPos + 24;
-                wallTempY = yPos;
+                wallTempY = yPos + 8;
                 wallHitbox.height = 32;
                 wallHitbox.width = 16;
                 break;
             case 1: // down
-                wallTempY = yPos + 24;
+                wallTempY = yPos + 32;
                 wallTempX = xPos;
                 wallHitbox.width = 32;
                 wallHitbox.height = 16;
                 break;
             case 2: // left
                 wallTempX = xPos - 8;
-                wallTempY = yPos;
+                wallTempY = yPos + 8;
                 wallHitbox.height = 32;
                 wallHitbox.width = 16;
                 break;
             case 3: // up
-                wallTempY = yPos - 8;
+                wallTempY = yPos;
                 wallTempX = xPos;
                 wallHitbox.width = 32;
                 wallHitbox.height = 16;

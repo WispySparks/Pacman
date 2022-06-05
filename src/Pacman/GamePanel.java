@@ -25,6 +25,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private JLabel scoreLabel = new JLabel("HIGH SCORE " + Integer.toString(score));
     private boolean startDone = false;
     private Rectangle[] dots = map.getDots();
+    private Rectangle[] bigDots = map.getBigDots();
     private Timer timer = new Timer(100, this);
 
     GamePanel() {
@@ -34,9 +35,12 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
 
     public void paint(Graphics g) {
         super.paint(g);
-        g.setColor(Color.WHITE);
+        g.setColor(new Color(255, 184, 151));
         for (int i = 0; i<dots.length; i++) {
             g.fillRect(dots[i].x, dots[i].y, dots[i].width, dots[i].height);
+        }
+        for (int i = 0; i<bigDots.length; i++) {
+            g.fillOval(bigDots[i].x, bigDots[i].y, bigDots[i].width, bigDots[i].height);
         }
         g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
         g.drawImage(blinky.updateAnim(), blinky.getX(), blinky.getY(), null);

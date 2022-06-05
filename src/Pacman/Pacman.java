@@ -20,10 +20,10 @@ public class Pacman implements ActionListener {
     private Timer animTimer = new Timer(75, this);
     private Blinky blinky;
     private int xPos = 13 * 16;
-    private int yPos = 26 * 16;
+    private int yPos = 51 * 8;
     private int direction = 2;
     private int nextDirection = 2;
-    public Rectangle hitbox = new Rectangle(xPos, yPos, 24, 24);
+    private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private boolean isDead = false;
 
     Pacman(GamePanel panel, Map map) {
@@ -52,7 +52,7 @@ public class Pacman implements ActionListener {
     }
 
     public int getY() {
-        return yPos-8;
+        return yPos;
     }
 
     public boolean isDead() {
