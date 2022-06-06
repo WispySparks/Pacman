@@ -46,6 +46,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         }
         g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
         g.drawImage(blinky.updateAnim(), blinky.getX(), blinky.getY(), null);
+        g.fillRect(14*16, 16*16, 1, 1);
         // g.setColor(Color.BLUE);
         // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
         // g.setColor(Color.PINK);
@@ -85,7 +86,6 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         pacman.checkHitboxCollision();
         if (startDone == true && pacman.isDead() == false) {
             modes();
-            //System.out.println(blinky.getState() + " state");
             pacman.move();
             blinky.move();
         }
@@ -106,7 +106,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
                 blinky.turnAround();
             }
         }
-        if ((int) frightenTime == 7) {
+        if ((int) frightenTime == 7 && blinky.isEaten() == false) {
             blinky.setState(0);
         }
     }

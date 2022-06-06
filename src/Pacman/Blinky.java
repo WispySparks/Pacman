@@ -23,6 +23,7 @@ public class Blinky implements ActionListener {
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private int ghostState = 1; // 0 = chase, 1 = scatter, 2 = frightened, 3 = eaten
     private Random rand = new Random();
+    private boolean eaten = false;
     
     Blinky(Pacman pacman, Map map) {
         this.pacman = pacman;
@@ -47,6 +48,10 @@ public class Blinky implements ActionListener {
 
     public int getY() {
         return yPos;
+    }
+
+    public boolean isEaten() {
+        return eaten;
     }
 
     public int getState() {
@@ -123,18 +128,24 @@ public class Blinky implements ActionListener {
     }
 
     public int getNextDirection() {
-        int x1 = 0;
-        int y1 = 0;
+        int x1;
+        int y1;
         if (ghostState == 0) {  // chase mode
             x1 = pacman.getX();
             y1 = pacman.getY();
         }
         else if (ghostState == 1) {  // scatter mode
-            x1 = 26*16;
+            x1 = 26*16;     // corner cordinates
             y1 = 4*16;
         }
         else if (ghostState == 2) {  // frighten mode
             return randDirection();
+        }
+        else {
+            x1 = 14*16;     // ghost house cordinates
+            y1 = 16*16;
+            eaten = true;
+            ghostHouse();
         }
         int x2 = getX();
         int y2 = getY();
@@ -220,6 +231,15 @@ public class Blinky implements ActionListener {
         }
         else {
             direction = 1;
+        }
+    }
+
+    public void ghostHouse() {
+        int x1 = 13*16;     // ghost house cordinates 224 256
+        int y1 = 13*16 + 8;
+        if (getX() == x1 && getY() == y1) {
+            eaten = false;
+            ghostState = 0;
         }
     }
 
