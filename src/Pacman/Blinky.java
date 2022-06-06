@@ -1,21 +1,14 @@
 package Pacman;
 
-import java.io.File;
 import java.util.Random;
-import javax.imageio.ImageIO;
-import javax.swing.Timer;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
-import java.awt.event.*;
 
-public class Blinky implements ActionListener {
+public class Blinky {
 
     private final Map map;
     private final Pacman pacman;
-    private final File[] animFiles = {new File("resources/images/blinky_0.png"), new File("./resources/images/blinky_1.png")};
-    private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
-    private final Timer animTimer = new Timer(75, this);
-    private int animState = 0;
+    private final Animator animator = new Animator("clyde");
     private int xPos = 13 * 16;
     private int yPos = 27 * 8;
     private int direction = Constants.left;
@@ -30,18 +23,6 @@ public class Blinky implements ActionListener {
     Blinky(Pacman pacman, Map map) {
         this.pacman = pacman;
         this.map = map;
-        setupAnims();
-    }
-
-    public void setupAnims() {
-        for (int i = 0; i<animFiles.length; i++) {
-            try {
-                animImages[i] = ImageIO.read(animFiles[i]);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-        animTimer.start();
     }
 
     public int getX() {
@@ -68,13 +49,14 @@ public class Blinky implements ActionListener {
     }
 
     public BufferedImage updateAnim() {
-        return animImages[animState];
-    }
-    
-    public void actionPerformed(ActionEvent e) {
-        animState++;
-        if (animState > 1){
-            animState = 0;
+        if (ghostState < 2) {
+            return animator.normal();
+        }
+        else if (ghostState == Constants.frighten) {
+            return animator.frighten();
+        }
+        else {
+            return animator.eyes(direction);
         }
     }
 
@@ -149,7 +131,7 @@ public class Blinky implements ActionListener {
         hitbox.y = getY()+4;
     }
 
-    public int getNextDirection() {
+    public int getNextDirection() {   // get next direction based on ai and math to go to target tile
         int x1;
         int y1;
         if (ghostState == Constants.chase) {  // chase mode
@@ -207,7 +189,7 @@ public class Blinky implements ActionListener {
         return compare(rightdistance, downdistance, leftdistance, updistance);
     }
 
-    public int compare(double right, double down, double left, double up) {
+    public int compare(double right, double down, double left, double up) {     // compare all directions and find best one
         if (right < down && right < left && right < up) {
             return Constants.right;
         }
@@ -223,7 +205,7 @@ public class Blinky implements ActionListener {
         return 5;
     }
 
-    public int randDirection() {    // get a new random direction
+    public int randDirection() {   // get a new random direction
         int x = rand.nextInt(4);
         if (x == Constants.right && direction == Constants.left) {
             return randDirection();
@@ -243,7 +225,7 @@ public class Blinky implements ActionListener {
         return x;
     }
 
-    public void turnAround() {
+    public void turnAround() {   // make ghost turn around 
         if (direction == Constants.right) {
             direction = Constants.left;
         }
@@ -258,12 +240,12 @@ public class Blinky implements ActionListener {
         }
     }
 
-    public void ghostHouse() {
+    public void ghostHouse() {   // travel to ghost house
         int x1 = 13*16;     // ghost house cordinates 224 256
         int y1 = 13*16 + 8;
         if (getX() == x1 && getY() == y1) {
             eaten = false;
-            ghostState = Constants.chase;
+            ghostState = Constants.scatter;
             speed = Constants.baseSpeed;
         }
     }

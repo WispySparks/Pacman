@@ -45,8 +45,8 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         for (int i = 0; i<bigDots.length; i++) {
             g.fillOval(bigDots[i].x, bigDots[i].y, bigDots[i].width, bigDots[i].height);
         }
-        g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
         g.drawImage(blinky.updateAnim(), blinky.getX(), blinky.getY(), null);
+        g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
         // g.fillRect(14*16, 16*16, 1, 1);
         // g.setColor(Color.BLUE);
         // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
@@ -113,16 +113,16 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
             pacman.setNextDir(Constants.right);
         }
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
             pacman.setNextDir(Constants.down);
         }
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
             pacman.setNextDir(Constants.left);
         }
-        else if (e.getKeyCode() == KeyEvent.VK_UP) {
+        else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
             pacman.setNextDir(Constants.up);
         }
     }
