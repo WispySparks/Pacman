@@ -64,6 +64,10 @@ public class Pacman implements ActionListener {
             audioPlayer.playDeath();
             isDead = true;
         }
+        else if (blinky.getHitbox().intersects(hitbox) && blinky.getState() == 2) {
+            blinky.setState(3);
+            System.out.println("killed blinky");
+        }
     }
 
     public void up() {

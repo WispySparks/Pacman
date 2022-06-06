@@ -20,7 +20,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private final Blinky blinky = new Blinky(pacman, map);
     private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
-    private final int[] modeTimes = {7, 27, 34, 54, 59, 79, 84};
+    private final double[] modeTimes = {7, 27, 34, 54, 59, 79, 84};
     private float currentTime = 0;
     private float frightenTime = 0;
     private int score = 0;
@@ -94,15 +94,16 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
 
     public void modes() {   // sets the states of the ghosts based on the current time or if the power pellets have run out
         if (blinky.getState() < 2) {
-            currentTime += .1;
+            currentTime += 1;
             frightenTime = 0;
         }
         else {
             frightenTime += .1;
         }
         for (int i = 0; i<modeTimes.length; i++) {
-            if ((int) currentTime == modeTimes[i]) {
+            if ((currentTime/10) == modeTimes[i]) {
                 blinky.setState(i % 2);
+                blinky.turnAround();
             }
         }
         if ((int) frightenTime == 7) {
@@ -140,5 +141,6 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
 
     public void powerPellet() { // set states of ghosts to frightened
         blinky.setState(2);
+        blinky.turnAround();
     }
 }

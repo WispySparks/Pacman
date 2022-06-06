@@ -208,4 +208,19 @@ public class Blinky implements ActionListener {
         return x;
     }
 
+    public void turnAround() {
+        if (direction == 0) {
+            direction = 2;
+        }
+        else if (direction == 1) {
+            direction = 3;
+        }
+        else if (direction == 2) {
+            direction = 0;
+        }
+        else {
+            direction = 1;
+        }
+    }
+
 }
