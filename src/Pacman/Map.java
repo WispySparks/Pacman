@@ -101,25 +101,25 @@ public class Map {
         int wallTempY = yPos;
         Rectangle wallHitbox = new Rectangle(wallTempX, wallTempY, 16, 16);
         switch (direction) {
-            case 0: // right
+            case Constants.right: // right
                 wallTempX = xPos + 24;
                 wallTempY = yPos + 8;
                 wallHitbox.height = 32;
                 wallHitbox.width = 16;
                 break;
-            case 1: // down
+            case Constants.down: // down
                 wallTempY = yPos + 32;
                 wallTempX = xPos;
                 wallHitbox.width = 32;
                 wallHitbox.height = 16;
                 break;
-            case 2: // left
+            case Constants.left: // left
                 wallTempX = xPos - 8;
                 wallTempY = yPos + 8;
                 wallHitbox.height = 32;
                 wallHitbox.width = 16;
                 break;
-            case 3: // up
+            case Constants.up: // up
                 wallTempY = yPos;
                 wallTempX = xPos;
                 wallHitbox.width = 32;

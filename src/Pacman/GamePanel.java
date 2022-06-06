@@ -47,7 +47,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         }
         g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
         g.drawImage(blinky.updateAnim(), blinky.getX(), blinky.getY(), null);
-        g.fillRect(14*16, 16*16, 1, 1);
+        // g.fillRect(14*16, 16*16, 1, 1);
         // g.setColor(Color.BLUE);
         // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
         // g.setColor(Color.PINK);
@@ -108,22 +108,22 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
             }
         }
         if ((int) frightenTime == 7 && blinky.isEaten() == false) {
-            blinky.setState(0);
+            blinky.setState(Constants.chase);
         }
     }
 
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            pacman.setNextDir(0);
+            pacman.setNextDir(Constants.right);
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            pacman.setNextDir(1);
+            pacman.setNextDir(Constants.down);
         }
         else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            pacman.setNextDir(2);
+            pacman.setNextDir(Constants.left);
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            pacman.setNextDir(3);
+            pacman.setNextDir(Constants.up);
         }
     }
     public void keyReleased(KeyEvent e) {
@@ -141,7 +141,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     }
 
     public void powerPellet() { // set states of ghosts to frightened
-        blinky.setState(2);
+        blinky.setState(Constants.frighten);
         blinky.turnAround();
     }
 }

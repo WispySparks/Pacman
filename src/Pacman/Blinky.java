@@ -18,12 +18,12 @@ public class Blinky implements ActionListener {
     private int animState = 0;
     private int xPos = 13 * 16;
     private int yPos = 27 * 8;
-    private int direction = 2;
-    private int nextDirection = 2;
-    private int speed = 8;
+    private int direction = Constants.left;
+    private int nextDirection = Constants.left;
+    private int speed = Constants.baseSpeed;
     private int count = 0;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
-    private int ghostState = 1; // 0 = chase, 1 = scatter, 2 = frightened, 3 = eaten
+    private int ghostState = Constants.scatter; // 0 = chase, 1 = scatter, 2 = frightened, 3 = eaten
     private Random rand = new Random();
     private boolean eaten = false;
     
@@ -62,7 +62,7 @@ public class Blinky implements ActionListener {
 
     public void setState(int state) {
         if (state < 2) {
-            speed = 8;
+            speed = Constants.baseSpeed;
         }
         ghostState = state;
     }
@@ -83,7 +83,7 @@ public class Blinky implements ActionListener {
     }
 
     public void getMove() {
-        if (speed == 8) {
+        if (speed == Constants.baseSpeed) {
             move();
         }
         else if (speed == 4 && count % 2 == 0) {
@@ -101,30 +101,29 @@ public class Blinky implements ActionListener {
 
     public void move() {
         nextDirection = getNextDirection();
-        System.out.println(speed);
         if (map.checkTps(hitbox) == 1) {
             xPos = 28*16;
-            nextDirection = direction = 2;
+            nextDirection = direction = Constants.left;
         }
         else if (map.checkTps(hitbox) == 2) {
             xPos = -2*16;
-            nextDirection = direction = 0;
+            nextDirection = direction = Constants.right;
         }
         if (map.checkWallCollision(nextDirection, xPos, yPos) == false) {
             switch (nextDirection) {
-                case 0: 
+                case Constants.right: 
                     xPos += 8;
                     direction = nextDirection;
                     break;
-                case 1:
+                case Constants.down:
                     yPos += 8;
                     direction = nextDirection;
                     break;
-                case 2:
+                case Constants.left:
                     xPos -= 8;
                     direction = nextDirection;
                     break;
-                case 3:
+                case Constants.up:
                     yPos -= 8;
                     direction = nextDirection;
                     break;
@@ -132,16 +131,16 @@ public class Blinky implements ActionListener {
         }
         else if (map.checkWallCollision(direction, xPos, yPos) == false) {
             switch (direction) {
-                case 0: 
+                case Constants.right: 
                     xPos += 8;
                     break;
-                case 1:
+                case Constants.down:
                     yPos += 8;
                     break;
-                case 2:
+                case Constants.left:
                     xPos -= 8;
                     break;
-                case 3:
+                case Constants.up:
                     yPos -= 8;
                     break;
             }
@@ -153,20 +152,20 @@ public class Blinky implements ActionListener {
     public int getNextDirection() {
         int x1;
         int y1;
-        if (ghostState == 0) {  // chase mode
+        if (ghostState == Constants.chase) {  // chase mode
             x1 = pacman.getX();
             y1 = pacman.getY();
         }
-        else if (ghostState == 1) {  // scatter mode
+        else if (ghostState == Constants.scatter) {  // scatter mode
             x1 = 26*16;     // corner cordinates
             y1 = 4*16;
         }
-        else if (ghostState == 2) {  // frighten mode
-            speed = 4;
+        else if (ghostState == Constants.frighten) {  // frighten mode
+            speed = Constants.baseSpeed/2;
             return randDirection();
         }
         else {
-            speed = 16;
+            speed = Constants.baseSpeed*2;
             x1 = 14*16;     // ghost house cordinates
             y1 = 16*16;
             eaten = true;
@@ -210,32 +209,32 @@ public class Blinky implements ActionListener {
 
     public int compare(double right, double down, double left, double up) {
         if (right < down && right < left && right < up) {
-            return 0;
+            return Constants.right;
         }
         else if (down < right && down < left && down < up) {
-            return 1;
+            return Constants.down;
         }
         else if (left < right && left < down && left < up) {
-            return 2;
+            return Constants.left;
         }
         else if (up < right && up < left && up < down) {
-            return 3;
+            return Constants.up;
         }
         return 5;
     }
 
     public int randDirection() {    // get a new random direction
         int x = rand.nextInt(4);
-        if (x == 0 && direction == 2) {
+        if (x == Constants.right && direction == Constants.left) {
             return randDirection();
         }
-        else if (x == 1 && direction == 3) {
+        else if (x == Constants.down && direction == Constants.up) {
             return randDirection();
         }
-        else if (x == 2 && direction == 0) {
+        else if (x == Constants.left && direction == Constants.right) {
             return randDirection();
         }
-        else if (x == 3 && direction == 1) {
+        else if (x == Constants.up && direction == Constants.down) {
             return randDirection();
         }
         else if (map.checkWallCollision(x, xPos, yPos)) {
@@ -245,17 +244,17 @@ public class Blinky implements ActionListener {
     }
 
     public void turnAround() {
-        if (direction == 0) {
-            direction = 2;
+        if (direction == Constants.right) {
+            direction = Constants.left;
         }
-        else if (direction == 1) {
-            direction = 3;
+        else if (direction == Constants.down) {
+            direction = Constants.up;
         }
-        else if (direction == 2) {
-            direction = 0;
+        else if (direction == Constants.left) {
+            direction = Constants.right;
         }
         else {
-            direction = 1;
+            direction = Constants.down;
         }
     }
 
@@ -264,8 +263,8 @@ public class Blinky implements ActionListener {
         int y1 = 13*16 + 8;
         if (getX() == x1 && getY() == y1) {
             eaten = false;
-            ghostState = 0;
-            speed = 8;
+            ghostState = Constants.chase;
+            speed = Constants.baseSpeed;
         }
     }
 

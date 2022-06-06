@@ -21,8 +21,8 @@ public class Pacman implements ActionListener {
     private Blinky blinky;
     private int xPos = 13 * 16;
     private int yPos = 51 * 8;
-    private int direction = 2;
-    private int nextDirection = 2;
+    private int direction = Constants.left;
+    private int nextDirection = Constants.left;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private boolean isDead = false;
 
@@ -64,8 +64,8 @@ public class Pacman implements ActionListener {
             audioPlayer.playDeath();
             isDead = true;
         }
-        else if (blinky.getHitbox().intersects(hitbox) && blinky.getState() == 2) {
-            blinky.setState(3);
+        else if (blinky.getHitbox().intersects(hitbox) && blinky.getState() == Constants.frighten) {
+            blinky.setState(Constants.eaten);
         }
     }
 
@@ -93,27 +93,27 @@ public class Pacman implements ActionListener {
         map.eatDot(hitbox);
         if (map.checkTps(hitbox) == 1) {
             xPos = 28*16;
-            nextDirection = direction = 2;
+            nextDirection = direction = Constants.left;
         }
         else if (map.checkTps(hitbox) == 2) {
             xPos = -2*16;
-            nextDirection = direction = 0;
+            nextDirection = direction = Constants.right;
         }
         if (map.checkWallCollision(nextDirection, xPos, yPos) == false) {
             switch (nextDirection) {
-                case 0: 
+                case Constants.right: 
                     right();
                     direction = nextDirection;
                     break;
-                case 1:
+                case Constants.down:
                     down();
                     direction = nextDirection;
                     break;
-                case 2:
+                case Constants.left:
                     left();
                     direction = nextDirection;
                     break;
-                case 3:
+                case Constants.up:
                     up();
                     direction = nextDirection;
                     break;
@@ -121,16 +121,16 @@ public class Pacman implements ActionListener {
         }
         else if (map.checkWallCollision(direction, xPos, yPos) == false) {
             switch (direction) {
-                case 0: 
+                case Constants.right: 
                     right();
                     break;
-                case 1:
+                case Constants.down:
                     down();
                     break;
-                case 2:
+                case Constants.left:
                     left();
                     break;
-                case 3:
+                case Constants.up:
                     up();
                     break;
             }
