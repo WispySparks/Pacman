@@ -14,12 +14,14 @@ public class Blinky implements ActionListener {
     private final Pacman pacman;
     private final File[] animFiles = {new File("resources/images/blinky_0.png"), new File("./resources/images/blinky_1.png")};
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
-    private final Timer timer= new Timer(75, this);
+    private final Timer animTimer = new Timer(75, this);
     private int animState = 0;
     private int xPos = 13 * 16;
     private int yPos = 27 * 8;
     private int direction = 2;
     private int nextDirection = 2;
+    private int speed = 8;
+    private int count = 0;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private int ghostState = 1; // 0 = chase, 1 = scatter, 2 = frightened, 3 = eaten
     private Random rand = new Random();
@@ -39,7 +41,7 @@ public class Blinky implements ActionListener {
                 System.out.println(e);
             }
         }
-        timer.start();
+        animTimer.start();
     }
 
     public int getX() {
@@ -59,6 +61,9 @@ public class Blinky implements ActionListener {
     }
 
     public void setState(int state) {
+        if (state < 2) {
+            speed = 8;
+        }
         ghostState = state;
     }
 
@@ -77,8 +82,26 @@ public class Blinky implements ActionListener {
         return hitbox;
     }
 
+    public void getMove() {
+        if (speed == 8) {
+            move();
+        }
+        else if (speed == 4 && count % 2 == 0) {
+            count++;
+            move();
+        }
+        else if (speed == 4) {
+            count++;
+        }
+        else {
+            move();
+            move();
+        }
+    }
+
     public void move() {
         nextDirection = getNextDirection();
+        System.out.println(speed);
         if (map.checkTps(hitbox) == 1) {
             xPos = 28*16;
             nextDirection = direction = 2;
@@ -139,9 +162,11 @@ public class Blinky implements ActionListener {
             y1 = 4*16;
         }
         else if (ghostState == 2) {  // frighten mode
+            speed = 4;
             return randDirection();
         }
         else {
+            speed = 16;
             x1 = 14*16;     // ghost house cordinates
             y1 = 16*16;
             eaten = true;
@@ -240,6 +265,7 @@ public class Blinky implements ActionListener {
         if (getX() == x1 && getY() == y1) {
             eaten = false;
             ghostState = 0;
+            speed = 8;
         }
     }
 

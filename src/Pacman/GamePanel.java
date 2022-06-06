@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.Timer;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
@@ -87,7 +88,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         if (startDone == true && pacman.isDead() == false) {
             modes();
             pacman.move();
-            blinky.move();
+            blinky.getMove();
         }
         repaint();
     }

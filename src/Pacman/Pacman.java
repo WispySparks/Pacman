@@ -16,8 +16,8 @@ public class Pacman implements ActionListener {
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
     private final GamePanel panel;
     private final AudioPlayer audioPlayer = new AudioPlayer();
+    private final Timer animTimer = new Timer(75, this);
     private int animState = 0;
-    private Timer animTimer = new Timer(75, this);
     private Blinky blinky;
     private int xPos = 13 * 16;
     private int yPos = 51 * 8;
@@ -33,7 +33,6 @@ public class Pacman implements ActionListener {
     }
 
     public void setupAnims() {
-        animTimer.start();
         for (int i = 0; i<animFiles.length; i++) {
             try {
                 animImages[i] = ImageIO.read(animFiles[i]);
@@ -41,6 +40,7 @@ public class Pacman implements ActionListener {
                 System.out.println(e);
             }
         }
+        animTimer.start();
     }
 
     public void setGhosts(Blinky blinky) {
@@ -66,7 +66,6 @@ public class Pacman implements ActionListener {
         }
         else if (blinky.getHitbox().intersects(hitbox) && blinky.getState() == 2) {
             blinky.setState(3);
-            System.out.println("killed blinky");
         }
     }
 
