@@ -16,13 +16,14 @@ public class Pacman implements ActionListener {
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
     private final GamePanel panel;
     private final AudioPlayer audioPlayer = new AudioPlayer();
-    private final Timer animTimer = new Timer(75, this);
+    private final Timer animTimer = new Timer(100, this);
     private int animState = 0;
     private Blinky blinky;
     private int xPos = 13 * 16;
     private int yPos = 51 * 8;
     private int direction = Constants.left;
     private int nextDirection = Constants.left;
+    private int speed = Constants.baseSpeed;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private boolean isDead = false;
 
@@ -66,23 +67,8 @@ public class Pacman implements ActionListener {
         }
         else if (blinky.getHitbox().intersects(hitbox) && blinky.getState() == Constants.frighten) {
             blinky.setState(Constants.eaten);
+            blinky.reAlign();
         }
-    }
-
-    public void up() {
-        yPos -= 8;
-    }
-
-    public void down() {
-        yPos += 8;
-    }
-
-    public void right() {
-        xPos += 8;
-    }
-
-    public void left() {
-        xPos -= 8;
     }
 
     public void setNextDir(int nextDirection) {
@@ -99,39 +85,39 @@ public class Pacman implements ActionListener {
             xPos = -2*16;
             nextDirection = direction = Constants.right;
         }
-        if (map.checkWallCollision(nextDirection, xPos, yPos) == false) {
+        if (map.checkWallCollision(nextDirection, xPos, yPos, speed) == false) {
             switch (nextDirection) {
                 case Constants.right: 
-                    right();
+                    xPos += speed;
                     direction = nextDirection;
                     break;
                 case Constants.down:
-                    down();
+                    yPos += speed;
                     direction = nextDirection;
                     break;
                 case Constants.left:
-                    left();
+                    xPos -= speed;
                     direction = nextDirection;
                     break;
                 case Constants.up:
-                    up();
+                    yPos -= speed;
                     direction = nextDirection;
                     break;
             }
         }
-        else if (map.checkWallCollision(direction, xPos, yPos) == false) {
+        else if (map.checkWallCollision(direction, xPos, yPos, speed) == false) {
             switch (direction) {
                 case Constants.right: 
-                    right();
+                    xPos += speed;
                     break;
                 case Constants.down:
-                    down();
+                    yPos += speed;
                     break;
                 case Constants.left:
-                    left();
+                    xPos -= speed;
                     break;
                 case Constants.up:
-                    up();
+                    yPos -= speed;
                     break;
             }
         }

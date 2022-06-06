@@ -21,7 +21,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private final Blinky blinky = new Blinky(pacman, map);
     private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
-    private final double[] modeTimes = {7, 27, 34, 54, 59, 79, 84};
+    private final double[] modeTimes = {9, 27, 36, 54, 61, 79, 86};
     private float currentTime = 0;
     private float frightenTime = 0;
     private int score = 0;
@@ -29,7 +29,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private boolean startDone = false;
     private Rectangle[] dots = map.getDots();
     private Rectangle[] bigDots = map.getBigDots();
-    private Timer timer = new Timer(100, this);
+    private Timer timer = new Timer(75, this);
 
     GamePanel() {
         audioPlayer.playStart();
@@ -108,6 +108,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
             }
         }
         if ((int) frightenTime == 7 && blinky.isEaten() == false) {
+            blinky.reAlign();
             blinky.setState(Constants.chase);
         }
     }

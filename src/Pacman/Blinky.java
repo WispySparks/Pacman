@@ -8,13 +8,12 @@ public class Blinky {
 
     private final Map map;
     private final Pacman pacman;
-    private final Animator animator = new Animator("clyde");
+    private final Animator animator = new Animator("blinky");
     private int xPos = 13 * 16;
     private int yPos = 27 * 8;
     private int direction = Constants.left;
     private int nextDirection = Constants.left;
     private int speed = Constants.baseSpeed;
-    private int count = 0;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private int ghostState = Constants.scatter; // 0 = chase, 1 = scatter, 2 = frightened, 3 = eaten
     private Random rand = new Random();
@@ -49,15 +48,7 @@ public class Blinky {
     }
 
     public BufferedImage updateAnim() {
-        if (ghostState < 2) {
-            return animator.normal();
-        }
-        else if (ghostState == Constants.frighten) {
-            return animator.frighten();
-        }
-        else {
-            return animator.eyes(direction);
-        }
+        return animator.getAnim(direction, ghostState);
     }
 
     public Rectangle getHitbox() {
@@ -65,18 +56,11 @@ public class Blinky {
     }
 
     public void getMove() {
-        if (speed == Constants.baseSpeed) {
+        if (eaten == true) {
             move();
-        }
-        else if (speed == 4 && count % 2 == 0) {
-            count++;
             move();
-        }
-        else if (speed == 4) {
-            count++;
         }
         else {
-            move();
             move();
         }
     }
@@ -91,39 +75,39 @@ public class Blinky {
             xPos = -2*16;
             nextDirection = direction = Constants.right;
         }
-        if (map.checkWallCollision(nextDirection, xPos, yPos) == false) {
+        if (map.checkWallCollision(nextDirection, xPos, yPos, speed) == false) {
             switch (nextDirection) {
                 case Constants.right: 
-                    xPos += 8;
+                    xPos += speed;
                     direction = nextDirection;
                     break;
                 case Constants.down:
-                    yPos += 8;
+                    yPos += speed;
                     direction = nextDirection;
                     break;
                 case Constants.left:
-                    xPos -= 8;
+                    xPos -= speed;
                     direction = nextDirection;
                     break;
                 case Constants.up:
-                    yPos -= 8;
+                    yPos -= speed;
                     direction = nextDirection;
                     break;
             }
         }
-        else if (map.checkWallCollision(direction, xPos, yPos) == false) {
+        else if (map.checkWallCollision(direction, xPos, yPos, speed) == false) {
             switch (direction) {
                 case Constants.right: 
-                    xPos += 8;
+                    xPos += speed;
                     break;
                 case Constants.down:
-                    yPos += 8;
+                    yPos += speed;
                     break;
                 case Constants.left:
-                    xPos -= 8;
+                    xPos -= speed;
                     break;
                 case Constants.up:
-                    yPos -= 8;
+                    yPos -= speed;
                     break;
             }
         }
@@ -147,7 +131,7 @@ public class Blinky {
             return randDirection();
         }
         else {
-            speed = Constants.baseSpeed*2;
+            speed = Constants.baseSpeed;
             x1 = 14*16;     // ghost house cordinates
             y1 = 16*16;
             eaten = true;
@@ -165,16 +149,16 @@ public class Blinky {
         double downdistance = Math.hypot(bcdu, abdown);
         double leftdistance = Math.hypot(bcleft, ablr);
         double updistance = Math.hypot(bcdu, abup);
-        if (map.checkWallCollision(0, xPos, yPos) || direction == 2) {
+        if (map.checkWallCollision(0, xPos, yPos, speed) || direction == 2) {
             rightdistance += 999;
         }
-        if (map.checkWallCollision(1, xPos, yPos) || direction == 3) {
+        if (map.checkWallCollision(1, xPos, yPos, speed) || direction == 3) {
             downdistance += 999;
         }
-        if (map.checkWallCollision(2, xPos, yPos) || direction == 0) {
+        if (map.checkWallCollision(2, xPos, yPos, speed) || direction == 0) {
             leftdistance += 999;
         }
-        if (map.checkWallCollision(3, xPos, yPos) || direction == 1) {
+        if (map.checkWallCollision(3, xPos, yPos, speed) || direction == 1) {
             updistance += 999;
         }
         if (rightdistance == leftdistance) {
@@ -219,7 +203,7 @@ public class Blinky {
         else if (x == Constants.up && direction == Constants.down) {
             return randDirection();
         }
-        else if (map.checkWallCollision(x, xPos, yPos)) {
+        else if (map.checkWallCollision(x, xPos, yPos, speed)) {
             return randDirection();
         }
         return x;
@@ -240,13 +224,31 @@ public class Blinky {
         }
     }
 
+    public void reAlign() {     // realign ghost after frightened mode
+        if (xPos % 8 != 0) {
+            if (!map.checkWallCollision(Constants.right, xPos, yPos, 4)) {
+                xPos += 4;
+            }
+            else {
+                xPos -= 4;
+            }
+        }
+        if (yPos % 8 != 0) {
+            if (!map.checkWallCollision(Constants.down, xPos, yPos, 4)) {
+                yPos += 4;
+            }
+            else {
+                yPos -= 4;
+            }
+        }
+    }
+
     public void ghostHouse() {   // travel to ghost house
         int x1 = 13*16;     // ghost house cordinates 224 256
         int y1 = 13*16 + 8;
         if (getX() == x1 && getY() == y1) {
             eaten = false;
-            ghostState = Constants.scatter;
-            speed = Constants.baseSpeed;
+            ghostState = Constants.chase;
         }
     }
 

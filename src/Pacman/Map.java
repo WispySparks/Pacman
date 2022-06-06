@@ -39,7 +39,7 @@ public class Map {
         int xPos = 1;
         for (int i = 0; i < dots.length;) {
             Rectangle rect = new Rectangle((xPos*16)+4, (yPos*16)+12, 4, 4);  // create new dot to check
-            if (!checkWallCollision(4, rect.x, rect.y) && !checkBlanks(rect)) { // check if dot will be in a wall or blank spaces
+            if (!checkWallCollision(4, rect.x, rect.y, Constants.baseSpeed) && !checkBlanks(rect)) { // check if dot will be in a wall or blank spaces
                 dots[i] = rect;
                 i++;
             }
@@ -96,31 +96,31 @@ public class Map {
         return 0;
     }
 
-    public boolean checkWallCollision(int direction, int xPos, int yPos) {  // check if something collides with the walls
+    public boolean checkWallCollision(int direction, int xPos, int yPos, int speed) {  // check if something collides with the walls
         int wallTempX = xPos;
         int wallTempY = yPos;
         Rectangle wallHitbox = new Rectangle(wallTempX, wallTempY, 16, 16);
         switch (direction) {
             case Constants.right: // right
-                wallTempX = xPos + 24;
+                wallTempX = xPos + 16 + speed; // 24 default
                 wallTempY = yPos + 8;
                 wallHitbox.height = 32;
                 wallHitbox.width = 16;
                 break;
             case Constants.down: // down
-                wallTempY = yPos + 32;
+                wallTempY = yPos + 24 + speed; // 32 default
                 wallTempX = xPos;
                 wallHitbox.width = 32;
                 wallHitbox.height = 16;
                 break;
             case Constants.left: // left
-                wallTempX = xPos - 8;
+                wallTempX = xPos - speed; // -8 default
                 wallTempY = yPos + 8;
                 wallHitbox.height = 32;
                 wallHitbox.width = 16;
                 break;
             case Constants.up: // up
-                wallTempY = yPos;
+                wallTempY = yPos + 8 - speed; // 0 default
                 wallTempX = xPos;
                 wallHitbox.width = 32;
                 wallHitbox.height = 16;
