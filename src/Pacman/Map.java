@@ -6,21 +6,22 @@ public class Map {
 
     private final GamePanel panel;
     private final AudioPlayer audioPlayer = new AudioPlayer();
-    private final Rectangle[] walls = {new Rectangle(5*8, 6*16, 48, 32), new Rectangle(5*8, 10*16, 48, 16), 
+    public final Rectangle[] walls = {new Rectangle(5*8, 6*16, 48, 32), new Rectangle(5*8, 10*16, 48, 16), 
         new Rectangle(15*8, 6*16, 64, 32), new Rectangle(33*8, 6*16, 64, 32), new Rectangle(45*8, 6*16, 48, 32),
         new Rectangle(45*8, 10*16, 48, 16), new Rectangle(21*8, 10*16, 112, 16), new Rectangle(27*8, 4*16, 16, 64), 
         new Rectangle(0*8, 3*16, 448, 16), new Rectangle(0*8, 3*16, 8, 160), new Rectangle(0*8, 13*16, 88, 64), 
         new Rectangle(15*8, 10*16, 16, 112), new Rectangle(39*8, 10*16, 16, 112), new Rectangle(55*8, 3*16, 8, 160), 
         new Rectangle(45*8, 13*16, 96, 64), new Rectangle(15*8, 13*16, 64, 16), new Rectangle(33*8, 13*16, 64, 16),
-        new Rectangle(27*8, 10*16, 16, 64), new Rectangle(21*8, 16*16, 112, 64), new Rectangle(0*8, 19*16, 88, 64), 
-        new Rectangle(15*8, 19*16, 16, 64), new Rectangle(39*8, 19*16, 16, 64), new Rectangle(45*8, 19*16, 96, 64), 
-        new Rectangle(27*8, 22*16, 16, 64), new Rectangle(21*8, 22*16, 112, 16), new Rectangle(0*8, 23*16, 8, 176), 
-        new Rectangle(0*8, 34*16, 448, 16), new Rectangle(55*8, 23*16, 8, 176), new Rectangle(0*8, 28*16, 40, 16),
-        new Rectangle(51*8, 28*16, 40, 16), new Rectangle(5*8, 25*16, 48, 16), new Rectangle(15*8, 25*16, 64, 16),
-        new Rectangle(33*8, 25*16, 64, 16), new Rectangle(45*8, 25*16, 48, 16), new Rectangle(45*8, 25*16, 16, 64), 
-        new Rectangle(9*8, 25*16, 16, 64), new Rectangle(21*8, 28*16, 112, 16), new Rectangle(5*8, 31*16, 144, 16), 
-        new Rectangle(33*8, 31*16, 144, 16), new Rectangle(15*8, 28*16, 16, 48), new Rectangle(39*8, 28*16, 16, 48),
-        new Rectangle(27*8, 29*16, 16, 48)};
+        new Rectangle(27*8, 10*16, 16, 64), new Rectangle(0*8, 19*16, 88, 64), new Rectangle(15*8, 19*16, 16, 64), 
+        new Rectangle(39*8, 19*16, 16, 64), new Rectangle(45*8, 19*16, 96, 64), new Rectangle(27*8, 22*16, 16, 64), 
+        new Rectangle(21*8, 22*16, 112, 16), new Rectangle(0*8, 23*16, 8, 176), new Rectangle(0*8, 34*16, 448, 16), 
+        new Rectangle(55*8, 23*16, 8, 176), new Rectangle(0*8, 28*16, 40, 16),new Rectangle(51*8, 28*16, 40, 16), 
+        new Rectangle(5*8, 25*16, 48, 16), new Rectangle(15*8, 25*16, 64, 16),new Rectangle(33*8, 25*16, 64, 16), 
+        new Rectangle(45*8, 25*16, 48, 16), new Rectangle(45*8, 25*16, 16, 64), new Rectangle(9*8, 25*16, 16, 64), 
+        new Rectangle(21*8, 28*16, 112, 16), new Rectangle(5*8, 31*16, 144, 16), new Rectangle(33*8, 31*16, 144, 16), 
+        new Rectangle(15*8, 28*16, 16, 48), new Rectangle(39*8, 28*16, 16, 48),new Rectangle(27*8, 29*16, 16, 48), 
+        new Rectangle(21*8, 16*16, 16, 64), new Rectangle(21*8, 19*16, 112, 16), new Rectangle(33*8, 16*16, 16, 64), /*this line and below is the ghost house walls*/
+        new Rectangle(21*8, 16*16, 40, 16), new Rectangle(30*8, 16*16, 40, 16), new Rectangle(26*8, 16*16, 32, 16)}; // last rectangle is the door
     private final Rectangle[] tps = {new Rectangle(-5*8, 17*16, 16, 32), new Rectangle(59*8, 17*16, 16, 32)};
     private final Rectangle[] blanks = {new Rectangle(14*8, (12*16)+8, 216, 176), new Rectangle(0*8, 17*16, 96, 16), 
         new Rectangle(44*8, 17*16, 96, 16), new Rectangle(13*16, 26 * 16, 32, 32)};
@@ -39,7 +40,7 @@ public class Map {
         int xPos = 1;
         for (int i = 0; i < dots.length;) {
             Rectangle rect = new Rectangle((xPos*16)+4, (yPos*16)+12, 4, 4);  // create new dot to check
-            if (!checkWallCollision(4, rect.x, rect.y, Constants.baseSpeed) && !checkBlanks(rect)) { // check if dot will be in a wall or blank spaces
+            if (!checkWallCollision(4, rect.x, rect.y, Constants.baseSpeed, true) && !checkBlanks(rect)) { // check if dot will be in a wall or blank spaces
                 dots[i] = rect;
                 i++;
             }
@@ -96,7 +97,7 @@ public class Map {
         return 0;
     }
 
-    public boolean checkWallCollision(int direction, int xPos, int yPos, int speed) {  // check if something collides with the walls
+    public boolean checkWallCollision(int direction, int xPos, int yPos, int speed, boolean door) {  // check if something collides with the walls
         int wallTempX = xPos;
         int wallTempY = yPos;
         Rectangle wallHitbox = new Rectangle(wallTempX, wallTempY, 16, 16);
@@ -135,6 +136,9 @@ public class Map {
         wallHitbox.y = wallTempY;
         for (int i = 0; i<walls.length; i++) {
             if (wallHitbox.intersects(walls[i])) {
+                if (i == walls.length-1 && door == false) {
+                    return false;
+                }
                 return true;
             }
         }

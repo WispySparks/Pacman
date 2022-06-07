@@ -68,12 +68,15 @@ public class Animator implements ActionListener{
         return eyeImages[direction];
     }
 
-    public BufferedImage getAnim(int direction, int ghostState) {
+    public BufferedImage getAnim(int direction, int ghostState, boolean enter) {
         if (ghostState < 2) {
             return normal();
         }
         else if (ghostState == Constants.frighten) {
             return frighten();
+        }
+        else if (ghostState == Constants.eaten && enter == false) {
+            return normal();
         }
         else {
             return eyes(direction);

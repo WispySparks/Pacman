@@ -85,7 +85,7 @@ public class Pacman implements ActionListener {
             xPos = -2*16;
             nextDirection = direction = Constants.right;
         }
-        if (map.checkWallCollision(nextDirection, xPos, yPos, speed) == false) {
+        if (map.checkWallCollision(nextDirection, xPos, yPos, speed, true) == false) {
             switch (nextDirection) {
                 case Constants.right: 
                     xPos += speed;
@@ -105,7 +105,7 @@ public class Pacman implements ActionListener {
                     break;
             }
         }
-        else if (map.checkWallCollision(direction, xPos, yPos, speed) == false) {
+        else if (map.checkWallCollision(direction, xPos, yPos, speed, true) == false) {
             switch (direction) {
                 case Constants.right: 
                     xPos += speed;

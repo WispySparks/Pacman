@@ -21,13 +21,15 @@ public class AudioPlayer {
     }
 
     public void playStart() {
-        try {
-            audioStream = AudioSystem.getAudioInputStream(startAudio);
-            startClip = AudioSystem.getClip();
-            startClip.open(audioStream);
-            startClip.start();
-        } catch (Exception e) {
-            System.out.println(e);
+        if (wakaClip == null || wakaClip.isRunning() == false) {
+            try {
+                audioStream = AudioSystem.getAudioInputStream(startAudio);
+                startClip = AudioSystem.getClip();
+                startClip.open(audioStream);
+                startClip.start();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 
