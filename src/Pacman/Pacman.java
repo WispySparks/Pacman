@@ -18,7 +18,7 @@ public class Pacman implements ActionListener {
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private final Timer animTimer = new Timer(100, this);
     private int animState = 0;
-    private Blinky blinky;
+    private Ghost[] ghosts;
     private int xPos = 13 * 16;
     private int yPos = 51 * 8;
     private int direction = Constants.left;
@@ -44,8 +44,8 @@ public class Pacman implements ActionListener {
         animTimer.start();
     }
 
-    public void setGhosts(Blinky blinky) {
-        this.blinky = blinky;
+    public void setGhosts(Ghost[] ghosts) {
+        this.ghosts = ghosts;
     }
 
     public int getX() {
@@ -61,13 +61,15 @@ public class Pacman implements ActionListener {
     }
 
     public void checkHitboxCollision() {
-        if (blinky.getHitbox().intersects(hitbox) && blinky.getState() < 2) {
-            audioPlayer.playDeath();
-            isDead = true;
-        }
-        else if (blinky.getHitbox().intersects(hitbox) && blinky.getState() == Constants.frighten) {
-            blinky.setState(Constants.eaten);
-            blinky.reAlign();
+        for (int i = 0; i<ghosts.length; i++) {
+            if (ghosts[i].getHitbox().intersects(hitbox) && ghosts[i].getState() < 2) {
+                audioPlayer.playDeath();
+                isDead = true;
+            }
+            else if (ghosts[i].getHitbox().intersects(hitbox) && ghosts[i].getState() == Constants.frighten) {
+                ghosts[i].setState(Constants.eaten);
+                ghosts[i].reAlign();
+            }
         }
     }
 

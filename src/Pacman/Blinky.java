@@ -4,7 +4,7 @@ import java.util.Random;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
-public class Blinky {
+public class Blinky implements Ghost {
 
     private final Map map;
     private final Pacman pacman;
@@ -175,24 +175,25 @@ public class Blinky {
         }
         updistance -= 1;
         downdistance -= 1;
-        // System.out.println(rightdistance + " " + downdistance + " " + leftdistance + " " + updistance);
         return compare(rightdistance, downdistance, leftdistance, updistance);
     }
 
     public int compare(double right, double down, double left, double up) {     // compare all directions and find best one
-        if (right < down && right < left && right < up) {
+        double lrmax = Math.min(right, left);
+        double udmax = Math.min(up, down);
+        double max = Math.min(lrmax, udmax);
+        if (max == right) {
             return Constants.right;
         }
-        else if (down < right && down < left && down < up) {
+        else if (max == down) {
             return Constants.down;
         }
-        else if (left < right && left < down && left < up) {
+        else if (max == left) {
             return Constants.left;
         }
-        else if (up < right && up < left && up < down) {
+        else {
             return Constants.up;
         }
-        return 5;
     }
 
     public int randDirection() {   // get a new random direction
