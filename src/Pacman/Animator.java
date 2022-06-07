@@ -8,10 +8,10 @@ import java.awt.event.*;
 
 public class Animator implements ActionListener{
 
-    private final File[] blinkyFiles = {new File("./resources/images/blinky_0.png"), new File("./resources/images/blinky_1.png")};
-    private final File[] pinkyFiles = {new File("./resources/images/pinky_0.png"), new File("./resources/images/pinky_1.png")};
-    private final File[] inkyFiles = {new File("./resources/images/inky_0.png"), new File("./resources/images/inky_1.png")};
-    private final File[] clydeFiles = {new File("./resources/images/clyde_0.png"), new File("./resources/images/clyde_1.png")};
+    private final File[] blinkyFiles = {new File("./resources/images/blinky_0.png"), new File("./resources/images/blinky_1.png"), new File("./resources/images/blinky_2.png"), new File("./resources/images/blinky_3.png"), new File("./resources/images/blinky_4.png"), new File("./resources/images/blinky_5.png"), new File("./resources/images/blinky_6.png"), new File("./resources/images/blinky_7.png")};
+    private final File[] pinkyFiles = {new File("./resources/images/pinky_0.png"), new File("./resources/images/pinky_1.png"), new File("./resources/images/pinky_2.png"), new File("./resources/images/pinky_3.png"), new File("./resources/images/pinky_4.png"), new File("./resources/images/pinky_5.png"), new File("./resources/images/pinky_6.png"), new File("./resources/images/pinky_7.png")};
+    private final File[] inkyFiles = {new File("./resources/images/inky_0.png"), new File("./resources/images/inky_1.png"), new File("./resources/images/inky_2.png"), new File("./resources/images/inky_3.png"), new File("./resources/images/inky_4.png"), new File("./resources/images/inky_5.png"), new File("./resources/images/inky_6.png"), new File("./resources/images/inky_7.png")};
+    private final File[] clydeFiles = {new File("./resources/images/clyde_0.png"), new File("./resources/images/clyde_1.png"), new File("./resources/images/clyde_2.png"), new File("./resources/images/clyde_3.png"), new File("./resources/images/clyde_4.png"), new File("./resources/images/clyde_5.png"), new File("./resources/images/clyde_6.png"), new File("./resources/images/clyde_7.png")};
     private final File[] eyeFiles = {new File("./resources/images/eyes_0.png"), new File("./resources/images/eyes_1.png"), new File("./resources/images/eyes_2.png"), new File("./resources/images/eyes_3.png")};
     private final File[] scaredFiles = {new File("./resources/images/scared_0.png"), new File("./resources/images/scared_1.png")};
     private final BufferedImage[] normalImages = new BufferedImage[blinkyFiles.length];
@@ -36,7 +36,9 @@ public class Animator implements ActionListener{
                     case "inky": normalImages[i] = ImageIO.read(inkyFiles[i]); break;
                     case "clyde": normalImages[i] = ImageIO.read(clydeFiles[i]); break;
                 }
-                scaredImages[i] = ImageIO.read(scaredFiles[i]);
+                if (i < 2) {
+                    scaredImages[i] = ImageIO.read(scaredFiles[i]);
+                }
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -50,11 +52,16 @@ public class Animator implements ActionListener{
         }
     }
 
-    public BufferedImage normal() {
+    public BufferedImage normal(int direction) {
+        switch (direction) {
+            case Constants.down: direction = 2; break;
+            case Constants.left: direction = 4; break;
+            case Constants.up: direction = 6; break;
+        }
         if (animState > 1) {
             animState = 0;
         }
-        return normalImages[animState];
+        return normalImages[animState + direction];
     }
 
     public BufferedImage frighten() {
@@ -70,13 +77,13 @@ public class Animator implements ActionListener{
 
     public BufferedImage getAnim(int direction, int ghostState, boolean enter) {
         if (ghostState < 2) {
-            return normal();
+            return normal(direction);
         }
         else if (ghostState == Constants.frighten) {
             return frighten();
         }
         else if (ghostState == Constants.eaten && enter == false) {
-            return normal();
+            return normal(direction);
         }
         else {
             return eyes(direction);

@@ -56,6 +56,10 @@ public class Pacman implements ActionListener {
         return yPos;
     }
 
+    public int getDirection() {
+        return direction;
+    }
+
     public boolean isDead() {
         return isDead;
     }

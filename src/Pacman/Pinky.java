@@ -4,12 +4,12 @@ import java.util.Random;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
-public class Blinky implements Ghost {
+public class Pinky implements Ghost {
 
     private final Map map;
     private final Pacman pacman;
-    private final Animator animator = new Animator("blinky");
-    private int xPos = 13 * 16;
+    private final Animator animator = new Animator("pinky");
+    private int xPos = 13*16;
     private int yPos = 27 * 8;
     private int direction = Constants.left;
     private int nextDirection = Constants.left;
@@ -18,9 +18,10 @@ public class Blinky implements Ghost {
     private int ghostState = Constants.scatter;
     private Random rand = new Random();
     private boolean eaten = false;
+    private boolean house = true;
     private boolean enter = true;
     
-    Blinky(Pacman pacman, Map map) {
+    Pinky(Pacman pacman, Map map) {
         this.pacman = pacman;
         this.map = map;
     }
@@ -39,6 +40,10 @@ public class Blinky implements Ghost {
 
     public int getState() {
         return ghostState;
+    }
+
+    public void setHouse(boolean bool) {
+        house = bool;
     }
 
     public void setState(int state) {
@@ -122,12 +127,20 @@ public class Blinky implements Ghost {
     public int getNextDirection() {   // get next direction based on ai and math to go to target tile
         int x1;
         int y1;
+        int dir;
         if (ghostState == Constants.chase) {  // chase mode
             x1 = pacman.getX();
             y1 = pacman.getY();
+            dir = pacman.getDirection();
+            switch (dir) {
+                case Constants.right: x1 += 80; break;
+                case Constants.down: y1 += 80; break;
+                case Constants.left: x1 -= 48; break;
+                case Constants.up: y1 -= 48; break;
+            }
         }
         else if (ghostState == Constants.scatter) {  // scatter mode
-            x1 = 26*16;     // corner cordinates
+            x1 = 1*16;     // corner cordinates
             y1 = 4*16;
         }
         else if (ghostState == Constants.frighten) {  // frighten mode

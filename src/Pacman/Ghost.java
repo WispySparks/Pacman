@@ -1,6 +1,7 @@
 package Pacman;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public interface Ghost {
     
@@ -18,4 +19,9 @@ public interface Ghost {
 
     public boolean isEaten();
 
+    public BufferedImage updateAnim();
+
+    public int getX();
+    
+    public int getY();
 }
