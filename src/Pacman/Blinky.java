@@ -20,6 +20,8 @@ public class Blinky implements Ghost {
     private Random rand = new Random();
     private boolean eaten = false;
     private boolean enter = true;
+    public int x1;
+    public int y1;
     
     Blinky(Pacman pacman, Map map, GamePanel panel) {
         this.pacman = pacman;
@@ -70,6 +72,11 @@ public class Blinky implements Ghost {
         else {
             move();
         }
+    }
+
+    public void targetTile() {
+        x1 = pacman.getX();
+        y1 = pacman.getY();
     }
 
     public void move() {
@@ -123,11 +130,8 @@ public class Blinky implements Ghost {
     }
 
     public int getNextDirection() {   // get next direction based on ai and math to go to target tile
-        int x1;
-        int y1;
         if (ghostState == Constants.chase) {  // chase mode
-            x1 = pacman.getX();
-            y1 = pacman.getY();
+            targetTile();
         }
         else if (ghostState == Constants.scatter) {  // scatter mode
             x1 = 26*16;     // corner cordinates

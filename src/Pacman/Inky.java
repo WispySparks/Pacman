@@ -88,7 +88,6 @@ public class Inky implements Ghost {
         int dir;
         int x3 = blinky.getX();
         int y3 = blinky.getY();
-        Vector2D vector = new Vector2D(x3, y3);
         x1 = pacman.getX();
         y1 = pacman.getY();
         dir = pacman.getDirection();
@@ -98,6 +97,10 @@ public class Inky implements Ghost {
             case Constants.left: x1 -= 24; break;
             case Constants.up: y1 -= 24; break;
         }
+        Vector2D vector = new Vector2D(x1, y1, x3, y3);
+        vector = vector.reflection(180);
+        x1 += vector.getX();
+        y1 += vector.getY();
     }
 
     public void move() {

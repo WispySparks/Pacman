@@ -19,11 +19,12 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private final Map map = new Map(this);
     private final Pacman pacman = new Pacman(this, map);
     private final Blinky blinky = new Blinky(pacman, map, this);
+    private final Pinky pinky = new Pinky(pacman, map, this);
     private final Inky inky = new Inky(pacman, blinky, map, this);
-    private final Ghost[] ghosts = {blinky, new Pinky(pacman, map, this), inky};
+    private final Ghost[] ghosts = {blinky, pinky, inky};
     private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
-    private final double[] modeTimes = {9, 27, 36, 54, 61, 79, 86};
+    private final double[] modeTimes = {9, 27, 38, 54, 63, 79, 88};
     private float currentTime = 0;
     private float frightenTime = 0;
     private boolean power = false;
@@ -54,12 +55,12 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
             g.drawImage(ghosts[i].updateAnim(), ghosts[i].getX(), ghosts[i].getY(), null);
         }
         g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
-        g.setColor(Color.yellow);
-        g.fillRect(inky.x1, inky.y1, 1, 1);
-        //g.fillRect(pacman.getX(), pacman.getY(), 32, 32);
-        //g.fillRect(pinky.target.x, pinky.target.y, 1, 1);
-        // g.fillRect(27*16, 33*16, 1, 1);
-        // g.setColor(Color.BLUE);
+        g.setColor(Color.RED);
+        g.fillRect(blinky.x1, blinky.y1, 8, 8);
+        g.setColor(Color.PINK);
+        g.fillRect(pinky.x1, pinky.y1, 8, 8);
+        g.setColor(Color.BLUE);
+        g.fillRect(inky.x1, inky.y1, 8, 8);
         // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
         // g.setColor(Color.PINK);
         // g.fillRect(blinky.hitbox.x, blinky.hitbox.y, blinky.hitbox.width, blinky.hitbox.height);

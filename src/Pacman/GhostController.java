@@ -25,7 +25,7 @@ public class GhostController implements ActionListener{
                 ghosts[i].getMove();
             }
             if (time/10 == 5) {
-                //ghosts[1].start();
+                ghosts[1].start();
             }
             if (time/10 == 10) {
                 ghosts[2].start();

@@ -21,6 +21,8 @@ public class Pinky implements Ghost {
     private boolean eaten = false;
     private boolean house = true;
     private boolean enter = false;
+    public int x1;
+    public int y1;
     
     Pinky(Pacman pacman, Map map, GamePanel panel) {
         this.pacman = pacman;
@@ -79,6 +81,19 @@ public class Pinky implements Ghost {
         }
     }
 
+    public void targetTile() {
+        int dir;
+        x1 = pacman.getX();
+        y1 = pacman.getY();
+        dir = pacman.getDirection();
+        switch (dir) {
+            case Constants.right: x1 += 80; break;
+            case Constants.down: y1 += 80; break;
+            case Constants.left: x1 -= 48; break;
+            case Constants.up: y1 -= 48; break;
+        }
+    }
+
     public void move() {
         nextDirection = getNextDirection();
         if (map.checkTps(hitbox) == 1) {
@@ -130,19 +145,8 @@ public class Pinky implements Ghost {
     }
 
     public int getNextDirection() {   // get next direction based on ai and math to go to target tile
-        int x1;
-        int y1;
-        int dir;
         if (ghostState == Constants.chase) {  // chase mode
-            x1 = pacman.getX();
-            y1 = pacman.getY();
-            dir = pacman.getDirection();
-            switch (dir) {
-                case Constants.right: x1 += 80; break;
-                case Constants.down: y1 += 80; break;
-                case Constants.left: x1 -= 48; break;
-                case Constants.up: y1 -= 48; break;
-            }
+            targetTile();
         }
         else if (ghostState == Constants.scatter) {  // scatter mode
             x1 = 1*16;     // corner cordinates
