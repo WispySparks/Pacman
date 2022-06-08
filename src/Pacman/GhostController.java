@@ -24,11 +24,14 @@ public class GhostController implements ActionListener{
             for (int i = 0; i<ghosts.length; i++) {
                 ghosts[i].getMove();
             }
-            if (time/10 == 5) {
+            if (time/10 == 5) {     // this section lets the ghosts out of the ghost house
                 ghosts[1].start();
             }
             if (time/10 == 10) {
                 ghosts[2].start();
+            }
+            if (time/10 == 15) { 
+                ghosts[3].start();
             }
         }
     }

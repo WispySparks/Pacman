@@ -19,10 +19,10 @@ public class Pinky implements Ghost {
     private int ghostState = Constants.eaten;
     private Random rand = new Random();
     private boolean eaten = false;
-    private boolean house = true;
-    private boolean enter = false;
-    public int x1;
-    public int y1;
+    private boolean house = true;    // used for beginning of game to leave ghost house
+    private boolean enter = false;   // whether ghost is entering or exiting ghost house
+    public int x1;  // target x
+    public int y1;  // target y
     
     Pinky(Pacman pacman, Map map, GamePanel panel) {
         this.pacman = pacman;

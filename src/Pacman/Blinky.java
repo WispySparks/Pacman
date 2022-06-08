@@ -19,9 +19,9 @@ public class Blinky implements Ghost {
     private int ghostState = Constants.scatter;
     private Random rand = new Random();
     private boolean eaten = false;
-    private boolean enter = true;
-    public int x1;
-    public int y1;
+    private boolean enter = true;   // whether ghost is entering or exiting ghost house
+    public int x1;  // target x
+    public int y1;  // target y
     
     Blinky(Pacman pacman, Map map, GamePanel panel) {
         this.pacman = pacman;

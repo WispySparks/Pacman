@@ -21,20 +21,21 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private final Blinky blinky = new Blinky(pacman, map, this);
     private final Pinky pinky = new Pinky(pacman, map, this);
     private final Inky inky = new Inky(pacman, blinky, map, this);
-    private final Ghost[] ghosts = {blinky, pinky, inky};
+    private final Clyde clyde = new Clyde(pacman, map, this);
+    private final Ghost[] ghosts = {blinky, pinky, inky, clyde};
     private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
-    private final double[] modeTimes = {9, 27, 38, 54, 63, 79, 88};
+    private final double[] modeTimes = {9, 27, 38, 54, 63, 79, 88};  // times for switching from chase to scatter 
     private float currentTime = 0;
-    private float frightenTime = 0;
-    private boolean power = false;
+    private float frightenTime = 0;     // timer for when frighten runs out
+    private boolean power = false;  // whether a power pellet are currently active
     private int score = 0;
     private JLabel scoreLabel = new JLabel("HIGH SCORE " + Integer.toString(score));
-    private boolean startDone = false;
+    private boolean startDone = false;  // whether start sound is done or not
     private Rectangle[] dots = map.getDots();
-    private Rectangle[] bigDots = map.getBigDots();
+    private Rectangle[] bigDots = map.getBigDots();  // power pellets
     private Timer timer = new Timer(75, this);
-    private int state = 1;
+    private int state = 1;  // level wide state that the ghosts should be at when not eaten or frightened
 
     GamePanel() {
         audioPlayer.playStart();
@@ -61,11 +62,8 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         g.fillRect(pinky.x1, pinky.y1, 8, 8);
         g.setColor(Color.BLUE);
         g.fillRect(inky.x1, inky.y1, 8, 8);
-        // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
-        // g.setColor(Color.PINK);
-        // g.fillRect(blinky.hitbox.x, blinky.hitbox.y, blinky.hitbox.width, blinky.hitbox.height);
-        // g.setColor(Color.CYAN);
-        // g.fillRect(map.test.x, map.test.y, map.test.width, map.test.height);
+        g.setColor(Color.ORANGE);
+        g.fillRect(clyde.x1, clyde.y1, 8, 8);
         // g.setColor(Color.GREEN);
         // for (int i = 0; i<map.walls.length; i++) {
         //     g.fillRect(map.walls[i].x, map.walls[i].y, map.walls[i].width, map.walls[i].height);
@@ -115,8 +113,8 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
             if ((currentTime/10) == modeTimes[i]) {
                 for (int j = 0; j<ghosts.length; j++) {
                     if (ghosts[j].getState() < 2) {
-                        ghosts[j].setState(i % 2);
                         state = i%2;
+                        ghosts[j].setState(state);
                     }
                 }
             }
