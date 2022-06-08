@@ -21,7 +21,6 @@ public class GhostController implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (panel.isStartDone() == true && pacman.isDead() == false) {
             time += 1;
-            //System.out.println((int) time);
             for (int i = 0; i<ghosts.length; i++) {
                 ghosts[i].getMove();
             }

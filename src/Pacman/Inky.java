@@ -1,6 +1,7 @@
 package Pacman;
 
 import java.util.Random;
+import Pacman.Math.Vector2D;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
@@ -87,6 +88,7 @@ public class Inky implements Ghost {
         int dir;
         int x3 = blinky.getX();
         int y3 = blinky.getY();
+        Vector2D vector = new Vector2D(x3, y3);
         x1 = pacman.getX();
         y1 = pacman.getY();
         dir = pacman.getDirection();
