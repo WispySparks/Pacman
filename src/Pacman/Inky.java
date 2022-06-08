@@ -4,16 +4,17 @@ import java.util.Random;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
-public class Pinky implements Ghost {
+public class Inky implements Ghost {
 
     private final Map map;
     private final Pacman pacman;
-    private final Animator animator = new Animator("pinky");
+    private final Animator animator = new Animator("inky");
     private final GamePanel panel;
-    private int xPos = 13*16;
+    private final Blinky blinky;
+    private int xPos = 11*16;
     private int yPos = 33 * 8;
-    private int direction = Constants.up;
-    private int nextDirection = Constants.up;
+    private int direction = Constants.right;
+    private int nextDirection = Constants.right;
     private int speed = Constants.baseSpeed;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private int ghostState = Constants.eaten;
@@ -21,9 +22,12 @@ public class Pinky implements Ghost {
     private boolean eaten = false;
     private boolean house = true;
     private boolean enter = false;
+    public int x1;
+    public int y1;
     
-    Pinky(Pacman pacman, Map map, GamePanel panel) {
+    Inky(Pacman pacman, Blinky blinky, Map map, GamePanel panel) {
         this.pacman = pacman;
+        this.blinky = blinky;
         this.map = map;
         this.panel = panel;
     }
@@ -79,6 +83,21 @@ public class Pinky implements Ghost {
         }
     }
 
+    public void targetTile() {
+        int dir;
+        int x3 = blinky.getX();
+        int y3 = blinky.getY();
+        x1 = pacman.getX();
+        y1 = pacman.getY();
+        dir = pacman.getDirection();
+        switch (dir) {
+            case Constants.right: x1 += 40; break;
+            case Constants.down: y1 += 40; break;
+            case Constants.left: x1 -= 24; break;
+            case Constants.up: y1 -= 24; break;
+        }
+    }
+
     public void move() {
         nextDirection = getNextDirection();
         if (map.checkTps(hitbox) == 1) {
@@ -130,23 +149,12 @@ public class Pinky implements Ghost {
     }
 
     public int getNextDirection() {   // get next direction based on ai and math to go to target tile
-        int x1;
-        int y1;
-        int dir;
         if (ghostState == Constants.chase) {  // chase mode
-            x1 = pacman.getX();
-            y1 = pacman.getY();
-            dir = pacman.getDirection();
-            switch (dir) {
-                case Constants.right: x1 += 80; break;
-                case Constants.down: y1 += 80; break;
-                case Constants.left: x1 -= 48; break;
-                case Constants.up: y1 -= 48; break;
-            }
+            targetTile();
         }
         else if (ghostState == Constants.scatter) {  // scatter mode
-            x1 = 1*16;     // corner cordinates
-            y1 = 4*16;
+            x1 = 27*16;     // corner cordinates
+            y1 = 33*16;
         }
         else if (ghostState == Constants.frighten) {  // frighten mode
             speed = Constants.baseSpeed/2;

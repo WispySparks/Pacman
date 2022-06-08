@@ -20,10 +20,16 @@ public class GhostController implements ActionListener{
 
     public void actionPerformed(ActionEvent e) {
         if (panel.isStartDone() == true && pacman.isDead() == false) {
-            time += .076;
+            time += 1;
             //System.out.println((int) time);
             for (int i = 0; i<ghosts.length; i++) {
                 ghosts[i].getMove();
+            }
+            if (time/10 == 5) {
+                //ghosts[1].start();
+            }
+            if (time/10 == 10) {
+                ghosts[2].start();
             }
         }
     }

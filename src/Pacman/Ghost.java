@@ -24,4 +24,6 @@ public interface Ghost {
     public int getX();
     
     public int getY();
+
+    public void start();
 }

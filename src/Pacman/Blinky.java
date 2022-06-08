@@ -9,6 +9,7 @@ public class Blinky implements Ghost {
     private final Map map;
     private final Pacman pacman;
     private final Animator animator = new Animator("blinky");
+    private final GamePanel panel;
     private int xPos = 13 * 16;
     private int yPos = 27 * 8;
     private int direction = Constants.left;
@@ -20,10 +21,12 @@ public class Blinky implements Ghost {
     private boolean eaten = false;
     private boolean enter = true;
     
-    Blinky(Pacman pacman, Map map) {
+    Blinky(Pacman pacman, Map map, GamePanel panel) {
         this.pacman = pacman;
         this.map = map;
+        this.panel = panel;
     }
+    public void start(){}
 
     public int getX() {
         return xPos;
@@ -267,7 +270,7 @@ public class Blinky implements Ghost {
         int y1 = 13*16+8;
         if (getX() == x1 && getY() == y1) {
             eaten = false;
-            ghostState = Constants.chase;
+            ghostState = panel.gameState();
             enter = true;
         }
     }

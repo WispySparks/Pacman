@@ -18,7 +18,9 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private final File mapFile = new File("./resources/images/pacmap.png");
     private final Map map = new Map(this);
     private final Pacman pacman = new Pacman(this, map);
-    private final Ghost[] ghosts = {new Blinky(pacman, map), new Pinky(pacman, map)};
+    private final Blinky blinky = new Blinky(pacman, map, this);
+    private final Inky inky = new Inky(pacman, blinky, map, this);
+    private final Ghost[] ghosts = {blinky, new Pinky(pacman, map, this), inky};
     private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private final double[] modeTimes = {9, 27, 36, 54, 61, 79, 86};
@@ -31,6 +33,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private Rectangle[] dots = map.getDots();
     private Rectangle[] bigDots = map.getBigDots();
     private Timer timer = new Timer(75, this);
+    private int state = 1;
 
     GamePanel() {
         audioPlayer.playStart();
@@ -51,9 +54,11 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
             g.drawImage(ghosts[i].updateAnim(), ghosts[i].getX(), ghosts[i].getY(), null);
         }
         g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
+        g.setColor(Color.yellow);
+        g.fillRect(inky.x1, inky.y1, 1, 1);
         //g.fillRect(pacman.getX(), pacman.getY(), 32, 32);
         //g.fillRect(pinky.target.x, pinky.target.y, 1, 1);
-        // g.fillRect(14*16, 18*16, 1, 1);
+        // g.fillRect(27*16, 33*16, 1, 1);
         // g.setColor(Color.BLUE);
         // g.fillRect(pacman.hitbox.x, pacman.hitbox.y, pacman.hitbox.width, pacman.hitbox.height);
         // g.setColor(Color.PINK);
@@ -108,8 +113,9 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         for (int i = 0; i<modeTimes.length; i++) {
             if ((currentTime/10) == modeTimes[i]) {
                 for (int j = 0; j<ghosts.length; j++) {
-                    if (ghosts[j].isEaten() == false && ghosts[j].getState() != Constants.frighten) {
+                    if (ghosts[j].getState() < 2) {
                         ghosts[j].setState(i % 2);
+                        state = i%2;
                     }
                 }
             }
@@ -124,7 +130,6 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
             frightenTime = 0;
             power = false;
         }
-        System.out.println(currentTime/10);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -157,10 +162,14 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
 
     public void powerPellet() { // set states of ghosts to frightened
         for (int i = 0; i<ghosts.length; i++) {
-            if (ghosts[i].isEaten() == false) {
+            if (ghosts[i].getState() != Constants.eaten) {
                 ghosts[i].setState(Constants.frighten);
             }
         }
         power = true;
     }
+
+    public int gameState() {
+        return state;
+    } 
 }
