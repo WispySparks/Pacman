@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 public class GhostController implements ActionListener{
     
-    private final Timer timer = new Timer(76, this);
+    private final Timer timer = new Timer(77, this);
     private final Ghost[] ghosts;
     private final GamePanel panel;
     private final Pacman pacman;

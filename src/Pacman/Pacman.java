@@ -73,6 +73,7 @@ public class Pacman implements ActionListener {
             else if (ghosts[i].getHitbox().intersects(hitbox) && ghosts[i].getState() == Constants.frighten) {
                 ghosts[i].setState(Constants.eaten);
                 ghosts[i].reAlign();
+                panel.setScore(400, 0);
             }
         }
     }

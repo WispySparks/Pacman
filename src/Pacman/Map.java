@@ -6,6 +6,7 @@ public class Map {
 
     private final GamePanel panel;
     private final AudioPlayer audioPlayer = new AudioPlayer();
+    private int dotsate = 0;
     public final Rectangle[] walls = {new Rectangle(5*8, 6*16, 48, 32), new Rectangle(5*8, 10*16, 48, 16), 
         new Rectangle(15*8, 6*16, 64, 32), new Rectangle(33*8, 6*16, 64, 32), new Rectangle(45*8, 6*16, 48, 32),
         new Rectangle(45*8, 10*16, 48, 16), new Rectangle(21*8, 10*16, 112, 16), new Rectangle(27*8, 4*16, 16, 64), 
@@ -75,12 +76,14 @@ public class Map {
         rect.y = rect.y+4;
         for (int i = 0; i<dots.length; i++) {
             if (dots[i].intersects(rect)) {
+                dotsate++;
                 audioPlayer.playWaka();
-                panel.setScore(10);
+                panel.setScore(10, dotsate);
                 dots[i] = space;
             }
             if (i < 4 && bigDots[i].intersects(rect)) {
-                panel.setScore(50);
+                dotsate++;
+                panel.setScore(50, dotsate);
                 bigDots[i] = space;
                 panel.powerPellet();    // sets the ghosts to frightened mode
             }

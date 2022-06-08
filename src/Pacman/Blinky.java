@@ -68,6 +68,7 @@ public class Blinky implements Ghost {
         if (eaten == true && enter == true) {
             move();
             move();
+            move();
         }
         else {
             move();
@@ -142,7 +143,7 @@ public class Blinky implements Ghost {
             return randDirection();
         }
         else if (enter == true) {
-            speed = Constants.baseSpeed;
+            speed = Constants.baseSpeed/2;
             x1 = 13*16;     // ghost house cordinates
             y1 = 16*16+8;
             eaten = true;
@@ -266,6 +267,7 @@ public class Blinky implements Ghost {
         if (getX() == x1 && getY() == y1) {
             nextDirection = direction = Constants.up;
             enter = false;
+            speed = Constants.baseSpeed;
         }
     }
 

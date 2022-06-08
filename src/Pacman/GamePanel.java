@@ -15,7 +15,6 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private final int tileSize = 16;
     private final int gridWidth = 28;
     private final int gridLength = 36;
-    private final File mapFile = new File("./resources/images/pacmap.png");
     private final Map map = new Map(this);
     private final Pacman pacman = new Pacman(this, map);
     private final Blinky blinky = new Blinky(pacman, map, this);
@@ -23,17 +22,15 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     private final Inky inky = new Inky(pacman, blinky, map, this);
     private final Clyde clyde = new Clyde(pacman, map, this);
     private final Ghost[] ghosts = {blinky, pinky, inky, clyde};
-    private final JLabel mapLabel = new JLabel();
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private final double[] modeTimes = {9, 27, 38, 54, 63, 79, 88};  // times for switching from chase to scatter 
     private float currentTime = 0;
     private float frightenTime = 0;     // timer for when frighten runs out
     private boolean power = false;  // whether a power pellet are currently active
     private int score = 0;
+    private boolean won = false;
     private JLabel scoreLabel = new JLabel("HIGH SCORE " + Integer.toString(score));
     private boolean startDone = false;  // whether start sound is done or not
-    private Rectangle[] dots = map.getDots();
-    private Rectangle[] bigDots = map.getBigDots();  // power pellets
     private Timer timer = new Timer(75, this);
     private int state = 1;  // level wide state that the ghosts should be at when not eaten or frightened
 
@@ -45,6 +42,8 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
 
     public void paint(Graphics g) {
         super.paint(g);
+        Rectangle[] dots = map.getDots();
+        Rectangle[] bigDots = map.getBigDots();  // power pellets
         g.setColor(new Color(255, 184, 151));
         for (int i = 0; i<dots.length; i++) {
             g.fillRect(dots[i].x, dots[i].y, dots[i].width, dots[i].height);
@@ -72,6 +71,8 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
 
     public void gameSetup() {
         BufferedImage mapImage = null;
+        final File mapFile = new File("./resources/images/pacmap.png");
+        final JLabel mapLabel = new JLabel();
         this.setOpaque(true);
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(gridWidth*tileSize, gridLength*tileSize));
@@ -95,7 +96,7 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
     public void actionPerformed(ActionEvent e) {
         startDone = audioPlayer.isFinished("start");
         pacman.checkHitboxCollision();
-        if (startDone == true && pacman.isDead() == false) {
+        if (startDone == true && pacman.isDead() == false && won == false) {
             modes();
             pacman.move();
         }
@@ -154,21 +155,27 @@ public class GamePanel extends JLayeredPane implements KeyListener, ActionListen
         return startDone;
     }
 
-    public void setScore(int amount) {
+    public void setScore(int amount, int dots) {
         score += amount;
         scoreLabel.setText("HIGH SCORE " + Integer.toString(score));
+        if (dots == 248) {
+            System.out.println("You Win!");
+            won = true;
+        }
     }
 
     public void powerPellet() { // set states of ghosts to frightened
         for (int i = 0; i<ghosts.length; i++) {
-            if (ghosts[i].getState() != Constants.eaten) {
+            if (ghosts[i].getState() != Constants.eaten && ghosts[i].isEaten() == false) {
                 ghosts[i].setState(Constants.frighten);
             }
         }
         power = true;
+        frightenTime = 0;
     }
 
     public int gameState() {
         return state;
-    } 
+    }
+    
 }
