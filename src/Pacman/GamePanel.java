@@ -26,6 +26,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
     GamePanel() {
         mapSetup();
         controller.setPieces(ghosts, pacman);
+        paint.start();
         // timer.addActionListener(new ActionListener() {
         //     @Override
         //     public void actionPerformed(ActionEvent e) {
@@ -42,7 +43,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         // timer2.addActionListener(jam);
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics g) {//TODO: Display lives and display fruit, collect fruit and gain score for it, level restart when you win, 1up when you get enough score, game over screen, extra sounds, main menu
         super.paint(g);
         Rectangle[] dots = map.getDots();
         Rectangle[] bigDots = map.getBigDots();  // power pellets
@@ -70,6 +71,17 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         //     g.fillRect(map.walls[i].x, map.walls[i].y, map.walls[i].width, map.walls[i].height);
         // }
     }
+    Thread paint = new Thread() {
+        public void run() {
+            repaint();
+            try {
+                Thread.sleep(75);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            run();
+        }
+    };
 
     public void mapSetup() {
         BufferedImage mapImage = null;

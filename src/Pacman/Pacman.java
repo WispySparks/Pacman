@@ -15,7 +15,6 @@ public class Pacman implements ActionListener {
     private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png"), new File("./resources/images/pacdeath_0.png"), new File("./resources/images/pacdeath_1.png"), new File("./resources/images/pacdeath_2.png"), new File("./resources/images/pacdeath_3.png"), new File("./resources/images/pacdeath_4.png"), new File("./resources/images/pacdeath_5.png"), new File("./resources/images/pacdeath_6.png"), new File("./resources/images/pacdeath_7.png"), new File("./resources/images/pacdeath_8.png"), new File("./resources/images/pacdeath_9.png"), new File("./resources/images/pacdeath_10.png"), new File("./resources/images/pacdeath_11.png"), new File("./resources/images/pacdeath_12.png")};
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
     private final GameController controller;
-    private final AudioPlayer audioPlayer = new AudioPlayer();
     private final Timer animTimer = new Timer(100, this);
     private int animState = 0;
     private Ghost[] ghosts;
@@ -92,7 +91,7 @@ public class Pacman implements ActionListener {
                 animState = 5;
             }
             else if (ghosts[i].getHitbox().intersects(hitbox) && ghosts[i].getState() == Constants.frighten) {
-                audioPlayer.playGhost();
+                controller.getAudio().playGhost();
                 ghosts[i].setState(Constants.eaten);
                 ghosts[i].reAlign();
                 controller.setScore(400, 0);
