@@ -28,7 +28,18 @@ public class Blinky implements Ghost {
         this.map = map;
         this.controller = controller;
     }
-    public void start(){}
+    public void start(boolean start){
+        xPos = 13 * 16;
+        yPos = 27 * 8;
+        direction = Constants.left;
+        nextDirection = Constants.left;
+        hitbox.x = getX()+4;
+        hitbox.y = getY()+4;
+        ghostState = Constants.scatter;
+        speed = Constants.baseSpeed;
+        eaten = false;
+        enter = true;
+    }
 
     public int getX() {
         return xPos;
@@ -66,7 +77,6 @@ public class Blinky implements Ghost {
 
     public void getMove() {
         if (eaten == true && enter == true) {
-            move();
             move();
             move();
         }
@@ -143,7 +153,9 @@ public class Blinky implements Ghost {
             return randDirection();
         }
         else if (enter == true) {
-            speed = Constants.baseSpeed/2;
+            controller.getAudio().loopPowerPellet(false);
+            controller.getAudio().loopEyes(true);
+            speed = Constants.baseSpeed;
             x1 = 13*16;     // ghost house cordinates
             y1 = 16*16+8;
             eaten = true;
@@ -268,6 +280,8 @@ public class Blinky implements Ghost {
             nextDirection = direction = Constants.up;
             enter = false;
             speed = Constants.baseSpeed;
+            controller.getAudio().loopEyes(false);
+            controller.getAudio().loopPowerPellet(true);
         }
     }
 

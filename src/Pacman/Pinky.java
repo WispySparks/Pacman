@@ -30,6 +30,26 @@ public class Pinky implements Ghost {
         this.controller = controller;
     }
 
+    public void start(boolean start) {
+        if (start == true) {
+            house = false;
+            eaten = true;
+        }
+        else {
+            xPos = 13*16;
+            yPos = 33 * 8;
+            direction = Constants.up;
+            nextDirection = Constants.up;
+            speed = Constants.baseSpeed;
+            hitbox.x = getX()+4;
+            hitbox.y = getY()+4;
+            ghostState = Constants.eaten;
+            eaten = false;
+            house = true;
+            enter = false;
+        }
+    }
+
     public int getX() {
         return xPos;
     }
@@ -44,11 +64,6 @@ public class Pinky implements Ghost {
 
     public int getState() {
         return ghostState;
-    }
-
-    public void start() {
-        house = false;
-        eaten = true;
     }
 
     public void setState(int state) {

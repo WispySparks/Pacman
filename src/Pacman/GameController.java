@@ -41,13 +41,13 @@ public class GameController implements ActionListener{
                         ghosts[i].getMove();
                     }
                     if (time/10 == 5) {     // this section lets the ghosts out of the ghost house
-                        ghosts[1].start();
+                        ghosts[1].start(true);
                     }
                     if (time/10 == 10) {
-                        ghosts[2].start();
+                        ghosts[2].start(true);
                     }
                     if (time/10 == 15) { 
-                        ghosts[3].start();
+                        ghosts[3].start(true);
                     }
                 }
             }
@@ -60,13 +60,27 @@ public class GameController implements ActionListener{
         pacman.checkHitboxCollision();
         if (audioPlayer.isFinished("start") == true && pacman.isDead() == false && won == false) {
             modes();
+            if (modeTime == 1) {
+                audioPlayer.loopSiren(true);
+            }
             pacman.move();
         }
         else if (pacman.isDead() == true) {
             if (pacman.getLives() > 0) {
-                System.out.println("not dead yet!" + pacman.getLives());
                 ghostTimer.stop();
-                pacman.reset();
+                modeTime = 0;
+                frightenTime = 0;
+                power = false;
+                state = 1;
+                time = 0;
+                //System.out.println(audioPlayer.isFinished("death"));
+                if (audioPlayer.isFinished("death") == true) {
+                    for (int i = 0; i<ghosts.length; i++) {
+                        ghosts[i].start(false);
+                    }
+                    pacman.reset();
+                    ghostTimer.restart();
+                }
             }
         }
         panel.setScore(score);
@@ -91,6 +105,8 @@ public class GameController implements ActionListener{
             }
         }
         if ((int) frightenTime == 7) {
+            audioPlayer.loopPowerPellet(false);
+            audioPlayer.loopSiren(true);
             for (int i = 0; i<ghosts.length; i++) {
                 ghosts[i].reAlign();
                 if (ghosts[i].isEaten() == false) {
@@ -103,6 +119,8 @@ public class GameController implements ActionListener{
     }
 
     public void powerPellet() { // set states of ghosts to frightened
+        audioPlayer.loopSiren(false);
+        audioPlayer.loopPowerPellet(true);
         for (int i = 0; i<ghosts.length; i++) {
             if (ghosts[i].getState() != Constants.eaten && ghosts[i].isEaten() == false) {
                 ghosts[i].setState(Constants.frighten);
@@ -121,6 +139,10 @@ public class GameController implements ActionListener{
         if (dots == 248) {
             System.out.println("You Win!");
         }
+    }
+
+    public AudioPlayer getAudio() {
+        return audioPlayer;
     }
 
 }

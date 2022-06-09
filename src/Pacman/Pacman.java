@@ -83,11 +83,16 @@ public class Pacman implements ActionListener {
     public void checkHitboxCollision() {
         for (int i = 0; i<ghosts.length; i++) {
             if (ghosts[i].getHitbox().intersects(hitbox) && ghosts[i].getState() < 2 && isDead == false) {
-                audioPlayer.playDeath();
+                controller.getAudio().loopSiren(false);
+                controller.getAudio().loopPowerPellet(false);
+                controller.getAudio().loopEyes(false);
+                controller.getAudio().playDeath();
                 isDead = true;
                 lives--;
+                animState = 5;
             }
             else if (ghosts[i].getHitbox().intersects(hitbox) && ghosts[i].getState() == Constants.frighten) {
+                audioPlayer.playGhost();
                 ghosts[i].setState(Constants.eaten);
                 ghosts[i].reAlign();
                 controller.setScore(400, 0);
