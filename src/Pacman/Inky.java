@@ -10,7 +10,7 @@ public class Inky implements Ghost {
     private final Map map;
     private final Pacman pacman;
     private final Animator animator = new Animator("inky");
-    private final GamePanel panel;
+    private final GameController controller;
     private final Blinky blinky;
     private int xPos = 11*16;
     private int yPos = 33 * 8;
@@ -26,11 +26,11 @@ public class Inky implements Ghost {
     public int x1;  // target x
     public int y1;  // target y
     
-    Inky(Pacman pacman, Blinky blinky, Map map, GamePanel panel) {
+    Inky(Pacman pacman, Blinky blinky, Map map, GameController controller) {
         this.pacman = pacman;
         this.blinky = blinky;
         this.map = map;
-        this.panel = panel;
+        this.controller = controller;
     }
 
     public int getX() {
@@ -300,7 +300,7 @@ public class Inky implements Ghost {
         int y1 = 13*16+8;
         if (getX() == x1 && getY() == y1) {
             eaten = false;
-            ghostState = panel.gameState();;
+            ghostState = controller.gameState();;
             enter = true;
         }
     }

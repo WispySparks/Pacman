@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Map {
 
-    private final GamePanel panel;
+    private final GameController controller;
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private int dotsate = 0;
     public final Rectangle[] walls = {new Rectangle(5*8, 6*16, 48, 32), new Rectangle(5*8, 10*16, 48, 16), 
@@ -30,8 +30,8 @@ public class Map {
     private Rectangle[] bigDots = {new Rectangle(1*16-2, 6*16 + 6, 16, 16), new Rectangle(26*16-1, 6*16 + 6, 16, 16),
         new Rectangle(1*16-2, 26*16 + 4, 16, 16), new Rectangle(26*16-1, 26*16 + 4, 16, 16)};
     
-    Map(GamePanel panel) {
-        this.panel = panel;
+    Map(GameController controller) {
+        this.controller = controller;
         setDots();
     }
 
@@ -78,14 +78,14 @@ public class Map {
             if (dots[i].intersects(rect)) {
                 dotsate++;
                 audioPlayer.playWaka();
-                panel.setScore(10, dotsate);
+                controller.setScore(10, dotsate);
                 dots[i] = space;
             }
             if (i < 4 && bigDots[i].intersects(rect)) {
                 dotsate++;
-                panel.setScore(50, dotsate);
+                controller.setScore(50, dotsate);
                 bigDots[i] = space;
-                panel.powerPellet();    // sets the ghosts to frightened mode
+                controller.powerPellet();    // sets the ghosts to frightened mode
             }
         }
     }

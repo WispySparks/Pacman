@@ -15,13 +15,12 @@ public class AudioPlayer {
     private Clip startClip;
     private Clip wakaClip;
     private Clip deathClip;
-    private int x = 0;
     
     AudioPlayer() {
     }
 
     public void playStart() {
-        if (wakaClip == null || wakaClip.isRunning() == false) {
+        if (startClip == null || startClip.isRunning() == false) {
             try {
                 audioStream = AudioSystem.getAudioInputStream(startAudio);
                 startClip = AudioSystem.getClip();
@@ -47,7 +46,7 @@ public class AudioPlayer {
     }
 
     public void playDeath() {
-        if (x == 0) {
+        if (deathClip == null || deathClip.isRunning() == false) {
             try {
                 audioStream = AudioSystem.getAudioInputStream(deathAudio);
                 deathClip = AudioSystem.getClip();
@@ -56,20 +55,25 @@ public class AudioPlayer {
             } catch (Exception e) {
                 System.out.println(e);
             }
-            x = 1;
         }
     }
 
     public boolean isFinished(String sound) {
         if (sound == "start") {
-            return !startClip.isRunning();
+            if (startClip != null) {
+                return !startClip.isRunning();
+            }
         }
         else if (sound == "waka"){
-            return !wakaClip.isRunning();
+            if (wakaClip != null) {
+                return !wakaClip.isRunning();
+            }
         }
         else if (sound == "death") {
-            return !deathClip.isRunning();
+            if (deathClip != null) {
+                return !deathClip.isRunning();
+            }
         }
-        return true;
+        return false;
     }
 }

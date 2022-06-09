@@ -9,7 +9,7 @@ public class Pinky implements Ghost {
     private final Map map;
     private final Pacman pacman;
     private final Animator animator = new Animator("pinky");
-    private final GamePanel panel;
+    private final GameController controller;
     private int xPos = 13*16;
     private int yPos = 33 * 8;
     private int direction = Constants.up;
@@ -24,10 +24,10 @@ public class Pinky implements Ghost {
     public int x1;  // target x
     public int y1;  // target y
     
-    Pinky(Pacman pacman, Map map, GamePanel panel) {
+    Pinky(Pacman pacman, Map map, GameController controller) {
         this.pacman = pacman;
         this.map = map;
-        this.panel = panel;
+        this.controller = controller;
     }
 
     public int getX() {
@@ -291,7 +291,7 @@ public class Pinky implements Ghost {
         int y1 = 13*16+8;
         if (getX() == x1 && getY() == y1) {
             eaten = false;
-            ghostState = panel.gameState();;
+            ghostState = controller.gameState();;
             enter = true;
         }
     }

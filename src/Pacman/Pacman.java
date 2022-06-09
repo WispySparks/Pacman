@@ -14,7 +14,7 @@ public class Pacman implements ActionListener {
     private final Map map;
     private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png"), new File("./resources/images/pacdeath_0.png"), new File("./resources/images/pacdeath_1.png"), new File("./resources/images/pacdeath_2.png"), new File("./resources/images/pacdeath_3.png"), new File("./resources/images/pacdeath_4.png"), new File("./resources/images/pacdeath_5.png"), new File("./resources/images/pacdeath_6.png"), new File("./resources/images/pacdeath_7.png"), new File("./resources/images/pacdeath_8.png"), new File("./resources/images/pacdeath_9.png"), new File("./resources/images/pacdeath_10.png"), new File("./resources/images/pacdeath_11.png"), new File("./resources/images/pacdeath_12.png")};
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
-    private final GamePanel panel;
+    private final GameController controller;
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private final Timer animTimer = new Timer(100, this);
     private int animState = 0;
@@ -26,9 +26,10 @@ public class Pacman implements ActionListener {
     private int speed = Constants.baseSpeed;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private boolean isDead = false;
+    private int lives = 3;
 
-    Pacman(GamePanel panel, Map map) {
-        this.panel = panel;
+    Pacman(GameController controller, Map map) {
+        this.controller = controller;
         this.map = map;
         setupAnims();
     }
@@ -64,16 +65,32 @@ public class Pacman implements ActionListener {
         return isDead;
     }
 
+    public int getLives() {
+        return lives;
+    }
+
+    public void reset() {
+        animState = 0;
+        xPos = 13 * 16;
+        yPos = 51 * 8;
+        direction = Constants.left;
+        nextDirection = Constants.left;
+        isDead = false;
+        hitbox.x = getX()+4;
+        hitbox.y = getY()+4;
+    }
+
     public void checkHitboxCollision() {
         for (int i = 0; i<ghosts.length; i++) {
-            if (ghosts[i].getHitbox().intersects(hitbox) && ghosts[i].getState() < 2) {
+            if (ghosts[i].getHitbox().intersects(hitbox) && ghosts[i].getState() < 2 && isDead == false) {
                 audioPlayer.playDeath();
                 isDead = true;
+                lives--;
             }
             else if (ghosts[i].getHitbox().intersects(hitbox) && ghosts[i].getState() == Constants.frighten) {
                 ghosts[i].setState(Constants.eaten);
                 ghosts[i].reAlign();
-                panel.setScore(400, 0);
+                controller.setScore(400, 0);
             }
         }
     }
@@ -144,9 +161,7 @@ public class Pacman implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent e) {
-        if (panel.isStartDone()) {
-            animState++;
-        }
+        animState++;
         if (animState > 4  && isDead == false){
             animState = 0;
         }
