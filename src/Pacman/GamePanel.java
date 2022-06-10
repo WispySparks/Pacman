@@ -43,7 +43,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         // timer2.addActionListener(jam);
     }
 
-    public void paint(Graphics g) {//TODO: Display lives and display fruit, collect fruit and gain score for it, level restart when you win, 1up when you get enough score, game over screen, extra sounds, main menu
+    public void paint(Graphics g) {//TODO: Display lives and display fruit, collect fruit and gain score for it, level restart when you win, 1up when you get enough score, game over screen, extra sounds, main menu, fix eyes sounds for all ghosts
         super.paint(g);
         Rectangle[] dots = map.getDots();
         Rectangle[] bigDots = map.getBigDots();  // power pellets
@@ -71,6 +71,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         //     g.fillRect(map.walls[i].x, map.walls[i].y, map.walls[i].width, map.walls[i].height);
         // }
     }
+
     Thread paint = new Thread() {
         public void run() {
             repaint();
@@ -105,6 +106,10 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         this.add(scoreLabel, Integer.valueOf(2));
     }
 
+    public void gameOver() {
+        System.out.println("show game over ui");
+    }
+
     public void setScore(int score) {
         scoreLabel.setText("HIGH SCORE " + Integer.toString(score));
     }
@@ -121,6 +126,19 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
             pacman.setNextDir(Constants.up);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            controller.stopLoops();
+            controller.setLost(true);
+            setScore(0);
+            try {
+                Thread.sleep(76);
+            } catch (Exception e1) {
+                System.out.println(e1);
+            }
+            map.setDots();
+            
+            controller.gameSetup();
         }
     }
     public void keyReleased(KeyEvent e) {

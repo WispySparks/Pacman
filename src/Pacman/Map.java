@@ -35,6 +35,7 @@ public class Map {
     }
 
     public void setDots() {     // set up dots for the map
+        dotsate = 0;
         int rollOver = 0;
         int yPos = 4;
         int xPos = 1;

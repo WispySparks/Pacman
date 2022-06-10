@@ -18,27 +18,53 @@ public class GameController implements ActionListener{
     private double ghostTime = 0; // time for releasing ghosts
     private int score = 0;
     private boolean won = false;
+    private boolean lost = false;
 
     GameController(GamePanel panel) {
         this.panel = panel;
-        audioPlayer.playStart();
     }
-
     
-
     public void setPieces(Ghost[] ghosts, Pacman pacman) {
         this.ghosts = ghosts;
         this.pacman = pacman;
+        pacman.setGhosts(ghosts);
         gameSetup();
-        main.start();
     }
 
     public void gameSetup() {
-        pacman.setGhosts(ghosts);
+        audioPlayer.playStart();
+        for (int i = 0; i<ghosts.length; i++) {
+            ghosts[i].start(false);
+        }
+        pacman.reset(true);
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
+        Thread main = new Thread() {
+        public void run() {
+            gameLoop();
+            try {
+                Thread.sleep(75);
+            } catch (InterruptedException e1) {
+                System.out.println(e1);
+            }
+            if (!lost) run();
+        }};
+        modeTime = 0;
+        frightenTime = 0;
+        power = false;
+        state = 1;
+        ghostTime = 0;
+        lost = false;
+        won = false;
+        score = 0;
         ghostTimer.start();
+        main.start();
     }
 
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {    // ghost movements and freeing
         if (audioPlayer.isFinished("start") == true && pacman.isDead() == false) {
             ghostTime += 1;
             for (int i = 0; i<ghosts.length; i++) {
@@ -56,17 +82,16 @@ public class GameController implements ActionListener{
         }
     }
 
-    Thread main = new Thread() {
-    public void run() {
+    public void gameLoop() {    // main game loop
         pacman.checkHitboxCollision();
-        if (audioPlayer.isFinished("start") == true && pacman.isDead() == false && won == false) {
+        if (audioPlayer.isFinished("start") == true && pacman.isDead() == false && won == false) {  // normal game loop stuff
             modes();
             if (modeTime == 1) {
                 audioPlayer.loopSiren(true);
             }
             pacman.move();
         }
-        else if (pacman.isDead() == true) {
+        else if (pacman.isDead() == true) {  // when pacman is dead 
             ghostTimer.stop();
             if (pacman.getLives() > 0) {    // restart game for your new life
                 frightenTime = 0;
@@ -77,29 +102,34 @@ public class GameController implements ActionListener{
                 } catch (InterruptedException e1) {     // sleep so the audio works
                     System.out.println(e1);
                 }
-                if (audioPlayer.isFinished("death") == true) {
+                if (audioPlayer.isFinished("death") == true) {  // reset pacman and ghosts to continue playing
                     for (int i = 0; i<ghosts.length; i++) {
                         ghosts[i].start(false);
                     }
-                    pacman.reset();
+                    pacman.reset(false);
                     try {
                         Thread.sleep(1500);
                     } catch (InterruptedException e2) {
                         System.out.println(e2);
                     }
-                    audioPlayer.loopSiren(true);
                     ghostTimer.restart();
+                    audioPlayer.loopSiren(true);
                 }
             }
+            else {  // game over man
+                System.out.println("GAME OVER");
+                lost = true;
+                panel.gameOver();
+            }
+        }
+        else if (won == true) {  // when you win
+            System.out.println("You win!");
+            stopLoops();
+            won = true;
+            ghostTimer.stop();
         }
         panel.setScore(score);
-        try {
-            Thread.sleep(75);
-        } catch (InterruptedException e1) {
-            System.out.println(e1);
-        }
-        run();
-    }};
+    }
 
     public void modes() {   // sets the states of the ghosts based on the current time or if the power pellets have run out
         if (power) {
@@ -123,7 +153,7 @@ public class GameController implements ActionListener{
             audioPlayer.loopSiren(true);
             for (int i = 0; i<ghosts.length; i++) {
                 ghosts[i].reAlign();
-                if (ghosts[i].isEaten() == false) {
+                if (ghosts[i].getState() != Constants.eaten && ghosts[i].isEaten() == false) {
                     ghosts[i].setState(Constants.chase);
                 }
             }
@@ -148,15 +178,29 @@ public class GameController implements ActionListener{
         return state;
     }
 
+    public boolean power() {
+        return power;
+    }
+
     public void setScore(int amount, int dots) {
         score += amount;
         if (dots == 248) {
-            System.out.println("You Win!");
+            won = true;
         }
     }
 
     public AudioPlayer getAudio() {
         return audioPlayer;
+    }
+
+    public void setLost(boolean bool) {
+        lost = bool;
+    }
+
+    public void stopLoops() {
+        audioPlayer.loopSiren(false);
+        audioPlayer.loopPowerPellet(false);
+        audioPlayer.loopEyes(false);
     }
 
 }

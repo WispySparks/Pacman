@@ -21,6 +21,7 @@ public class Clyde implements Ghost {
     private boolean eaten = false;
     private boolean house = true;    // used for beginning of game to leave ghost house
     private boolean enter = false;   // whether ghost is entering or exiting ghost house
+    private boolean scaredout = true;
     public int x1;  // target x
     public int y1;  // target y
     
@@ -308,7 +309,13 @@ public class Clyde implements Ghost {
         int y1 = 13*16+8;
         if (getX() == x1 && getY() == y1) {
             eaten = false;
-            ghostState = controller.gameState();;
+            if (scaredout == true && controller.power() == true) {
+                ghostState = Constants.frighten;
+                scaredout = false;
+            }
+            else {
+                ghostState = controller.gameState();
+            }
             enter = true;
         }
     }

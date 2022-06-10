@@ -35,7 +35,7 @@ public class Blinky implements Ghost {
         nextDirection = Constants.left;
         hitbox.x = getX()+4;
         hitbox.y = getY()+4;
-        ghostState = Constants.scatter;
+        ghostState = controller.gameState();
         speed = Constants.baseSpeed;
         eaten = false;
         enter = true;
@@ -280,8 +280,8 @@ public class Blinky implements Ghost {
             nextDirection = direction = Constants.up;
             enter = false;
             speed = Constants.baseSpeed;
-            controller.getAudio().loopEyes(false);
-            controller.getAudio().loopPowerPellet(true);
+            // controller.getAudio().loopEyes(false);
+            // controller.getAudio().loopPowerPellet(true);
         }
     }
 

@@ -68,7 +68,7 @@ public class Pacman implements ActionListener {
         return lives;
     }
 
-    public void reset() {
+    public void reset(boolean hard) {
         animState = 0;
         xPos = 13 * 16;
         yPos = 51 * 8;
@@ -77,6 +77,9 @@ public class Pacman implements ActionListener {
         isDead = false;
         hitbox.x = getX()+4;
         hitbox.y = getY()+4;
+        if (hard == true) {
+            lives = 3;
+        }
     }
 
     public void checkHitboxCollision() {
