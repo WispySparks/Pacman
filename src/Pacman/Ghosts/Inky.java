@@ -1,6 +1,7 @@
-package Pacman;
+package Pacman.Ghosts;
 
 import java.util.Random;
+import Pacman.*;
 import Pacman.Math.Vector2D;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
@@ -27,7 +28,7 @@ public class Inky implements Ghost {
     public int x1;  // target x
     public int y1;  // target y
     
-    Inky(Pacman pacman, Blinky blinky, Map map, GameController controller) {
+    public Inky(Pacman pacman, Blinky blinky, Map map, GameController controller) {
         this.pacman = pacman;
         this.blinky = blinky;
         this.map = map;
@@ -51,6 +52,7 @@ public class Inky implements Ghost {
             eaten = false;
             house = true;
             enter = false;
+            scaredout = true;
         }
     }
 
@@ -183,6 +185,8 @@ public class Inky implements Ghost {
             return randDirection();
         }
         else if (enter == true) {
+            controller.getAudio().loopPowerPellet(false);
+            controller.getAudio().loopEyes(true);
             speed = Constants.baseSpeed/2;
             x1 = 13*16;     // ghost house cordinates
             y1 = 16*16+8;
@@ -308,6 +312,10 @@ public class Inky implements Ghost {
             nextDirection = direction = Constants.up;
             enter = false;
             speed = Constants.baseSpeed;
+            controller.getAudio().loopEyes(false);
+            if (controller.power() == true) {
+                controller.getAudio().loopPowerPellet(true);
+            }
         }
     }
 

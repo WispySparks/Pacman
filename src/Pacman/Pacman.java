@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
+import Pacman.Ghosts.Ghost;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
@@ -26,6 +27,7 @@ public class Pacman implements ActionListener {
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private boolean isDead = false;
     private int lives = 3;
+    private boolean oneUp = false;
 
     Pacman(GameController controller, Map map) {
         this.controller = controller;
@@ -66,6 +68,13 @@ public class Pacman implements ActionListener {
 
     public int getLives() {
         return lives;
+    }
+
+    public void extraLife() {
+        if (oneUp == false) {
+            lives++;
+            oneUp = true;
+        }
     }
 
     public void reset(boolean hard) {
@@ -165,6 +174,10 @@ public class Pacman implements ActionListener {
         AffineTransformOp rotateOp = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
         BufferedImage rotatedAnim = rotateOp.filter(anim, rotatedImage);
         return rotatedAnim;
+    }
+
+    public BufferedImage staticImage() {
+        return animImages[0];
     }
     
     public void actionPerformed(ActionEvent e) {

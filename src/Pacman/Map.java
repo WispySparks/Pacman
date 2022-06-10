@@ -26,8 +26,7 @@ public class Map {
     private final Rectangle[] blanks = {new Rectangle(14*8, (12*16)+8, 216, 176), new Rectangle(0*8, 17*16, 96, 16), 
         new Rectangle(44*8, 17*16, 96, 16), new Rectangle(13*16, 26 * 16, 32, 32)};
     private Rectangle[] dots = new Rectangle[244];
-    private Rectangle[] bigDots = {new Rectangle(1*16-2, 6*16 + 6, 16, 16), new Rectangle(26*16-1, 6*16 + 6, 16, 16),
-        new Rectangle(1*16-2, 26*16 + 4, 16, 16), new Rectangle(26*16-1, 26*16 + 4, 16, 16)};
+    private Rectangle[] bigDots;
     
     Map(GameController controller) {
         this.controller = controller;
@@ -36,6 +35,7 @@ public class Map {
 
     public void setDots() {     // set up dots for the map
         dotsate = 0;
+        bigDots = new Rectangle[]{new Rectangle(1*16-2, 6*16 + 6, 16, 16), new Rectangle(26*16-1, 6*16 + 6, 16, 16), new Rectangle(1*16-2, 26*16 + 4, 16, 16), new Rectangle(26*16-1, 26*16 + 4, 16, 16)};
         int rollOver = 0;
         int yPos = 4;
         int xPos = 1;

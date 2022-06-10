@@ -1,6 +1,7 @@
 package Pacman;
 
 import javax.swing.Timer;
+import Pacman.Ghosts.Ghost;
 import java.awt.event.*;
 
 public class GameController implements ActionListener{
@@ -31,8 +32,16 @@ public class GameController implements ActionListener{
         gameSetup();
     }
 
-    public void gameSetup() {
+    public void gameSetup() {   // starts main thread and resets all values to what they should be
         audioPlayer.playStart();
+        modeTime = 0;
+        frightenTime = 0;
+        power = false;
+        state = 1;
+        ghostTime = 0;
+        lost = false;
+        won = false;
+        score = 0;
         for (int i = 0; i<ghosts.length; i++) {
             ghosts[i].start(false);
         }
@@ -52,14 +61,6 @@ public class GameController implements ActionListener{
             }
             if (!lost) run();
         }};
-        modeTime = 0;
-        frightenTime = 0;
-        power = false;
-        state = 1;
-        ghostTime = 0;
-        lost = false;
-        won = false;
-        score = 0;
         ghostTimer.start();
         main.start();
     }
@@ -108,7 +109,7 @@ public class GameController implements ActionListener{
                     }
                     pacman.reset(false);
                     try {
-                        Thread.sleep(1500);
+                        Thread.sleep(1250);
                     } catch (InterruptedException e2) {
                         System.out.println(e2);
                     }
@@ -186,6 +187,9 @@ public class GameController implements ActionListener{
         score += amount;
         if (dots == 248) {
             won = true;
+        }
+        if (score >= 10000) {
+            pacman.extraLife();
         }
     }
 

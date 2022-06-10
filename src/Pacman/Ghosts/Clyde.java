@@ -1,19 +1,20 @@
-package Pacman;
+package Pacman.Ghosts;
 
 import java.util.Random;
+import Pacman.*;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
-public class Pinky implements Ghost {
+public class Clyde implements Ghost {
 
     private final Map map;
     private final Pacman pacman;
-    private final Animator animator = new Animator("pinky");
+    private final Animator animator = new Animator("clyde");
     private final GameController controller;
-    private int xPos = 13*16;
+    private int xPos = 15*16;
     private int yPos = 33 * 8;
-    private int direction = Constants.up;
-    private int nextDirection = Constants.up;
+    private int direction = Constants.left;
+    private int nextDirection = Constants.left;
     private int speed = Constants.baseSpeed;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private int ghostState = Constants.eaten;
@@ -25,7 +26,7 @@ public class Pinky implements Ghost {
     public int x1;  // target x
     public int y1;  // target y
     
-    Pinky(Pacman pacman, Map map, GameController controller) {
+    public Clyde(Pacman pacman, Map map, GameController controller) {
         this.pacman = pacman;
         this.map = map;
         this.controller = controller;
@@ -37,10 +38,10 @@ public class Pinky implements Ghost {
             eaten = true;
         }
         else {
-            xPos = 13*16;
+            xPos = 15*16;
             yPos = 33 * 8;
-            direction = Constants.up;
-            nextDirection = Constants.up;
+            direction = Constants.left;
+            nextDirection = Constants.left;
             speed = Constants.baseSpeed;
             hitbox.x = getX()+4;
             hitbox.y = getY()+4;
@@ -48,6 +49,7 @@ public class Pinky implements Ghost {
             eaten = false;
             house = true;
             enter = false;
+            scaredout = true;
         }
     }
 
@@ -99,15 +101,17 @@ public class Pinky implements Ghost {
     }
 
     public void targetTile() {
-        int dir;
+        double dist;
         x1 = pacman.getX();
         y1 = pacman.getY();
-        dir = pacman.getDirection();
-        switch (dir) {
-            case Constants.right: x1 += 80; break;
-            case Constants.down: y1 += 80; break;
-            case Constants.left: x1 -= 48; break;
-            case Constants.up: y1 -= 48; break;
+        int x2 = getX();
+        int y2 = getY();
+        int ablr = Math.abs(y2 - y1);
+        int bcdu = Math.abs(x2 - x1);
+        dist = Math.hypot(bcdu, ablr);
+        if (dist <= 128) {
+            x1 = 1*16;
+            y1 = 33*16;
         }
     }
 
@@ -167,13 +171,15 @@ public class Pinky implements Ghost {
         }
         else if (ghostState == Constants.scatter) {  // scatter mode
             x1 = 1*16;     // corner cordinates
-            y1 = 4*16;
+            y1 = 33*16;
         }
         else if (ghostState == Constants.frighten) {  // frighten mode
             speed = Constants.baseSpeed/2;
             return randDirection();
         }
         else if (enter == true) {
+            controller.getAudio().loopPowerPellet(false);
+            controller.getAudio().loopEyes(true);
             speed = Constants.baseSpeed/2;
             x1 = 13*16;     // ghost house cordinates
             y1 = 16*16+8;
@@ -299,6 +305,10 @@ public class Pinky implements Ghost {
             nextDirection = direction = Constants.up;
             enter = false;
             speed = Constants.baseSpeed;
+            controller.getAudio().loopEyes(false);
+            if (controller.power() == true) {
+                controller.getAudio().loopPowerPellet(true);
+            }
         }
     }
 

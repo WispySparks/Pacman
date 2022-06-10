@@ -21,7 +21,7 @@ public class Animator implements ActionListener{
     private int animState = 0;
     private String ghost = "null";
     
-    Animator(String ghost) {
+    public Animator(String ghost) {
         this.ghost = ghost;
         setupAnims();
         timer.start();

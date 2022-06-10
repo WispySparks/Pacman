@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import Pacman.Ghosts.*;
 import java.awt.event.*;
 
 public class GamePanel extends JLayeredPane implements KeyListener {
@@ -43,7 +44,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         // timer2.addActionListener(jam);
     }
 
-    public void paint(Graphics g) {//TODO: Display lives and display fruit, collect fruit and gain score for it, level restart when you win, 1up when you get enough score, game over screen, extra sounds, main menu, fix eyes sounds for all ghosts
+    public void paint(Graphics g) {//TODO: display fruit, collect fruit and gain score for it, level restart when you win,  extra sounds, main menu, game over screen,
         super.paint(g);
         Rectangle[] dots = map.getDots();
         Rectangle[] bigDots = map.getBigDots();  // power pellets
@@ -56,6 +57,9 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         }
         for (int i = 0; i<ghosts.length; i++) {
             g.drawImage(ghosts[i].updateAnim(), ghosts[i].getX(), ghosts[i].getY(), null);
+        }
+        for (int i = 1; i<pacman.getLives(); i++) {     // draw pacman lives
+            g.drawImage(pacman.staticImage(), (2*i)*16, 545, null);
         }
         g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
         g.setColor(Color.RED);
@@ -72,7 +76,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         // }
     }
 
-    Thread paint = new Thread() {
+    Thread paint = new Thread() {   // thread to repaint the screen on its own
         public void run() {
             repaint();
             try {
@@ -84,7 +88,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         }
     };
 
-    public void mapSetup() {
+    public void mapSetup() {    // set up the ui and background images
         BufferedImage mapImage = null;
         final File mapFile = new File("./resources/images/pacmap.png");
         final JLabel mapLabel = new JLabel();
@@ -127,12 +131,12 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
             pacman.setNextDir(Constants.up);
         }
-        if (e.getKeyCode() == KeyEvent.VK_R) {
+        if (e.getKeyCode() == KeyEvent.VK_R) {  // restarts the game by stopping music and calling game setup
             controller.stopLoops();
-            controller.setLost(true);
+            controller.setLost(true);   // stops current main thread
             setScore(0);
             try {
-                Thread.sleep(76);
+                Thread.sleep(76);   // waits for main thread to finish
             } catch (Exception e1) {
                 System.out.println(e1);
             }
