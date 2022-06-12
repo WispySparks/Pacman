@@ -23,8 +23,8 @@ public class Pinky implements Ghost {
     private boolean house = true;    // used for beginning of game to leave ghost house
     private boolean enter = false;   // whether ghost is entering or exiting ghost house
     private boolean scaredout = true;
-    public int x1;  // target x
-    public int y1;  // target y
+    private int x1;  // target x
+    private int y1;  // target y
     
     public Pinky(Pacman pacman, Map map, GameController controller) {
         this.pacman = pacman;

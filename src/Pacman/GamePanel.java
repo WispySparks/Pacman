@@ -18,11 +18,10 @@ public class GamePanel extends JLayeredPane implements KeyListener {
     private final Map map = new Map(controller);
     private final Pacman pacman = new Pacman(controller, map);
     private final Blinky blinky = new Blinky(pacman, map, controller);
-    private final Pinky pinky = new Pinky(pacman, map, controller);
-    private final Inky inky = new Inky(pacman, blinky, map, controller);
-    private final Clyde clyde = new Clyde(pacman, map, controller);
-    private final Ghost[] ghosts = {blinky, pinky, inky, clyde};
+    private final Ghost[] ghosts = {blinky, new Pinky(pacman, map, controller), new Inky(pacman, blinky, map, controller), new Clyde(pacman, map, controller)};
     private JLabel scoreLabel = new JLabel("HIGH SCORE " + Integer.toString(0));
+    private JLabel lossLabel = new JLabel("GAME OVER");
+    private JLabel lossLabel2 = new JLabel("PRESS R TO RESTART");
 
     GamePanel() {
         mapSetup();
@@ -51,14 +50,6 @@ public class GamePanel extends JLayeredPane implements KeyListener {
             g.drawImage(pacman.staticImage(), (2*i)*16, 545, null);
         }
         g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
-        g.setColor(Color.RED);
-        g.fillRect(blinky.x1, blinky.y1, 16, 16);
-        g.setColor(Color.PINK);
-        g.fillRect(pinky.x1, pinky.y1, 16, 16);
-        g.setColor(Color.BLUE);
-        g.fillRect(inky.x1, inky.y1, 16, 16);
-        g.setColor(Color.ORANGE);
-        g.fillRect(clyde.x1, clyde.y1, 16, 16);
         // g.setColor(Color.GREEN);
         // for (int i = 0; i<map.walls.length; i++) {
         //     g.fillRect(map.walls[i].x, map.walls[i].y, map.walls[i].width, map.walls[i].height);
@@ -95,12 +86,23 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         scoreLabel.setBounds(gridWidth*tileSize/2-75, 0, 200, 50);
         scoreLabel.setForeground(Color.WHITE);
         scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+        lossLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+        lossLabel.setForeground(Color.RED);
+        lossLabel.setBounds(170, 305, 200, 50);
+        lossLabel.setVisible(true);
+        lossLabel2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        lossLabel2.setForeground(Color.RED);
+        lossLabel2.setBounds(145, 205, 200, 50);
+        lossLabel2.setVisible(false);
         this.add(mapLabel, Integer.valueOf(1));
         this.add(scoreLabel, Integer.valueOf(2));
+        this.add(lossLabel, Integer.valueOf(2));
+        this.add(lossLabel2, Integer.valueOf(2));
     }
 
-    public void gameOver() {
-        System.out.println("show game over ui");
+    public void gameOver() {    // show game over ui
+        lossLabel.setVisible(true);
+        lossLabel2.setVisible(true);
     }
 
     public void setScore(int score) {
@@ -124,13 +126,14 @@ public class GamePanel extends JLayeredPane implements KeyListener {
             controller.stopLoops();
             controller.setLost(true);   // stops current main thread
             setScore(0);
+            lossLabel.setVisible(false);
+            lossLabel2.setVisible(false);
             try {
                 Thread.sleep(76);   // waits for main thread to finish
             } catch (Exception e1) {
                 System.out.println(e1);
             }
             map.setDots();
-            
             controller.gameSetup();
         }
     }

@@ -9,9 +9,9 @@ public class GameController implements ActionListener {
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private final Timer ghostTimer = new Timer(75, this);
     private final GamePanel panel;
+    private final double[] modeTimes = {9, 27, 38, 54, 63, 79, 88};  // times for switching from chase to scatter 
     private Pacman pacman;
     private Ghost[] ghosts;
-    private final double[] modeTimes = {9, 27, 38, 54, 63, 79, 88};  // times for switching from chase to scatter 
     private float modeTime = 0;
     private float frightenTime = 0;     // timer for when frighten runs out
     private boolean power = false;  // whether a power pellet are currently active
@@ -118,7 +118,6 @@ public class GameController implements ActionListener {
                 }
             }
             else {  // game over man
-                System.out.println("GAME OVER");
                 lost = true;
                 panel.gameOver();
             }
