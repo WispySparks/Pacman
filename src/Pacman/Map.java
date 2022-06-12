@@ -118,7 +118,7 @@ public class Map {
                 cherry.height = 0;
                 ateCherry = true;
                 controller.getAudio().playFruit();
-                controller.setScore(200, 0);
+                controller.setScore(400, 0);
             }
         }
         if (dotsate >= 124) {

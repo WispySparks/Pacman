@@ -10,6 +10,7 @@ public class GameController implements ActionListener {
     private final Timer ghostTimer = new Timer(75, this);
     private final GamePanel panel;
     private final double[] modeTimes = {9, 27, 38, 54, 63, 79, 88};  // times for switching from chase to scatter 
+    private Map map;
     private Pacman pacman;
     private Ghost[] ghosts;
     private float modeTime = 0;
@@ -20,14 +21,16 @@ public class GameController implements ActionListener {
     private int score = 0;
     private boolean won = false;
     private boolean lost = false;
+    private int level = 1;
 
     GameController(GamePanel panel) {
         this.panel = panel;
     }
     
-    public void setPieces(Ghost[] ghosts, Pacman pacman) {
+    public void setPieces(Ghost[] ghosts, Pacman pacman, Map map) {
         this.ghosts = ghosts;
         this.pacman = pacman;
+        this.map = map;
         pacman.setGhosts(ghosts);
         gameSetup();
     }
@@ -42,6 +45,7 @@ public class GameController implements ActionListener {
         lost = false;
         won = false;
         score = 0;
+        level = 1;
         for (int i = 0; i<ghosts.length; i++) {
             ghosts[i].start(false);
         }
@@ -125,10 +129,28 @@ public class GameController implements ActionListener {
             }
         }
         else if (won == true) {  // when you win
-            System.out.println("You win!");
-            stopLoops();
-            won = true;
+            level++;
             ghostTimer.stop();
+            stopLoops();
+            modeTime = 0;
+            frightenTime = 0;
+            power = false;
+            state = 1;
+            ghostTime = 0;
+            lost = false;
+            map.setDots();
+            for (int i = 0; i<ghosts.length; i++) { // reset pacman and ghosts to continue playing
+                ghosts[i].start(false);
+            }
+            pacman.reset(false);
+            try {
+                Thread.sleep(1600);
+            } catch (InterruptedException e2) {
+                System.out.println(e2);
+            }
+            ghostTimer.restart();
+            audioPlayer.loopSiren(true);
+            won = false;
         }
         panel.setScore(score);
     }
@@ -205,6 +227,14 @@ public class GameController implements ActionListener {
 
     public boolean isLost() {
         return lost;
+    }
+
+    public int level() {
+        return level;
+    }
+
+    public boolean won() {
+        return won;
     }
 
     public void stopLoops() {

@@ -20,6 +20,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
     private final Blinky blinky = new Blinky(pacman, map, controller);
     private final Ghost[] ghosts = {blinky, new Pinky(pacman, map, controller), new Inky(pacman, blinky, map, controller), new Clyde(pacman, map, controller)};
     private JLabel scoreLabel = new JLabel("HIGH SCORE " + Integer.toString(0));
+    private JLabel levelLabel = new JLabel("LEVEL " + Integer.toString(1));
     private JLabel lossLabel = new JLabel("GAME OVER");
     private JLabel lossLabel2 = new JLabel("PRESS R TO RESTART");
     private JLabel startLabel = new JLabel("PRESS ENTER TO START");
@@ -29,7 +30,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         paint.start();
     }
 
-    public void paint(Graphics g) {//TODO: level restart when you win 
+    public void paint(Graphics g) {
         super.paint(g);
         Rectangle[] dots = map.getDots();
         Rectangle[] bigDots = map.getBigDots();  // power pellets
@@ -88,6 +89,9 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         scoreLabel.setBounds(gridWidth*tileSize/2-75, 0, 200, 50);
         scoreLabel.setForeground(Color.WHITE);
         scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+        levelLabel.setBounds(gridWidth*tileSize/2-75+190, 0, 200, 50);
+        levelLabel.setForeground(Color.WHITE);
+        levelLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
         lossLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
         lossLabel.setForeground(Color.RED);
         lossLabel.setBounds(170, 305, 200, 50);
@@ -105,6 +109,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         this.add(lossLabel, Integer.valueOf(2));
         this.add(lossLabel2, Integer.valueOf(2));
         this.add(startLabel, Integer.valueOf(2));
+        this.add(levelLabel, Integer.valueOf(2));
     }
 
     public void gameOver() {    // show game over ui
@@ -114,6 +119,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
 
     public void setScore(int score) {
         scoreLabel.setText("HIGH SCORE " + Integer.toString(score));
+        levelLabel.setText("LEVEL " + Integer.toString(controller.level()));
     }
 
     public void keyPressed(KeyEvent e) {
@@ -129,7 +135,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
             pacman.setNextDir(Constants.up);
         }
-        if (e.getKeyCode() == KeyEvent.VK_R && startLabel.isVisible() == false) {  // restarts the game by stopping music and calling game setup
+        if (e.getKeyCode() == KeyEvent.VK_R && startLabel.isVisible() == false && controller.won() == false) {  // restarts the game by stopping music and calling game setup
             controller.stopLoops();
             controller.setLost(true);   // stops current main thread
             setScore(0);
@@ -144,7 +150,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
             controller.gameSetup();
         }
         if (e.getKeyCode() == KeyEvent.VK_ENTER && startLabel.isVisible() == true) {
-            controller.setPieces(ghosts, pacman);
+            controller.setPieces(ghosts, pacman, map);
             startLabel.setVisible(false);
         }
     }
