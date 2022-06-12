@@ -74,6 +74,7 @@ public class Pacman implements ActionListener {
     public void extraLife() {
         if (oneUp == false) {
             lives++;
+            controller.getAudio().playLife();
             oneUp = true;
         }
     }

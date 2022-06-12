@@ -94,15 +94,15 @@ public class GameController implements ActionListener {
         }
         else if (pacman.isDead() == true) {  // when pacman is dead 
             ghostTimer.stop();
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e1) {     // sleep so the audio works
+                System.out.println(e1);
+            }
             if (pacman.getLives() > 0) {    // restart game for your new life
                 frightenTime = 0;
                 power = false;
                 ghostTime = 0;
-                try {
-                    Thread.sleep(5);
-                } catch (InterruptedException e1) {     // sleep so the audio works
-                    System.out.println(e1);
-                }
                 if (audioPlayer.isFinished("death") == true) {  // reset pacman and ghosts to continue playing
                     for (int i = 0; i<ghosts.length; i++) {
                         ghosts[i].start(false);
@@ -118,8 +118,10 @@ public class GameController implements ActionListener {
                 }
             }
             else {  // game over man
-                lost = true;
-                panel.gameOver();
+                if (audioPlayer.isFinished("death") == true) {
+                    lost = true;
+                    panel.gameOver();
+                }
             }
         }
         else if (won == true) {  // when you win
@@ -199,6 +201,10 @@ public class GameController implements ActionListener {
 
     public void setLost(boolean bool) {
         lost = bool;
+    }
+
+    public boolean isLost() {
+        return lost;
     }
 
     public void stopLoops() {

@@ -22,14 +22,14 @@ public class GamePanel extends JLayeredPane implements KeyListener {
     private JLabel scoreLabel = new JLabel("HIGH SCORE " + Integer.toString(0));
     private JLabel lossLabel = new JLabel("GAME OVER");
     private JLabel lossLabel2 = new JLabel("PRESS R TO RESTART");
+    private JLabel startLabel = new JLabel("PRESS ENTER TO START");
 
     GamePanel() {
         mapSetup();
-        controller.setPieces(ghosts, pacman);
         paint.start();
     }
 
-    public void paint(Graphics g) {//TODO: level restart when you win,  extra sounds, main menu, game over screen,
+    public void paint(Graphics g) {//TODO: level restart when you win 
         super.paint(g);
         Rectangle[] dots = map.getDots();
         Rectangle[] bigDots = map.getBigDots();  // power pellets
@@ -43,13 +43,15 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         for (int i = 0; i<bigDots.length; i++) {
             g.fillOval(bigDots[i].x, bigDots[i].y, bigDots[i].width, bigDots[i].height);
         }
-        for (int i = 0; i<ghosts.length; i++) {
-            g.drawImage(ghosts[i].updateAnim(), ghosts[i].getX(), ghosts[i].getY(), null);
-        }
         for (int i = 1; i<pacman.getLives(); i++) {     // draw pacman lives
             g.drawImage(pacman.staticImage(), (2*i)*16, 545, null);
         }
-        g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
+        if (controller.isLost() == false) {
+            for (int i = 0; i<ghosts.length; i++) {
+                g.drawImage(ghosts[i].updateAnim(), ghosts[i].getX(), ghosts[i].getY(), null);
+            }
+            g.drawImage(pacman.updateAnim(), pacman.getX(), pacman.getY(), null);
+        }
         // g.setColor(Color.GREEN);
         // for (int i = 0; i<map.walls.length; i++) {
         //     g.fillRect(map.walls[i].x, map.walls[i].y, map.walls[i].width, map.walls[i].height);
@@ -89,15 +91,20 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         lossLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
         lossLabel.setForeground(Color.RED);
         lossLabel.setBounds(170, 305, 200, 50);
-        lossLabel.setVisible(true);
+        lossLabel.setVisible(false);
         lossLabel2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
         lossLabel2.setForeground(Color.RED);
         lossLabel2.setBounds(145, 205, 200, 50);
         lossLabel2.setVisible(false);
+        startLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+        startLabel.setForeground(Color.RED);
+        startLabel.setBounds(145, 305, 200, 50);
+        startLabel.setVisible(true);
         this.add(mapLabel, Integer.valueOf(1));
         this.add(scoreLabel, Integer.valueOf(2));
         this.add(lossLabel, Integer.valueOf(2));
         this.add(lossLabel2, Integer.valueOf(2));
+        this.add(startLabel, Integer.valueOf(2));
     }
 
     public void gameOver() {    // show game over ui
@@ -122,7 +129,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
             pacman.setNextDir(Constants.up);
         }
-        if (e.getKeyCode() == KeyEvent.VK_R) {  // restarts the game by stopping music and calling game setup
+        if (e.getKeyCode() == KeyEvent.VK_R && startLabel.isVisible() == false) {  // restarts the game by stopping music and calling game setup
             controller.stopLoops();
             controller.setLost(true);   // stops current main thread
             setScore(0);
@@ -135,6 +142,10 @@ public class GamePanel extends JLayeredPane implements KeyListener {
             }
             map.setDots();
             controller.gameSetup();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && startLabel.isVisible() == true) {
+            controller.setPieces(ghosts, pacman);
+            startLabel.setVisible(false);
         }
     }
     public void keyReleased(KeyEvent e) {

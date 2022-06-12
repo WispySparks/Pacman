@@ -11,7 +11,6 @@ public class AudioPlayer {
     private final File startAudio = new File("./resources/audio/Start.wav");
     private final File wakaAudio = new File("./resources/audio/Waka.wav");
     private final File lifeAudio = new File("./resources/audio/1UP.wav");
-    private final File creditAudio = new File("./resources/audio/Credit.wav");
     private final File fruitAudio = new File("./resources/audio/Fruit.wav");
     private final File ghostAudio = new File("./resources/audio/Ghost.wav");
     private final File powerPelletAudio = new File("./resources/audio/PowerPellet.wav");
@@ -22,15 +21,14 @@ public class AudioPlayer {
     private AudioInputStream audioStream;
     private Clip startClip;
     private Clip wakaClip;
-    private Clip lifeClip;  // not yet
-    private Clip creditClip; // not yet
-    private Clip fruitClip;  // not yet
+    private Clip lifeClip;  
+    private Clip fruitClip; 
     private Clip ghostClip;
     private Clip powerPelletClip;
     private Clip intermissionClip;  // not yet
     private Clip sirenClip;
     private Clip eyesClip;
-    public Clip deathClip;
+    private Clip deathClip;
     
     AudioPlayer() {
     }
@@ -68,19 +66,6 @@ public class AudioPlayer {
                 lifeClip = AudioSystem.getClip();
                 lifeClip.open(audioStream);
                 lifeClip.start();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-    }
-
-    public void playCredit() {
-        if (creditClip == null || creditClip.isRunning() == false) {
-            try {
-                audioStream = AudioSystem.getAudioInputStream(creditAudio);
-                creditClip = AudioSystem.getClip();
-                creditClip.open(audioStream);
-                creditClip.start();
             } catch (Exception e) {
                 System.out.println(e);
             }
