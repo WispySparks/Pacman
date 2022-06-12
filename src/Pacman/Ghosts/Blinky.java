@@ -165,6 +165,7 @@ public class Blinky implements Ghost {
         else {
             x1 = 13*16;     // outside ghost house
             y1 = 13*16+8;
+            speed = Constants.baseSpeed/2;
             exitHouse();
         }
         int x2 = getX();
@@ -295,6 +296,7 @@ public class Blinky implements Ghost {
             eaten = false;
             ghostState = controller.gameState();
             enter = true;
+            speed = Constants.baseSpeed;
         }
     }
 

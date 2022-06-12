@@ -101,15 +101,13 @@ public class AudioPlayer {
     }
 
     public void playGhost() {
-        if (ghostClip == null || ghostClip.isRunning() == false) {
-            try {
-                audioStream = AudioSystem.getAudioInputStream(ghostAudio);
-                ghostClip = AudioSystem.getClip();
-                ghostClip.open(audioStream);
-                ghostClip.start();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+        try {
+            audioStream = AudioSystem.getAudioInputStream(ghostAudio);
+            ghostClip = AudioSystem.getClip();
+            ghostClip.open(audioStream);
+            ghostClip.start();
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 

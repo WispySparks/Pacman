@@ -1,10 +1,15 @@
 package Pacman;
 
 import java.awt.*;
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 public class Map {
 
     private final GameController controller;
+    private final File cherryFile = new File("./resources/images/cherries.png");
+    private BufferedImage cherryImage; 
     private int dotsate = 0;
     public final Rectangle[] walls = {new Rectangle(5*8, 6*16, 48, 32), new Rectangle(5*8, 10*16, 48, 16), 
         new Rectangle(15*8, 6*16, 64, 32), new Rectangle(33*8, 6*16, 64, 32), new Rectangle(45*8, 6*16, 48, 32),
@@ -27,14 +32,24 @@ public class Map {
         new Rectangle(44*8, 17*16, 96, 16), new Rectangle(13*16, 26 * 16, 32, 32)};
     private Rectangle[] dots = new Rectangle[244];
     private Rectangle[] bigDots;
+    private Rectangle cherry = new Rectangle(13*16+8, 19*16+16, 0, 0);
+    private boolean ateCherry = false;
     
     Map(GameController controller) {
         this.controller = controller;
+        try {
+            cherryImage = ImageIO.read(cherryFile);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         setDots();
     }
 
     public void setDots() {     // set up dots for the map
         dotsate = 0;
+        cherry.width = 0;
+        cherry.height = 0;
+        ateCherry = false;
         bigDots = new Rectangle[]{new Rectangle(1*16-2, 6*16 + 6, 16, 16), new Rectangle(26*16-1, 6*16 + 6, 16, 16), new Rectangle(1*16-2, 26*16 + 4, 16, 16), new Rectangle(26*16-1, 26*16 + 4, 16, 16)};
         int rollOver = 0;
         int yPos = 4;
@@ -71,6 +86,17 @@ public class Map {
         return bigDots;
     }
 
+    public Boolean isCherry() {
+        if (cherry.width != 0 && cherry.height != 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public BufferedImage cherryImage() {
+        return cherryImage;
+    }
+
     public void eatDot(Rectangle rect) {    // code for eating a dot
         Rectangle space = new Rectangle(0, 0, 0, 0);
         rect.y = rect.y+4;
@@ -86,6 +112,19 @@ public class Map {
                 controller.setScore(50, dotsate);
                 bigDots[i] = space;
                 controller.powerPellet();    // sets the ghosts to frightened mode
+            }
+            if (cherry.intersects(rect)) {
+                cherry.width = 0;
+                cherry.height = 0;
+                ateCherry = true;
+                controller.getAudio().playFruit();
+                controller.setScore(200, 0);
+            }
+        }
+        if (dotsate >= 124) {
+            if (ateCherry == false) {
+                cherry.width = 16;
+                cherry.height = 16;
             }
         }
     }

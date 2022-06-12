@@ -28,6 +28,7 @@ public class Pacman implements ActionListener {
     private boolean isDead = false;
     private int lives = 3;
     private boolean oneUp = false;
+    private double eaten = 0;
 
     Pacman(GameController controller, Map map) {
         this.controller = controller;
@@ -77,6 +78,10 @@ public class Pacman implements ActionListener {
         }
     }
 
+    public void resetGhosts() {
+        eaten = 0;
+    }
+
     public void reset(boolean hard) {
         animState = 0;
         xPos = 13 * 16;
@@ -86,6 +91,7 @@ public class Pacman implements ActionListener {
         isDead = false;
         hitbox.x = getX()+4;
         hitbox.y = getY()+4;
+        eaten = 0;
         if (hard == true) {
             lives = 3;
         }
@@ -94,9 +100,7 @@ public class Pacman implements ActionListener {
     public void checkHitboxCollision() {
         for (int i = 0; i<ghosts.length; i++) {
             if (ghosts[i].getHitbox().intersects(hitbox) && ghosts[i].getState() < 2 && isDead == false) {
-                controller.getAudio().loopSiren(false);
-                controller.getAudio().loopPowerPellet(false);
-                controller.getAudio().loopEyes(false);
+                controller.stopLoops();
                 controller.getAudio().playDeath();
                 isDead = true;
                 lives--;
@@ -106,7 +110,9 @@ public class Pacman implements ActionListener {
                 controller.getAudio().playGhost();
                 ghosts[i].setState(Constants.eaten);
                 ghosts[i].reAlign();
-                controller.setScore(400, 0);
+                eaten = Math.pow(2, eaten);
+                if (eaten == 16) {eaten = eaten/2;}
+                controller.setScore(200*eaten, 0);
             }
         }
     }

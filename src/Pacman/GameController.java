@@ -4,7 +4,7 @@ import javax.swing.Timer;
 import Pacman.Ghosts.Ghost;
 import java.awt.event.*;
 
-public class GameController implements ActionListener{
+public class GameController implements ActionListener {
     
     private final AudioPlayer audioPlayer = new AudioPlayer();
     private final Timer ghostTimer = new Timer(75, this);
@@ -150,7 +150,7 @@ public class GameController implements ActionListener{
             }
         }
         if ((int) frightenTime == 7) {
-            audioPlayer.loopPowerPellet(false);
+            stopLoops();
             audioPlayer.loopSiren(true);
             for (int i = 0; i<ghosts.length; i++) {
                 ghosts[i].reAlign();
@@ -160,6 +160,7 @@ public class GameController implements ActionListener{
             }
             frightenTime = 0;
             power = false;
+            pacman.resetGhosts();
         }
     }
 
@@ -183,7 +184,7 @@ public class GameController implements ActionListener{
         return power;
     }
 
-    public void setScore(int amount, int dots) {
+    public void setScore(double amount, int dots) {    // increment score
         score += amount;
         if (dots == 248) {
             won = true;
