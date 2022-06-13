@@ -1,7 +1,7 @@
 package Pacman;
 
 import java.awt.Rectangle;
-import java.io.File;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 import Pacman.Ghosts.Ghost;
@@ -13,7 +13,7 @@ import java.awt.image.AffineTransformOp;
 public class Pacman implements ActionListener {
 
     private final Map map;
-    private final File[] animFiles = {new File("./resources/images/pacman_0.png"), new File("./resources/images/pacman_1.png"), new File("./resources/images/pacman_2.png"), new File("./resources/images/pacman_3.png"), new File("./resources/images/pacman_4.png"), new File("./resources/images/pacdeath_0.png"), new File("./resources/images/pacdeath_1.png"), new File("./resources/images/pacdeath_2.png"), new File("./resources/images/pacdeath_3.png"), new File("./resources/images/pacdeath_4.png"), new File("./resources/images/pacdeath_5.png"), new File("./resources/images/pacdeath_6.png"), new File("./resources/images/pacdeath_7.png"), new File("./resources/images/pacdeath_8.png"), new File("./resources/images/pacdeath_9.png"), new File("./resources/images/pacdeath_10.png"), new File("./resources/images/pacdeath_11.png"), new File("./resources/images/pacdeath_12.png")};
+    private final InputStream[] animFiles = {this.getClass().getResourceAsStream("/resources/images/pacman_0.png"), this.getClass().getResourceAsStream("/resources/images/pacman_1.png"), this.getClass().getResourceAsStream("/resources/images/pacman_2.png"), this.getClass().getResourceAsStream("/resources/images/pacman_3.png"), this.getClass().getResourceAsStream("/resources/images/pacman_4.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_0.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_1.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_2.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_3.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_4.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_5.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_6.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_7.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_8.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_9.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_10.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_11.png"), this.getClass().getResourceAsStream("/resources/images/pacdeath_12.png")};
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
     private final GameController controller;
     private final Timer animTimer = new Timer(100, this);

@@ -1,23 +1,21 @@
 package Pacman;
 
-import java.io.File;
-//import java.net.URL;
+import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class AudioPlayer {
-    //private final URL startAudio = this.getClass().getResource("./resources/audio/StartSound.wav");
-    private final File startAudio = new File("./resources/audio/Start.wav");
-    private final File wakaAudio = new File("./resources/audio/Waka.wav");
-    private final File lifeAudio = new File("./resources/audio/1UP.wav");
-    private final File fruitAudio = new File("./resources/audio/Fruit.wav");
-    private final File ghostAudio = new File("./resources/audio/Ghost.wav");
-    private final File powerPelletAudio = new File("./resources/audio/PowerPellet.wav");
-    private final File intermissionAudio = new File("./resources/audio/Intermission.wav");
-    private final File sirenAudio = new File("./resources/audio/Siren.wav");
-    private final File eyesAudio = new File("./resources/audio/Eyes.wav");
-    private final File deathAudio = new File("./resources/audio/Death.wav");
+    private final URL startAudio = this.getClass().getResource("/resources/audio/Start.wav");
+    private final URL wakaAudio = this.getClass().getResource("/resources/audio/Waka.wav");
+    private final URL lifeAudio = this.getClass().getResource("/resources/audio/1UP.wav");
+    private final URL fruitAudio = this.getClass().getResource("/resources/audio/Fruit.wav");
+    private final URL ghostAudio = this.getClass().getResource("/resources/audio/Ghost.wav");
+    private final URL powerPelletAudio = this.getClass().getResource("/resources/audio/PowerPellet.wav");
+    private final URL intermissionAudio = this.getClass().getResource("./resources/audio/Intermission.wav");
+    private final URL sirenAudio = this.getClass().getResource("/resources/audio/Siren.wav");
+    private final URL eyesAudio = this.getClass().getResource("/resources/audio/Eyes.wav");
+    private final URL deathAudio = this.getClass().getResource("/resources/audio/Death.wav");
     private AudioInputStream audioStream;
     private Clip startClip;
     private Clip wakaClip;

@@ -2,8 +2,8 @@ package Pacman;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import Pacman.Ghosts.*;
@@ -34,9 +34,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         super.paint(g);
         Rectangle[] dots = map.getDots();
         Rectangle[] bigDots = map.getBigDots();  // power pellets
-        if (map.isCherry() == true) {
-            g.drawImage(map.cherryImage(), 13*16, 19*16+8, null);
-        }
+        
         g.setColor(new Color(255, 184, 151)); 
         for (int i = 0; i<dots.length; i++) {
             g.fillRect(dots[i].x, dots[i].y, dots[i].width, dots[i].height);
@@ -48,6 +46,9 @@ public class GamePanel extends JLayeredPane implements KeyListener {
             g.drawImage(pacman.staticImage(), (2*i)*16, 545, null);
         }
         if (controller.isLost() == false) {
+            if (map.isCherry() == true) {
+                g.drawImage(map.cherryImage(), 13*16, 19*16+8, null);
+            }
             for (int i = 0; i<ghosts.length; i++) {
                 g.drawImage(ghosts[i].updateAnim(), ghosts[i].getX(), ghosts[i].getY(), null);
             }
@@ -73,7 +74,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
 
     public void mapSetup() {    // set up the ui and background images
         BufferedImage mapImage = null;
-        final File mapFile = new File("./resources/images/pacmap.png");
+        final URL mapFile = this.getClass().getResource("/resources/images/pacmap.png");
         final JLabel mapLabel = new JLabel();
         this.setOpaque(true);
         this.setBackground(Color.black);

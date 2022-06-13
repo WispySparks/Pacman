@@ -1,6 +1,6 @@
 package Pacman;
 
-import java.io.File;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 import java.awt.image.BufferedImage;
@@ -8,12 +8,12 @@ import java.awt.event.*;
 
 public class Animator implements ActionListener{
 
-    private final File[] blinkyFiles = {new File("./resources/images/blinky_0.png"), new File("./resources/images/blinky_1.png"), new File("./resources/images/blinky_2.png"), new File("./resources/images/blinky_3.png"), new File("./resources/images/blinky_4.png"), new File("./resources/images/blinky_5.png"), new File("./resources/images/blinky_6.png"), new File("./resources/images/blinky_7.png")};
-    private final File[] pinkyFiles = {new File("./resources/images/pinky_0.png"), new File("./resources/images/pinky_1.png"), new File("./resources/images/pinky_2.png"), new File("./resources/images/pinky_3.png"), new File("./resources/images/pinky_4.png"), new File("./resources/images/pinky_5.png"), new File("./resources/images/pinky_6.png"), new File("./resources/images/pinky_7.png")};
-    private final File[] inkyFiles = {new File("./resources/images/inky_0.png"), new File("./resources/images/inky_1.png"), new File("./resources/images/inky_2.png"), new File("./resources/images/inky_3.png"), new File("./resources/images/inky_4.png"), new File("./resources/images/inky_5.png"), new File("./resources/images/inky_6.png"), new File("./resources/images/inky_7.png")};
-    private final File[] clydeFiles = {new File("./resources/images/clyde_0.png"), new File("./resources/images/clyde_1.png"), new File("./resources/images/clyde_2.png"), new File("./resources/images/clyde_3.png"), new File("./resources/images/clyde_4.png"), new File("./resources/images/clyde_5.png"), new File("./resources/images/clyde_6.png"), new File("./resources/images/clyde_7.png")};
-    private final File[] eyeFiles = {new File("./resources/images/eyes_0.png"), new File("./resources/images/eyes_1.png"), new File("./resources/images/eyes_2.png"), new File("./resources/images/eyes_3.png")};
-    private final File[] scaredFiles = {new File("./resources/images/scared_0.png"), new File("./resources/images/scared_1.png")};
+    private final InputStream[] blinkyFiles = {this.getClass().getResourceAsStream("/resources/images/blinky_0.png"), this.getClass().getResourceAsStream("/resources/images/blinky_1.png"), this.getClass().getResourceAsStream("/resources/images/blinky_2.png"), this.getClass().getResourceAsStream("/resources/images/blinky_3.png"), this.getClass().getResourceAsStream("/resources/images/blinky_4.png"), this.getClass().getResourceAsStream("/resources/images/blinky_5.png"), this.getClass().getResourceAsStream("/resources/images/blinky_6.png"), this.getClass().getResourceAsStream("/resources/images/blinky_7.png")};
+    private final InputStream[] pinkyFiles = {this.getClass().getResourceAsStream("/resources/images/pinky_0.png"), this.getClass().getResourceAsStream("/resources/images/pinky_1.png"), this.getClass().getResourceAsStream("/resources/images/pinky_2.png"), this.getClass().getResourceAsStream("/resources/images/pinky_3.png"), this.getClass().getResourceAsStream("/resources/images/pinky_4.png"), this.getClass().getResourceAsStream("/resources/images/pinky_5.png"), this.getClass().getResourceAsStream("/resources/images/pinky_6.png"), this.getClass().getResourceAsStream("/resources/images/pinky_7.png")};
+    private final InputStream[] inkyFiles = {this.getClass().getResourceAsStream("/resources/images/inky_0.png"), this.getClass().getResourceAsStream("/resources/images/inky_1.png"), this.getClass().getResourceAsStream("/resources/images/inky_2.png"), this.getClass().getResourceAsStream("/resources/images/inky_3.png"), this.getClass().getResourceAsStream("/resources/images/inky_4.png"), this.getClass().getResourceAsStream("/resources/images/inky_5.png"), this.getClass().getResourceAsStream("/resources/images/inky_6.png"), this.getClass().getResourceAsStream("/resources/images/inky_7.png")};
+    private final InputStream[] clydeFiles = {this.getClass().getResourceAsStream("/resources/images/clyde_0.png"), this.getClass().getResourceAsStream("/resources/images/clyde_1.png"), this.getClass().getResourceAsStream("/resources/images/clyde_2.png"), this.getClass().getResourceAsStream("/resources/images/clyde_3.png"), this.getClass().getResourceAsStream("/resources/images/clyde_4.png"), this.getClass().getResourceAsStream("/resources/images/clyde_5.png"), this.getClass().getResourceAsStream("/resources/images/clyde_6.png"), this.getClass().getResourceAsStream("/resources/images/clyde_7.png")};
+    private final InputStream[] eyeFiles = {this.getClass().getResourceAsStream("/resources/images/eyes_0.png"), this.getClass().getResourceAsStream("/resources/images/eyes_1.png"), this.getClass().getResourceAsStream("/resources/images/eyes_2.png"), this.getClass().getResourceAsStream("/resources/images/eyes_3.png")};
+    private final InputStream[] scaredFiles = {this.getClass().getResourceAsStream("/resources/images/scared_0.png"), this.getClass().getResourceAsStream("/resources/images/scared_1.png")};
     private final BufferedImage[] normalImages = new BufferedImage[blinkyFiles.length];
     private final BufferedImage[] eyeImages = new BufferedImage[eyeFiles.length];
     private final BufferedImage[] scaredImages = new BufferedImage[scaredFiles.length];

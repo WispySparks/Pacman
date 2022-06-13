@@ -1,14 +1,14 @@
 package Pacman;
 
 import java.awt.*;
-import java.io.File;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 public class Map {
 
     private final GameController controller;
-    private final File cherryFile = new File("./resources/images/cherries.png");
+    private final InputStream cherryFile = this.getClass().getResourceAsStream("/resources/images/cherries.png");
     private BufferedImage cherryImage; 
     private int dotsate = 0;
     public final Rectangle[] walls = {new Rectangle(5*8, 6*16, 48, 32), new Rectangle(5*8, 10*16, 48, 16), 

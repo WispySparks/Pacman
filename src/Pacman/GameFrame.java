@@ -6,6 +6,7 @@ public class GameFrame extends JFrame{
     GameFrame() {
         GamePanel panel = new GamePanel();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("Pacman");
         this.add(panel);
         this.addKeyListener(panel);
         this.setResizable(false);
