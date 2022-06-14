@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"Pacman"},{"l":"Pacman.Ghosts"},{"l":"Pacman.Math"}];updateSearchResults();
