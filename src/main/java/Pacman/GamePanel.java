@@ -1,13 +1,26 @@
-package Pacman;
+package main.java.Pacman;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import Pacman.Ghosts.*;
-import java.awt.event.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+
+import main.java.Pacman.Ghosts.Blinky;
+import main.java.Pacman.Ghosts.Clyde;
+import main.java.Pacman.Ghosts.Ghost;
+import main.java.Pacman.Ghosts.Inky;
+import main.java.Pacman.Ghosts.Pinky;
 
 public class GamePanel extends JLayeredPane implements KeyListener {
 

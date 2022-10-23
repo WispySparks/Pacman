@@ -1,10 +1,12 @@
-package Pacman;
+package main.java.Pacman;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
+
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
-import java.awt.image.BufferedImage;
-import java.awt.event.*;
 
 public class Animator implements ActionListener{
 

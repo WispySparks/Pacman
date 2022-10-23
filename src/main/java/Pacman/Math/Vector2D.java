@@ -1,5 +1,4 @@
-package Pacman.Math;
-import java.lang.Math;
+package main.java.Pacman.Math;
 
 public class Vector2D {
     

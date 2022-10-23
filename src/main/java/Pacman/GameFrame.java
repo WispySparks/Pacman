@@ -1,4 +1,4 @@
-package Pacman;
+package main.java.Pacman;
 
 import javax.swing.JFrame;
 

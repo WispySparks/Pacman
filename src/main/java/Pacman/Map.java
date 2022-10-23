@@ -1,9 +1,10 @@
-package Pacman;
+package main.java.Pacman;
 
-import java.awt.*;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 
 public class Map {
 

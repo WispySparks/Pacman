@@ -1,4 +1,4 @@
-package Pacman.Ghosts;
+package main.java.Pacman.Ghosts;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;

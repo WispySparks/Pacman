@@ -1,45 +1,61 @@
-package Pacman.Ghosts;
+package main.java.Pacman.Ghosts;
 
-import java.util.Random;
-import Pacman.*;
-import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.util.Random;
 
-public class Blinky implements Ghost {
+import main.java.Pacman.Animator;
+import main.java.Pacman.Constants;
+import main.java.Pacman.GameController;
+import main.java.Pacman.Map;
+import main.java.Pacman.Pacman;
+
+public class Clyde implements Ghost {
 
     private final Map map;
     private final Pacman pacman;
-    private final Animator animator = new Animator("blinky");
+    private final Animator animator = new Animator("clyde");
     private final GameController controller;
-    private int xPos = 13 * 16;
-    private int yPos = 27 * 8;
+    private int xPos = 15*16;
+    private int yPos = 33 * 8;
     private int direction = Constants.left;
     private int nextDirection = Constants.left;
     private int speed = Constants.baseSpeed;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
-    private int ghostState = Constants.scatter;
+    private int ghostState = Constants.eaten;
     private Random rand = new Random();
     private boolean eaten = false;
-    private boolean enter = true;   // whether ghost is entering or exiting ghost house
+    private boolean house = true;    // used for beginning of game to leave ghost house
+    private boolean enter = false;   // whether ghost is entering or exiting ghost house
+    private boolean scaredout = true;
     private int x1;  // target x
     private int y1;  // target y
     
-    public Blinky(Pacman pacman, Map map, GameController controller) {
+    public Clyde(Pacman pacman, Map map, GameController controller) {
         this.pacman = pacman;
         this.map = map;
         this.controller = controller;
     }
-    public void start(boolean start){
-        xPos = 13 * 16;
-        yPos = 27 * 8;
-        direction = Constants.left;
-        nextDirection = Constants.left;
-        hitbox.x = getX()+4;
-        hitbox.y = getY()+4;
-        ghostState = controller.gameState();
-        speed = Constants.baseSpeed;
-        eaten = false;
-        enter = true;
+
+    public void start(boolean start) {
+        if (start == true) {
+            house = false;
+            eaten = true;
+        }
+        else {
+            xPos = 15*16;
+            yPos = 33 * 8;
+            direction = Constants.left;
+            nextDirection = Constants.left;
+            speed = Constants.baseSpeed;
+            hitbox.x = getX()+4;
+            hitbox.y = getY()+4;
+            ghostState = Constants.eaten;
+            eaten = false;
+            house = true;
+            enter = false;
+            scaredout = true;
+        }
     }
 
     public int getX() {
@@ -77,18 +93,31 @@ public class Blinky implements Ghost {
     }
 
     public void getMove() {
-        if (eaten == true && enter == true) {
-            move();
-            move();
-        }
-        else {
-            move();
+        if (house == false) {
+            if (eaten == true && enter == true) {
+                move();
+                move();
+                move();
+            }
+            else {
+                move();
+            }
         }
     }
 
     public void targetTile() {
+        double dist;
         x1 = pacman.getX();
         y1 = pacman.getY();
+        int x2 = getX();
+        int y2 = getY();
+        int ablr = Math.abs(y2 - y1);
+        int bcdu = Math.abs(x2 - x1);
+        dist = Math.hypot(bcdu, ablr);
+        if (dist <= 128) {
+            x1 = 1*16;
+            y1 = 33*16;
+        }
     }
 
     public void move() {
@@ -146,8 +175,8 @@ public class Blinky implements Ghost {
             targetTile();
         }
         else if (ghostState == Constants.scatter) {  // scatter mode
-            x1 = 26*16;     // corner cordinates
-            y1 = 4*16;
+            x1 = 1*16;     // corner cordinates
+            y1 = 33*16;
         }
         else if (ghostState == Constants.frighten) {  // frighten mode
             speed = Constants.baseSpeed/2;
@@ -156,7 +185,7 @@ public class Blinky implements Ghost {
         else if (enter == true) {
             controller.getAudio().loopPowerPellet(false);
             controller.getAudio().loopEyes(true);
-            speed = Constants.baseSpeed;
+            speed = Constants.baseSpeed/2;
             x1 = 13*16;     // ghost house cordinates
             y1 = 16*16+8;
             eaten = true;
@@ -294,7 +323,14 @@ public class Blinky implements Ghost {
         int y1 = 13*16+8;
         if (getX() == x1 && getY() == y1) {
             eaten = false;
-            ghostState = controller.gameState();
+            if (scaredout == true && controller.power() == true) {
+                ghostState = Constants.frighten;
+                scaredout = false;
+            }
+            else {
+                scaredout = false;
+                ghostState = controller.gameState();
+            }
             enter = true;
             speed = Constants.baseSpeed;
         }

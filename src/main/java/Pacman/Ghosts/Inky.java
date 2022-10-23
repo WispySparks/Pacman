@@ -1,20 +1,27 @@
-package Pacman.Ghosts;
+package main.java.Pacman.Ghosts;
 
-import java.util.Random;
-import Pacman.*;
-import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.util.Random;
 
-public class Pinky implements Ghost {
+import main.java.Pacman.Animator;
+import main.java.Pacman.Constants;
+import main.java.Pacman.GameController;
+import main.java.Pacman.Map;
+import main.java.Pacman.Pacman;
+import main.java.Pacman.Math.Vector2D;
+
+public class Inky implements Ghost {
 
     private final Map map;
     private final Pacman pacman;
-    private final Animator animator = new Animator("pinky");
+    private final Animator animator = new Animator("inky");
     private final GameController controller;
-    private int xPos = 13*16;
+    private final Blinky blinky;
+    private int xPos = 11*16;
     private int yPos = 33 * 8;
-    private int direction = Constants.up;
-    private int nextDirection = Constants.up;
+    private int direction = Constants.right;
+    private int nextDirection = Constants.right;
     private int speed = Constants.baseSpeed;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private int ghostState = Constants.eaten;
@@ -26,8 +33,9 @@ public class Pinky implements Ghost {
     private int x1;  // target x
     private int y1;  // target y
     
-    public Pinky(Pacman pacman, Map map, GameController controller) {
+    public Inky(Pacman pacman, Blinky blinky, Map map, GameController controller) {
         this.pacman = pacman;
+        this.blinky = blinky;
         this.map = map;
         this.controller = controller;
     }
@@ -38,10 +46,10 @@ public class Pinky implements Ghost {
             eaten = true;
         }
         else {
-            xPos = 13*16;
+            xPos = 11*16;
             yPos = 33 * 8;
-            direction = Constants.up;
-            nextDirection = Constants.up;
+            direction = Constants.right;
+            nextDirection = Constants.right;
             speed = Constants.baseSpeed;
             hitbox.x = getX()+4;
             hitbox.y = getY()+4;
@@ -102,15 +110,21 @@ public class Pinky implements Ghost {
 
     public void targetTile() {
         int dir;
+        int x3 = blinky.getX();
+        int y3 = blinky.getY();
         x1 = pacman.getX();
         y1 = pacman.getY();
         dir = pacman.getDirection();
         switch (dir) {
-            case Constants.right: x1 += 80; break;
-            case Constants.down: y1 += 80; break;
-            case Constants.left: x1 -= 48; break;
-            case Constants.up: y1 -= 48; break;
+            case Constants.right: x1 += 40; break;
+            case Constants.down: y1 += 40; break;
+            case Constants.left: x1 -= 24; break;
+            case Constants.up: y1 -= 24; break;
         }
+        Vector2D vector = new Vector2D(x1, y1, x3, y3);
+        vector = vector.reflection(180);
+        x1 += vector.getX();
+        y1 += vector.getY();
     }
 
     public void move() {
@@ -168,8 +182,8 @@ public class Pinky implements Ghost {
             targetTile();
         }
         else if (ghostState == Constants.scatter) {  // scatter mode
-            x1 = 1*16;     // corner cordinates
-            y1 = 4*16;
+            x1 = 27*16;     // corner cordinates
+            y1 = 33*16;
         }
         else if (ghostState == Constants.frighten) {  // frighten mode
             speed = Constants.baseSpeed/2;
