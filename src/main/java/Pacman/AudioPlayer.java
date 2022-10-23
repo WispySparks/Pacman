@@ -7,16 +7,16 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class AudioPlayer {
-    private final URL startAudio = this.getClass().getResource("/resources/audio/Start.wav");
-    private final URL wakaAudio = this.getClass().getResource("/resources/audio/Waka.wav");
-    private final URL lifeAudio = this.getClass().getResource("/resources/audio/1UP.wav");
-    private final URL fruitAudio = this.getClass().getResource("/resources/audio/Fruit.wav");
-    private final URL ghostAudio = this.getClass().getResource("/resources/audio/Ghost.wav");
-    private final URL powerPelletAudio = this.getClass().getResource("/resources/audio/PowerPellet.wav");
-    private final URL intermissionAudio = this.getClass().getResource("./resources/audio/Intermission.wav");
-    private final URL sirenAudio = this.getClass().getResource("/resources/audio/Siren.wav");
-    private final URL eyesAudio = this.getClass().getResource("/resources/audio/Eyes.wav");
-    private final URL deathAudio = this.getClass().getResource("/resources/audio/Death.wav");
+    private final URL startAudio = this.getClass().getResource("/main/resources/audio/Start.wav");
+    private final URL wakaAudio = this.getClass().getResource("/main/resources/audio/Waka.wav");
+    private final URL lifeAudio = this.getClass().getResource("/main/resources/audio/1UP.wav");
+    private final URL fruitAudio = this.getClass().getResource("/main/resources/audio/Fruit.wav");
+    private final URL ghostAudio = this.getClass().getResource("/main/resources/audio/Ghost.wav");
+    private final URL powerPelletAudio = this.getClass().getResource("/main/resources/audio/PowerPellet.wav");
+    private final URL intermissionAudio = this.getClass().getResource("/main/resources/audio/Intermission.wav");
+    private final URL sirenAudio = this.getClass().getResource("/main/resources/audio/Siren.wav");
+    private final URL eyesAudio = this.getClass().getResource("/main/resources/audio/Eyes.wav");
+    private final URL deathAudio = this.getClass().getResource("/main/resources/audio/Death.wav");
     private AudioInputStream audioStream;
     private Clip startClip;
     private Clip wakaClip;
@@ -40,7 +40,7 @@ public class AudioPlayer {
                 startClip.open(audioStream);
                 startClip.start();
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
     }
@@ -53,7 +53,7 @@ public class AudioPlayer {
                 wakaClip.open(audioStream);
                 wakaClip.start();
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
     }
@@ -66,7 +66,7 @@ public class AudioPlayer {
                 lifeClip.open(audioStream);
                 lifeClip.start();
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
     }
@@ -79,7 +79,7 @@ public class AudioPlayer {
                 fruitClip.open(audioStream);
                 fruitClip.start();
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
     }
@@ -91,7 +91,7 @@ public class AudioPlayer {
             ghostClip.open(audioStream);
             ghostClip.start();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -103,7 +103,7 @@ public class AudioPlayer {
                 powerPelletClip.open(audioStream);
                 powerPelletClip.start();
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
     }
@@ -128,7 +128,7 @@ public class AudioPlayer {
                 intermissionClip.open(audioStream);
                 intermissionClip.start();
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
     }
@@ -141,7 +141,7 @@ public class AudioPlayer {
                 sirenClip.open(audioStream);
                 sirenClip.start();
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
     }
@@ -166,7 +166,7 @@ public class AudioPlayer {
                 eyesClip.open(audioStream);
                 eyesClip.start();
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
     }
@@ -191,7 +191,7 @@ public class AudioPlayer {
                 deathClip.open(audioStream);
                 deathClip.start();
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
     }

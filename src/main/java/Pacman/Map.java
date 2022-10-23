@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 public class Map {
 
     private final GameController controller;
-    private final InputStream cherryFile = this.getClass().getResourceAsStream("/resources/images/cherries.png");
+    private final InputStream cherryFile = this.getClass().getResourceAsStream("/main/resources/images/cherries.png");
     private BufferedImage cherryImage; 
     private int dotsate = 0;
     public final Rectangle[] walls = {new Rectangle(5*8, 6*16, 48, 32), new Rectangle(5*8, 10*16, 48, 16), 

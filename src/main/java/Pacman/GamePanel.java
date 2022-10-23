@@ -87,7 +87,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
 
     public void mapSetup() {    // set up the ui and background images
         BufferedImage mapImage = null;
-        final URL mapFile = this.getClass().getResource("/resources/images/pacmap.png");
+        final URL mapFile = this.getClass().getResource("/main/resources/images/pacmap.png");
         final JLabel mapLabel = new JLabel();
         this.setOpaque(true);
         this.setBackground(Color.black);
