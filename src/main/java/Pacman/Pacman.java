@@ -1,4 +1,4 @@
-package main.java.Pacman;
+package pacman;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
-import main.java.Pacman.Ghosts.Ghost;
+import pacman.ghosts.Ghost;
 
 public class Pacman implements ActionListener {
 

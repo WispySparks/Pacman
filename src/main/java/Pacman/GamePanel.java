@@ -1,4 +1,4 @@
-package main.java.Pacman;
+package pacman;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,11 +16,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
-import main.java.Pacman.Ghosts.Blinky;
-import main.java.Pacman.Ghosts.Clyde;
-import main.java.Pacman.Ghosts.Ghost;
-import main.java.Pacman.Ghosts.Inky;
-import main.java.Pacman.Ghosts.Pinky;
+import pacman.ghosts.Blinky;
+import pacman.ghosts.Clyde;
+import pacman.ghosts.Ghost;
+import pacman.ghosts.Inky;
+import pacman.ghosts.Pinky;
 
 public class GamePanel extends JLayeredPane implements KeyListener {
 

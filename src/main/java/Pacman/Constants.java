@@ -1,4 +1,4 @@
-package main.java.Pacman;
+package pacman;
 
 public class Constants {
     

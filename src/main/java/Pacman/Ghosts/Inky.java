@@ -1,15 +1,15 @@
-package main.java.Pacman.Ghosts;
+package pacman.ghosts;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import main.java.Pacman.Animator;
-import main.java.Pacman.Constants;
-import main.java.Pacman.GameController;
-import main.java.Pacman.Map;
-import main.java.Pacman.Pacman;
-import main.java.Pacman.Math.Vector2D;
+import pacman.Animator;
+import pacman.Constants;
+import pacman.GameController;
+import pacman.Map;
+import pacman.Pacman;
+import pacman.math.Vector2D;
 
 public class Inky implements Ghost {
 

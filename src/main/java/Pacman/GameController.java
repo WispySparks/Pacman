@@ -1,11 +1,11 @@
-package main.java.Pacman;
+package pacman;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import main.java.Pacman.Ghosts.Ghost;
+import pacman.ghosts.Ghost;
 
 public class GameController implements ActionListener {
     

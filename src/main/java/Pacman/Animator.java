@@ -1,4 +1,4 @@
-package main.java.Pacman;
+package pacman;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
