@@ -20,14 +20,14 @@ public class Pacman implements ActionListener {
     private final BufferedImage[] animImages = new BufferedImage[animFiles.length];
     private final GameController controller;
     private final Timer animTimer = new Timer(100, this);
+    private final int speed = Constants.baseSpeed;
     private int animState = 0;
     private Ghost[] ghosts;
     private int xPos = 13 * 16;
     private int yPos = 51 * 8;
     private int direction = Constants.left;
     private int nextDirection = Constants.left;
-    private int speed = Constants.baseSpeed;
-    private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
+    private final Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private boolean isDead = false;
     private int lives = 3;
     private boolean oneUp = false;
@@ -190,6 +190,7 @@ public class Pacman implements ActionListener {
         return animImages[0];
     }
     
+    @Override
     public void actionPerformed(ActionEvent e) {
         animState++;
         if (animState > 4  && isDead == false){
@@ -199,4 +200,5 @@ public class Pacman implements ActionListener {
             animState = 17;
         }
     }
+    
 }

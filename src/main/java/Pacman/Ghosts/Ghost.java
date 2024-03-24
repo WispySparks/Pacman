@@ -26,4 +26,5 @@ public interface Ghost {
     public int getY();
 
     public void start(boolean start);
+    
 }

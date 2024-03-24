@@ -16,6 +16,7 @@ public class Clyde implements Ghost {
     private final Pacman pacman;
     private final Animator animator = new Animator("clyde");
     private final GameController controller;
+    private final Random rand = new Random();
     private int xPos = 15*16;
     private int yPos = 33 * 8;
     private int direction = Constants.left;
@@ -23,7 +24,6 @@ public class Clyde implements Ghost {
     private int speed = Constants.baseSpeed;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private int ghostState = Constants.eaten;
-    private Random rand = new Random();
     private boolean eaten = false;
     private boolean house = true;    // used for beginning of game to leave ghost house
     private boolean enter = false;   // whether ghost is entering or exiting ghost house
@@ -37,6 +37,7 @@ public class Clyde implements Ghost {
         this.controller = controller;
     }
 
+    @Override
     public void start(boolean start) {
         if (start == true) {
             house = false;
@@ -66,14 +67,17 @@ public class Clyde implements Ghost {
         return yPos;
     }
 
+    @Override
     public boolean isEaten() {
         return eaten;
     }
 
+    @Override
     public int getState() {
         return ghostState;
     }
 
+    @Override
     public void setState(int state) {
         if (state < 2) {
             speed = Constants.baseSpeed;
@@ -84,14 +88,17 @@ public class Clyde implements Ghost {
         ghostState = state;
     }
 
+    @Override
     public BufferedImage updateAnim() {
         return animator.getAnim(direction, ghostState, enter);
     }
 
+    @Override
     public Rectangle getHitbox() {
         return hitbox;
     }
 
+    @Override
     public void getMove() {
         if (house == false) {
             if (eaten == true && enter == true) {
@@ -270,7 +277,8 @@ public class Clyde implements Ghost {
         return x;
     }
 
-    public void turnAround() {   // make ghost turn around 
+    @Override
+    public void turnAround() {   
         if (direction == Constants.right) {
             direction = Constants.left;
         }
@@ -285,6 +293,7 @@ public class Clyde implements Ghost {
         }
     }
 
+    @Override
     public void reAlign() {     // realign ghost after frightened mode
         if (xPos % 8 != 0) {
             if (!map.checkWallCollision(Constants.right, xPos, yPos, 4, true)) {

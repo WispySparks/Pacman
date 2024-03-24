@@ -32,22 +32,22 @@ public class GamePanel extends JLayeredPane implements KeyListener {
     private final Pacman pacman = new Pacman(controller, map);
     private final Blinky blinky = new Blinky(pacman, map, controller);
     private final Ghost[] ghosts = {blinky, new Pinky(pacman, map, controller), new Inky(pacman, blinky, map, controller), new Clyde(pacman, map, controller)};
-    private JLabel scoreLabel = new JLabel("HIGH SCORE " + Integer.toString(0));
-    private JLabel levelLabel = new JLabel("LEVEL " + Integer.toString(1));
-    private JLabel lossLabel = new JLabel("GAME OVER");
-    private JLabel lossLabel2 = new JLabel("PRESS R TO RESTART");
-    private JLabel startLabel = new JLabel("PRESS ENTER TO START");
+    private final JLabel scoreLabel = new JLabel("HIGH SCORE " + Integer.toString(0));
+    private final JLabel levelLabel = new JLabel("LEVEL " + Integer.toString(1));
+    private final JLabel lossLabel = new JLabel("GAME OVER");
+    private final JLabel lossLabel2 = new JLabel("PRESS R TO RESTART");
+    private final JLabel startLabel = new JLabel("PRESS ENTER TO START");
 
     GamePanel() {
         mapSetup();
         paint.start();
     }
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         Rectangle[] dots = map.getDots();
         Rectangle[] bigDots = map.getBigDots();  // power pellets
-        
         g.setColor(new Color(255, 184, 151)); 
         for (int i = 0; i<dots.length; i++) {
             g.fillRect(dots[i].x, dots[i].y, dots[i].width, dots[i].height);
@@ -73,17 +73,16 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         // }
     }
 
-    Thread paint = new Thread() {   // thread to repaint the screen on its own
-        public void run() {
+    private final Thread paint = new Thread(() -> {
+        while (true) {
             repaint();
             try {
                 Thread.sleep(16);   // roughly 60 frames per second
             } catch (Exception e) {
                 System.out.println(e);
             }
-            run();
         }
-    };
+    }); 
 
     public void mapSetup() {    // set up the ui and background images
         BufferedImage mapImage = null;
@@ -126,7 +125,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         this.add(levelLabel, Integer.valueOf(2));
     }
 
-    public void gameOver() {    // show game over ui
+    public void gameOver() {    
         lossLabel.setVisible(true);
         lossLabel2.setVisible(true);
     }
@@ -136,6 +135,7 @@ public class GamePanel extends JLayeredPane implements KeyListener {
         levelLabel.setText("LEVEL " + Integer.toString(controller.level()));
     }
 
+    @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
             pacman.setNextDir(Constants.right);
@@ -168,9 +168,9 @@ public class GamePanel extends JLayeredPane implements KeyListener {
             startLabel.setVisible(false);
         }
     }
-    public void keyReleased(KeyEvent e) {
-    }
-    public void keyTyped(KeyEvent e) {
-    }
+    @Override
+    public void keyReleased(KeyEvent e) {}
+    @Override
+    public void keyTyped(KeyEvent e) {}
 
 }

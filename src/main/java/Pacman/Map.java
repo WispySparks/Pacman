@@ -33,7 +33,7 @@ public class Map {
         new Rectangle(44*8, 17*16, 96, 16), new Rectangle(13*16, 26 * 16, 32, 32)};
     private Rectangle[] dots = new Rectangle[244];
     private Rectangle[] bigDots;
-    private Rectangle cherry = new Rectangle(13*16+8, 19*16+16, 0, 0);
+    private final Rectangle cherry = new Rectangle(13*16+8, 19*16+16, 0, 0);
     private boolean ateCherry = false;
     
     Map(GameController controller) {
@@ -87,7 +87,7 @@ public class Map {
         return bigDots;
     }
 
-    public Boolean isCherry() {
+    public boolean isCherry() {
         if (cherry.width != 0 && cherry.height != 0) {
             return true;
         }

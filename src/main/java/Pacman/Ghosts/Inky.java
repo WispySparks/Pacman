@@ -18,6 +18,7 @@ public class Inky implements Ghost {
     private final Animator animator = new Animator("inky");
     private final GameController controller;
     private final Blinky blinky;
+    private final Random rand = new Random();
     private int xPos = 11*16;
     private int yPos = 33 * 8;
     private int direction = Constants.right;
@@ -25,7 +26,6 @@ public class Inky implements Ghost {
     private int speed = Constants.baseSpeed;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private int ghostState = Constants.eaten;
-    private Random rand = new Random();
     private boolean eaten = false;
     private boolean house = true;    // used for beginning of game to leave ghost house
     private boolean enter = false;   // whether ghost is entering or exiting ghost house
@@ -40,6 +40,7 @@ public class Inky implements Ghost {
         this.controller = controller;
     }
 
+    @Override
     public void start(boolean start) {
         if (start == true) {
             house = false;
@@ -69,14 +70,17 @@ public class Inky implements Ghost {
         return yPos;
     }
 
+    @Override
     public boolean isEaten() {
         return eaten;
     }
 
+    @Override
     public int getState() {
         return ghostState;
     }
 
+    @Override
     public void setState(int state) {
         if (state < 2) {
             speed = Constants.baseSpeed;
@@ -87,14 +91,17 @@ public class Inky implements Ghost {
         ghostState = state;
     }
 
+    @Override
     public BufferedImage updateAnim() {
         return animator.getAnim(direction, ghostState, enter);
     }
 
+    @Override
     public Rectangle getHitbox() {
         return hitbox;
     }
 
+    @Override
     public void getMove() {
         if (house == false) {
             if (eaten == true && enter == true) {
@@ -277,7 +284,8 @@ public class Inky implements Ghost {
         return x;
     }
 
-    public void turnAround() {   // make ghost turn around 
+    @Override
+    public void turnAround() {   
         if (direction == Constants.right) {
             direction = Constants.left;
         }
@@ -292,6 +300,7 @@ public class Inky implements Ghost {
         }
     }
 
+    @Override
     public void reAlign() {     // realign ghost after frightened mode
         if (xPos % 8 != 0) {
             if (!map.checkWallCollision(Constants.right, xPos, yPos, 4, true)) {

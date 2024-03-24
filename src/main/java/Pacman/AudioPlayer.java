@@ -7,6 +7,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class AudioPlayer {
+
     private final URL startAudio = this.getClass().getResource("/main/resources/audio/Start.wav");
     private final URL wakaAudio = this.getClass().getResource("/main/resources/audio/Waka.wav");
     private final URL lifeAudio = this.getClass().getResource("/main/resources/audio/1UP.wav");
@@ -29,9 +30,6 @@ public class AudioPlayer {
     private Clip eyesClip;
     private Clip deathClip;
     
-    AudioPlayer() {
-    }
-
     public void playStart() {
         if (startClip == null || startClip.isRunning() == false) {
             try {
@@ -214,4 +212,5 @@ public class AudioPlayer {
         }
         return true;
     }
+    
 }

@@ -2,7 +2,8 @@ package main.java.Pacman;
 
 import javax.swing.JFrame;
 
-public class GameFrame extends JFrame{
+public class GameFrame extends JFrame {
+
     GameFrame() {
         GamePanel panel = new GamePanel();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -14,4 +15,5 @@ public class GameFrame extends JFrame{
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
+    
 }

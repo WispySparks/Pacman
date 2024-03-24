@@ -13,7 +13,7 @@ public class Vector2D {
         this.y = 0;
     }
 
-    public Vector2D(double x, double y) {   // vector from x y
+    public Vector2D(double x, double y) {   
         this.x = x;
         this.y = y;
         calculateMag(this);
@@ -57,7 +57,7 @@ public class Vector2D {
         return slope;
     }
 
-    public void normalize() {   // normalize a vector into a unit vector
+    public void normalize() {   
         if (magnitude != 0) {
             x = x / magnitude;
             y = y / magnitude;
@@ -73,7 +73,7 @@ public class Vector2D {
         }
     }
 
-    public static double directionAngle(Vector2D vector) {   // find direction angle of a vector
+    public static double directionAngle(Vector2D vector) {   
         double angle = Math.atan((vector.y/vector.x));
         return Math.toDegrees(angle);
     }
@@ -86,7 +86,7 @@ public class Vector2D {
         return new Vector2D((vector.x*scale), (vector.y*scale));
     }
 
-    public static double dotProduct(Vector2D a, Vector2D b) {   // find dot product of two vectors
+    public static double dotProduct(Vector2D a, Vector2D b) {   
         return ((a.getX() * b.getX()) + (a.getY() * b.getY()));
     }
 
@@ -94,4 +94,5 @@ public class Vector2D {
         double angle = Math.acos((dotProduct(a, b)/(a.getMagnitude()*b.getMagnitude())));
         return Math.toDegrees(angle);
     }
+    
 }

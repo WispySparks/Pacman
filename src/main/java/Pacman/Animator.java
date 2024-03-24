@@ -8,7 +8,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
-public class Animator implements ActionListener{
+public class Animator implements ActionListener {
 
     private final InputStream[] blinkyFiles = {this.getClass().getResourceAsStream("/main/resources/images/blinky_0.png"), this.getClass().getResourceAsStream("/main/resources/images/blinky_1.png"), this.getClass().getResourceAsStream("/main/resources/images/blinky_2.png"), this.getClass().getResourceAsStream("/main/resources/images/blinky_3.png"), this.getClass().getResourceAsStream("/main/resources/images/blinky_4.png"), this.getClass().getResourceAsStream("/main/resources/images/blinky_5.png"), this.getClass().getResourceAsStream("/main/resources/images/blinky_6.png"), this.getClass().getResourceAsStream("/main/resources/images/blinky_7.png")};
     private final InputStream[] pinkyFiles = {this.getClass().getResourceAsStream("/main/resources/images/pinky_0.png"), this.getClass().getResourceAsStream("/main/resources/images/pinky_1.png"), this.getClass().getResourceAsStream("/main/resources/images/pinky_2.png"), this.getClass().getResourceAsStream("/main/resources/images/pinky_3.png"), this.getClass().getResourceAsStream("/main/resources/images/pinky_4.png"), this.getClass().getResourceAsStream("/main/resources/images/pinky_5.png"), this.getClass().getResourceAsStream("/main/resources/images/pinky_6.png"), this.getClass().getResourceAsStream("/main/resources/images/pinky_7.png")};
@@ -20,8 +20,8 @@ public class Animator implements ActionListener{
     private final BufferedImage[] eyeImages = new BufferedImage[eyeFiles.length];
     private final BufferedImage[] scaredImages = new BufferedImage[scaredFiles.length];
     private final Timer timer = new Timer(100, this);
+    private final String ghost;
     private int animState = 0;
-    private String ghost = "null";
     
     public Animator(String ghost) {
         this.ghost = ghost;
@@ -30,7 +30,7 @@ public class Animator implements ActionListener{
     }
 
     public void setupAnims() {
-        for (int i = 0; i<blinkyFiles.length; i++) {
+        for (int i = 0; i < blinkyFiles.length; i++) {
             try {
                 switch (ghost) {
                     case "blinky": normalImages[i] = ImageIO.read(blinkyFiles[i]); break;
@@ -45,7 +45,7 @@ public class Animator implements ActionListener{
                 System.out.println(e);
             }
         }
-        for (int i = 0; i<eyeFiles.length; i++) {
+        for (int i = 0; i < eyeFiles.length; i++) {
             try {
                 eyeImages[i] = ImageIO.read(eyeFiles[i]);
             } catch (Exception e) {
@@ -92,6 +92,7 @@ public class Animator implements ActionListener{
         }
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         animState++;
     }

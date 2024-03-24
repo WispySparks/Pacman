@@ -16,6 +16,7 @@ public class Blinky implements Ghost {
     private final Pacman pacman;
     private final Animator animator = new Animator("blinky");
     private final GameController controller;
+    private final Random rand = new Random();
     private int xPos = 13 * 16;
     private int yPos = 27 * 8;
     private int direction = Constants.left;
@@ -23,7 +24,6 @@ public class Blinky implements Ghost {
     private int speed = Constants.baseSpeed;
     private Rectangle hitbox = new Rectangle(xPos+4, yPos+4, 24, 24);
     private int ghostState = Constants.scatter;
-    private Random rand = new Random();
     private boolean eaten = false;
     private boolean enter = true;   // whether ghost is entering or exiting ghost house
     private int x1;  // target x
@@ -34,6 +34,8 @@ public class Blinky implements Ghost {
         this.map = map;
         this.controller = controller;
     }
+
+    @Override
     public void start(boolean start){
         xPos = 13 * 16;
         yPos = 27 * 8;
@@ -55,14 +57,17 @@ public class Blinky implements Ghost {
         return yPos;
     }
 
+    @Override
     public boolean isEaten() {
         return eaten;
     }
 
+    @Override
     public int getState() {
         return ghostState;
     }
 
+    @Override
     public void setState(int state) {
         if (state < 2) {
             speed = Constants.baseSpeed;
@@ -73,14 +78,17 @@ public class Blinky implements Ghost {
         ghostState = state;
     }
 
+    @Override
     public BufferedImage updateAnim() {
         return animator.getAnim(direction, ghostState, enter);
     }
 
+    @Override
     public Rectangle getHitbox() {
         return hitbox;
     }
 
+    @Override
     public void getMove() {
         if (eaten == true && enter == true) {
             move();
@@ -246,7 +254,8 @@ public class Blinky implements Ghost {
         return x;
     }
 
-    public void turnAround() {   // make ghost turn around 
+    @Override
+    public void turnAround() {   
         if (direction == Constants.right) {
             direction = Constants.left;
         }
@@ -261,6 +270,7 @@ public class Blinky implements Ghost {
         }
     }
 
+    @Override
     public void reAlign() {     // realign ghost after frightened mode
         if (xPos % 8 != 0) {
             if (!map.checkWallCollision(Constants.right, xPos, yPos, 4, true)) {

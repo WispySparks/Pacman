@@ -72,6 +72,7 @@ public class GameController implements ActionListener {
         main.start();
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {    // ghost movements and freeing
         if (audioPlayer.isFinished("start") == true && pacman.isDead() == false) {
             ghostTime += 1;
